@@ -28,10 +28,12 @@ test("briefing, demo community, prompts and perspectives are explicitly syntheti
   expect(await page.locator('form, input, textarea, button[type="submit"]').count()).toBe(0);
 });
 
-test("all home CTAs lead to real placeholder routes; details stay 404", async ({ page }) => {
+test("dad home CTA routes include readable sample details, placeholders and unknown 404", async ({ page }) => {
   const paths = [
     "/dad/trends", "/dad/briefing", "/dad/community",
     "/dad/questions", "/dad/talk", "/dad/perspectives",
+    "/dad/trends/example-favorite-word", "/dad/trends/example-short-video",
+    "/dad/trends/example-playlist", "/dad/trends/example-snack", "/dad/trends/example-personal-style",
   ];
   await page.goto("/dad");
   const destinations = await page.locator(".dad-home a").evaluateAll(
@@ -42,11 +44,15 @@ test("all home CTAs lead to real placeholder routes; details stay 404", async ({
   for (const path of paths) {
     const response = await page.goto(path);
     expect(response?.status(), path).toBe(200);
-    await expect(page.getByRole("main")).toContainText("준비 중입니다.");
+    if (path === "/dad/trends" || path.startsWith("/dad/trends/")) {
+      await expect(page.getByRole("main")).toContainText("시연 콘텐츠");
+    } else {
+      await expect(page.getByRole("main")).toContainText("준비 중입니다.");
+    }
     const nav = page.getByRole("navigation", { name: "아빠의 공간 주요 메뉴" });
     await expect(nav.getByRole("link")).toHaveCount(4);
   }
-  const unknown = await page.goto("/dad/trends/example-favorite-word");
+  const unknown = await page.goto("/dad/trends/not-a-fixture");
   expect(unknown?.status()).toBe(404);
 });
 
@@ -89,7 +95,7 @@ test("dad home links are keyboard operable, axe clean and read-only", async ({ p
     }
   });
   await page.goto("/dad");
-  const link = page.getByRole("link", { name: "트렌드 메뉴 보기" });
+  const link = page.locator(".dad-home__hero-link");
   await link.focus();
   await expect(link).toBeFocused();
   expect(await link.evaluate((el) => getComputedStyle(el).outlineStyle)).toBe("solid");
