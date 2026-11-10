@@ -60,7 +60,7 @@ function ChoiceLinks() {
   );
 }
 
-export function RoleLanding() {
+export function RoleLanding({ chooseExplicitly }: { chooseExplicitly: boolean }) {
   const router = useRouter();
   // Keep SSR and initial hydration deterministic; no localStorage access on the server.
   const browserReady = useSyncExternalStore(
@@ -68,8 +68,6 @@ export function RoleLanding() {
     isBrowser,
     isServer,
   );
-  const chooseExplicitly = browserReady &&
-    new URLSearchParams(window.location.search).get("choose") === "1";
   const lastSpace = browserReady && !chooseExplicitly ? readLastSpace() : null;
 
   useEffect(() => {
