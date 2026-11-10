@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "아빠와 딸 | 준비 중",
-  description: "같은 집, 조금 다른 세상. 웹 서비스 개발 환경 준비 중입니다.",
+  title: "아빠와 딸 | 같은 집, 조금 다른 세상.",
+  description: "우리가 몰랐던 서로의 이야기. 아빠와 딸, 각자의 공간을 둘러보세요.",
 };
 
 export default function RootLayout({
