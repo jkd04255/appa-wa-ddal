@@ -15,11 +15,11 @@ jobs:
           set -euo pipefail
           mkdir -p public/editorial
           download() {
-            local photo_id="$1"
+            local image_path="$1"
             local output="$2"
             if [ -s "public/editorial/$output" ]; then return; fi
             curl -fLsS --retry 3 --connect-timeout 15 --max-time 75 \
-              "https://unsplash.com/photos/$photo_id/download?force=true&w=1100&q=80" \
+              "https://images.unsplash.com/$image_path?auto=format&fit=crop&fm=jpg&w=1000&q=78" \
               -o "public/editorial/$output"
             local mime
             mime=$(file --brief --mime-type "public/editorial/$output")
@@ -30,10 +30,10 @@ jobs:
             test "$(wc -c < "public/editorial/$output")" -gt 15000
             test "$(wc -c < "public/editorial/$output")" -lt 3500000
           }
-          download "YoYEaWHqKqA" "headphones-magazine.jpg"
-          download "L_0g0Tkj4pI" "beauty-stilllife.jpg"
-          download "dVKIpaoSAyU" "cafe-dessert.jpg"
-          download "u_d17v_Buqk" "vinyl-night.jpg"
+          download "photo-1778854228024-c1aecd6859c5" "headphones-magazine.jpg"
+          download "photo-1681679103943-cff212a6461a" "beauty-stilllife.jpg"
+          download "photo-1773064990672-dfbe02865943" "cafe-dessert.jpg"
+          download "photo-1759224357673-c7cb5ed009c4" "vinyl-night.jpg"
           file public/editorial/*.jpg
       - name: Commit self-hosted assets to feature branch
         shell: bash
