@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import {
   DAUGHTER_COMMUNITY,
   DAUGHTER_DISCOVERY,
@@ -10,7 +11,7 @@ import {
 } from "@/data/fixtures/daughter-home";
 import type { DaughterDiscovery } from "@/domain/daughter-editorial";
 
-function DemoLabel({ children = "시연 콘텐츠" }: { children?: string }) {
+function DemoLabel({ children = "시연 콘텐츠" }: { children?: ReactNode }) {
   return <span className="daughter-home__demo">{children}</span>;
 }
 
