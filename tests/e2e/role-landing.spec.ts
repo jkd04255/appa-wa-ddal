@@ -102,7 +102,9 @@ test("keyboard focus, axe accessibility and no write requests", async ({ page })
   await dad.focus();
   await expect(dad).toBeFocused();
   expect(await dad.evaluate((el) => getComputedStyle(el).outlineStyle)).toBe("solid");
-  const result = await new AxeBuilder({ page })
+  // AxeBuilder ships a newer Playwright Page type; the methods used here are compatible.
+  const axePage = page as unknown as ConstructorParameters<typeof AxeBuilder>[0]["page"];
+  const result = await new AxeBuilder({ page: axePage })
     .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
     .analyze();
   expect(result.violations, JSON.stringify(result.violations, null, 2)).toEqual([]);
