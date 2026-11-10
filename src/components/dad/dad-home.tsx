@@ -78,8 +78,8 @@ export function DadHome() {
               <div className="dad-home__meta"><DemoStamp /><span>{featured.categoryLabel}</span></div>
               <h3>{featured.title}</h3>
               <p>{featured.summary}</p>
-              <Link href="/dad/trends" className="dad-home__hero-link">
-                트렌드 메뉴 보기 <span aria-hidden="true">↗</span>
+              <Link href={`/dad/trends/${featured.slug}`} className="dad-home__hero-link">
+                이야기 읽기 <span aria-hidden="true">↗</span>
               </Link>
             </div>
           </div>
@@ -93,6 +93,7 @@ export function DadHome() {
                     <div className="dad-home__meta"><DemoStamp /><span>{item.categoryLabel}</span></div>
                     <h3>{item.title}</h3>
                     <p>{item.summary}</p>
+                    <Link className="dad-home__story-link" href={`/dad/trends/${item.slug}`} aria-label={`${item.title} 상세 읽기`}>이야기 읽기 <span aria-hidden="true">↗</span></Link>
                   </div>
                 </article>
               ))}
@@ -163,7 +164,7 @@ export function DadHome() {
 
         <p className="dad-home__fineprint">
           모든 카드·브리핑·게시글·관점은 디자인 검증용 합성 예시이며 실제 SNS 최신 동향, 게시글, 설문 결과가 아닙니다.
-          상세 콘텐츠와 커뮤니티 기능은 후속 단계에서 개발합니다.
+          트렌드 목록과 가상 상세는 읽을 수 있지만 실제 SNS 조사·실사용자 커뮤니티는 제공하지 않습니다.
         </p>
       </div>
     </main>
