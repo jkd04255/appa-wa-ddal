@@ -2,10 +2,10 @@
 
 > 프로젝트: 아빠와 딸 (가칭)  
 > 기준 요구사항: 「아빠와 딸을 위한 양방향 트렌드·익명 커뮤니티 개발 프롬프트 v2.0」  
-> 문서 버전: v0.10.0-rc.1  
+> 문서 버전: v0.10.0  
 > 최초 작성: 2026-11-10 (KST)  
 > 관리 위치: docs/DEVELOPMENT_PLAN.md  
-> 현재 게이트: G1-06 — 아빠 트렌드·딸 발견 목록/상세 구현·Chromium 41/41 통과, PR #16 최종 검증·병합 대기  
+> 현재 게이트: G1-06 완료 — G1-07 두 공간의 합성 커뮤니티 시연 준비  
 > 배포 상태: 미배포. 회원가입·실제 게시글·개인정보 저장 기능 미연결.
 
 ## 1. 목적과 제품 원칙
@@ -61,7 +61,7 @@
 | G1-03 | 공용 내비게이션 | 역할별 공통 헤더·정확히 4탭·활성 표시·키보드·모바일 safe-area | **완료** | [G1-03 QA](./G1_03_QA.md), [PR #10](https://github.com/jkd04255/appa-wa-ddal/pull/10) main 병합 5ac1007a 및 CI 16/16 |
 | G1-04 | 아빠 홈 | 합성 대표 트렌드 1+4·브리핑·커뮤니티·질문/대화·서로의 시선 | **완료** | [G1-04 QA](./G1_04_QA.md), [PR #12](https://github.com/jkd04255/appa-wa-ddal/pull/12) main 병합 3f7d048b, CI 23/23 통과 |
 | G1-05 | 딸 홈 | 사진 중심 Polished Underground 발견·뷰티·먹거리·쇼핑·샘플 커뮤니티·질문 | **완료** | [QA](./G1_05_QA.md), [PR #14](https://github.com/jkd04255/appa-wa-ddal/pull/14) main 병합 ede2a162, CI 31/31 통과 |
-| G1-06 | 트렌드 목록/상세 | 아빠 5·딸 4 합성 편집글 목록/정확한 slug 상세, 분류 필터·404·검증 안전 상태 | **검증 통과(병합 대기)** | [G1-06 QA](./G1_06_QA.md), Chromium 41/41, PR #16 최종 HEAD 검증 후 병합 |
+| G1-06 | 트렌드 목록/상세 | 아빠 5·딸 4 합성 편집글 목록/정확한 slug 상세, 분류 필터·404·검증 안전 상태 | **완료** | [G1-06 QA](./G1_06_QA.md), [PR #16](https://github.com/jkd04255/appa-wa-ddal/pull/16) main 병합 377bca61, Chromium 41/41 통과 |
 | G1-07 | 커뮤니티 시연 UI | 양쪽 목록·검색·정렬·작성·댓글 데모 | 미착수 | 서버 저장 없음, 개인정보 노출 없음 |
 | G1-08 | 서로의 시선/설문 UI | 집계형 익명 비교와 설문 데모 | 미착수 | 소표본/원문 공개 없음 |
 | G1-09 | 전체 시제품 회귀 검증 | 모바일·접근성·시각 QA 기록 | 미착수 | 치명적 결함 없음·피드백 수집 |
@@ -248,14 +248,14 @@
 - **실제 iPhone Safari/Android 실기기, 수동 스크린리더·고해상도 사진 시각 감리는 미실시**. 자동 브라우저 테스트를 실기기 통과로 주장하지 않음.
 - [G1-05 QA](./G1_05_QA.md). 최종 PR head `cfd68a9857b7c3e19145ca594d51e77643258d96`의 [GitHub Actions #42853751382](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42853751382) **전체 success/Chromium 31/31** 확인 후 PR #14를 main squash 병합(`ede2a162003d8dab2265340ec2f5f1b0c1e8fe6a`). main의 사진 4개·소스·QA·라이선스·계획서 파일 재조회 완료.
 
-### G1-06 아빠 트렌드·딸 발견 목록/상세 (기능 검증 통과, PR #16 병합 대기)
+### G1-06 완료 ([PR #16](https://github.com/jkd04255/appa-wa-ddal/pull/16) main 병합)
 - `feat/g1-06-editorial-list-details`: `/dad/trends`의 합성 트렌드 5개와 정확한 5개 slug 상세, `/daughter/discover`의 합성 발견 4개와 정확한 4개 slug 상세. 기존 두 홈의 대표/보조 카드가 해당 가상 상세로 직접 연결됨.
 - 상세에는 배경·맥락·팁·대화 예시, **시연 콘텐츠 / 합성 시연 자료 · 외부 원문 없음 / 출처·확인 날짜 해당 없음**을 명확히 표시. 허위 취재·최신 유행·할인율·검증일 주장은 금지.
 - 딸 목록은 `?category=beauty|food|culture` 필터를 서버에서 처리하고 URL·새로고침·뒤로가기로 상태 유지. 잘못된/중복 category는 경고 + 전체 가상 목록. 4탭 활성 상태와 홈·목록 복귀가 명료하게 작동.
 - TS `Record<slug, DemoDetailCopy>`와 읽기 전용 fixture에 상세 문장을 연결하여 어떤 컨텐츠든 정확한 slug만 허용. 무효/다른 공간의 slug, 미구현 실제 세일 상세는 **404**. `sourceDisplay`는 원문·확인일·승인 없는 `verified/expired` 표기를 **unverified(정보 확인 필요)**로 낮춤. 실제 verified 상태·할인 만료 로직은 **승인된 출처 계약 전 미구현**.
 - CSS를 별도 `editorial.css`로 범위 제한하여 아빠 차분한 블루그레이와 딸 크림·차콜·베리 Polished Underground 홈 미감 유지. 사진 4개는 기존 로컬 권리 확인 자산만 재사용. 새 외부/API/DB/서버 쓰기 없음.
 - [최초 성공 CI #42859245526](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42859245526): npm ci/lint/typecheck/build/HTTP smoke + 기존 31개/신규 10개 Chromium **41/41 통과**. 320/360/375/390/430/768/1024px·320px 200% 글자 확대·키보드·axe 자동 접근성·제3자/쓰기 요청 0 확인.
-- **물리 기기 iPhone Safari/Android Chrome, 수동 VoiceOver/TalkBack 검사는 미실시**. 소스·문서 최종 HEAD CI가 다시 성공하고 [G1-06 QA](./G1_06_QA.md) 검토 후 PR #16 main 병합.
+- **물리 기기 iPhone Safari/Android Chrome, 수동 VoiceOver/TalkBack 검사는 미실시**. 소스·문서 최종 HEAD `5de158ff41437f31badf6a18c0be4ff716882647`의 [PR GitHub Actions #42859936842](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42859936842) npm ci/lint/typecheck/build/HTTP smoke/Chromium **41/41 성공** 후 PR #16을 main squash 병합(`377bca61b8b34c93cae8e8d4ab73d5f2d57002d9`). 목록/상세/QA/계획서의 main 존재 재확인.
 
 ### 다음 예정 — G1-07 (G1-06 병합 이후)
 - 아빠·딸 커뮤니티 **합성 목록·검색·정렬·읽기 및 작성/댓글 시연**을 별도 기능 브랜치에서 단계적으로 구현. 핵심은 안전한 시연 진입과 역할별 분리, 검색/정렬/시연 입력을 실제 저장/인증처럼 오인하지 않도록 하는 것.
@@ -330,7 +330,7 @@
 | 2026-11-11 | 신규 10개: 9개 slug, 무효/교차 404·필터·320~1024px·200% 확대·axe·쓰기 0 | **통과** |
 | 2026-11-11 | 브라우저 회귀 총 41/41 | **통과**, Actions #42859245526 |
 | 2026-11-11 | 실제 iPhone/Android 및 수동 스크린리더 | **미실시**, 후속 QA 필요 |
-| 2026-11-11 | PR #16 최종 문서 HEAD CI 및 main 병합 | 최종 재검증 대기 |
+| 2026-11-11 | PR #16 최종 문서 HEAD CI 및 main 병합 | **통과**, head 5de158ff, Actions #42859936842 success, main 377bca61 |
 
 ### 문서 변경 이력
 | 날짜(KST) | 버전 | 내용 |
@@ -351,7 +351,8 @@
 | 2026-11-11 | v0.8.0 | PR #12 최종 CI 통과·main 병합 확인, G1-04 완료 및 G1-05 Polished Underground 대기 |
 | 2026-11-11 | v0.9.0-rc.1 | G1-05 딸 홈 사진·합성 편집 레이아웃, 브라우저 31/31 및 사진 사용권·보안 근거, 병합 대기 |
 | 2026-11-11 | v0.9.0 | PR #14 최종 CI 31/31 통과·main 병합 확인, G1-05 완료/G1-06 대기 확정 |
-| 2026-11-11 | **v0.10.0-rc.1** | G1-06 양쪽 목록/9개 합성 상세·URL 필터/검증 안전 상태, Chromium 41/41 확인, PR #16 병합 대기 |
+| 2026-11-11 | v0.10.0-rc.1 | G1-06 양쪽 목록/9개 합성 상세·URL 필터/검증 안전 상태, Chromium 41/41 확인, PR #16 병합 대기 |
+| 2026-11-11 | **v0.10.0** | G1-06 PR #16 최종 CI 41/41·main 병합 확인, G1-07 합성 커뮤니티 시연 대기 |
 
 ---
 
