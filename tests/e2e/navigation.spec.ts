@@ -135,7 +135,8 @@ test("keyboard skip link, focus, axe accessibility and read-only network", async
   await page.keyboard.press("Tab");
   await expect(page.getByRole("link", { name: "본문으로 바로가기" })).toBeFocused();
   await page.keyboard.press("Enter");
-  await expect(page).toHaveURL(/\/dad\/trends$/);
+  await expect(page).toHaveURL(/\/dad\/trends#main-content$/);
+  await expect(page.locator("#main-content")).toBeVisible();
   const nav = page.getByRole("navigation", { name: menuLabel("dad") });
   const current = nav.getByRole("link", { name: "트렌드" });
   await current.focus();
