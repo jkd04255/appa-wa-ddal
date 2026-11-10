@@ -34,7 +34,7 @@ for (const space of ["dad", "daughter"] as const) {
       await nav.getByRole("link", { name: label }).click();
       await expect(page).toHaveURL(new RegExp(`${href}$`));
       await expect(nav.getByRole("link", { name: label })).toHaveAttribute("aria-current", "page");
-      if (href === "/dad/trends" || href === "/daughter/discover") {
+      if (href === "/dad/trends" || href === "/daughter/discover" || href.endsWith("/community")) {
         await expect(page.getByRole("main")).toContainText("시연 콘텐츠");
       } else {
         await expect(page.getByRole("main").getByText("준비 중입니다.")).toBeVisible();
