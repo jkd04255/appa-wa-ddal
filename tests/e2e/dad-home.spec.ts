@@ -44,7 +44,7 @@ test("dad home CTA routes include readable sample details, placeholders and unkn
   for (const path of paths) {
     const response = await page.goto(path);
     expect(response?.status(), path).toBe(200);
-    if (path === "/dad/trends" || path.startsWith("/dad/trends/")) {
+    if (path === "/dad/trends" || path.startsWith("/dad/trends/") || path === "/dad/community") {
       await expect(page.getByRole("main")).toContainText("시연 콘텐츠");
     } else {
       await expect(page.getByRole("main")).toContainText("준비 중입니다.");

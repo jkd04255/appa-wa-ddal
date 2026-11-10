@@ -94,11 +94,41 @@ try {
     assert.equal(response.status, 404, `Expected 404 for unknown ${path}`);
   }
 
+  // G1-07: role-separated sample communities; read-only posts and non-submitting drafts.
+  const communityRoutes = [
+    "/dad/community", "/daughter/community",
+    "/dad/community/new", "/daughter/community/new",
+    "/dad/community/dad-post-demo-01", "/dad/community/dad-post-demo-02", "/dad/community/dad-post-demo-03",
+    "/daughter/community/daughter-post-demo-01",
+    "/daughter/community/daughter-post-demo-02",
+    "/daughter/community/daughter-post-demo-03",
+  ];
+  for (const path of communityRoutes) {
+    const response = await fetch(url + path);
+    assert.equal(response.status, 200, `Expected community demo HTTP 200: ${path}`);
+    const body = await response.text();
+    if (path.endsWith("/new")) {
+      assert.match(body, /글쓰기 체험/);
+      assert.match(body, /실제 게시하거나 저장하지 않습니다/);
+      assert.doesNotMatch(body, /<form\b/);
+    } else {
+      assert.match(body, /샘플 게시글/);
+    }
+  }
+  for (const path of [
+    "/dad/community/daughter-post-demo-01",
+    "/daughter/community/dad-post-demo-01",
+    "/dad/community/not-fixture",
+    "/daughter/community/not-fixture",
+  ]) {
+    const response = await fetch(url + path);
+    assert.equal(response.status, 404, `Expected sample detail 404 for ${path}`);
+  }
   for (const path of ["/dad/trends/no-fixture", "/daughter/community/no-fixture"]) {
     const res = await fetch(url + path);
     assert.equal(res.status, 404, `Expected 404 for unknown ${path}`);
   }
-  console.log("PASS: both homes; 9 safe demo details; filtered discovery; unknown 404; photos, nav and no-JS landing");
+  console.log("PASS: both homes; 9 editorial details; both demo communities + 6 sample details + 2 memory-only composers; 404; photos; nav");
 } finally {
   server.kill("SIGTERM");
 }
