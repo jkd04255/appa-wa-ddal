@@ -30,7 +30,7 @@ try {
   assert.match(html, /아빠로 들어가기/);  // no-JS fallback
   assert.match(html, /딸로 들어가기/);
   const routes = [
-    "/dad", "/dad/trends", "/dad/community", "/dad/perspectives",
+    "/dad", "/dad/trends", "/dad/briefing", "/dad/questions", "/dad/talk", "/dad/community", "/dad/perspectives",
     "/daughter", "/daughter/discover", "/daughter/community",
     "/daughter/perspectives", "/?choose=1",
   ];
@@ -43,11 +43,17 @@ try {
       assert.match(html, /공간 다시 선택하기/);
     }
   }
+  const dadResponse = await fetch(url + "/dad");
+  const dadHTML = await dadResponse.text();
+  assert.match(dadHTML, /오늘의 딸 트렌드/);
+  assert.match(dadHTML, /아빠의 1분 브리핑/);
+  assert.match(dadHTML, /시연 콘텐츠/);
+  assert.match(dadHTML, /실제 저장되지 않습니다/);
   for (const path of ["/dad/trends/no-fixture", "/daughter/community/no-fixture"]) {
     const res = await fetch(url + path);
     assert.equal(res.status, 404, `Expected 404 for unknown ${path}`);
   }
-  console.log("PASS: landing + 8 role routes + choose HTTP 200; unknown details 404; shared nav");
+  console.log("PASS: landing + 11 role routes + choose HTTP 200; dad home demos; unknown details 404; shared nav");
 } finally {
   server.kill("SIGTERM");
 }
