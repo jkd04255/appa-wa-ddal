@@ -60,7 +60,7 @@
 }
 .dad-home__art-caption {
   position: absolute; bottom: 10px; left: 12px; color: #fff;
-  font-size: 9px; font-weight: 800; letter-spacing: .12em;
+  font-size: 9px; font-weight: 800; letter-spacing: .12em; background: #18313d; padding: 3px 6px; border-radius: 3px;
 }
 .dad-home__art--hero .dad-home__art-caption { font-size: 12px; bottom: 22px; left: 24px; }
 .dad-home__hero-copy { min-width: 0; padding: 24px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 14px; }
