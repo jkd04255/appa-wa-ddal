@@ -134,3 +134,11 @@
 @media (prefers-reduced-motion: reduce) {
  .dad-home *, .dad-home *::before, .dad-home *::after { animation: none !important; transition: none !important; }
 }
+
+/* G1-06: secondary trend cards now expose genuine read-only detail links. */
+.dad-home__story-link {
+  display:inline-flex; align-items:center; gap:6px; min-height:44px;
+  color:#275467; font-size:13px; font-weight:750;
+  text-underline-offset:4px; margin-top:5px;
+}
+.dad-home__story-link:hover {color:#193f52;}

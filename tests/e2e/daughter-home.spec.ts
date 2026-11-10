@@ -31,7 +31,7 @@ test("all editorial cards, demo shopping, community, poll and perspective show h
   expect(await page.locator('form, input, textarea, button[type="submit"]').count()).toBe(0);
 });
 
-test("category chips are 3 plus all and link to existing discover placeholder", async ({ page }) => {
+test("category chips link to filtered discovered stories", async ({ page }) => {
   await page.goto("/daughter");
   const nav = page.getByRole("navigation", { name: "관심사 카테고리" });
   await expect(nav.getByRole("link")).toHaveCount(4);
@@ -45,16 +45,21 @@ test("category chips are 3 plus all and link to existing discover placeholder", 
   ]);
   await nav.getByRole("link", { name: /뷰티/ }).click();
   await expect(page).toHaveURL(/\/daughter\/discover\?category=beauty$/);
-  await expect(page.getByRole("main")).toContainText("준비 중입니다.");
+  await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(1);
+  await expect(page.locator(".editorial-page__tile--daughter")).toContainText("화장대 위, 취향을 기록하는 방법");
   await expect(page.getByRole("navigation", { name: "딸의 공간 주요 메뉴" })
     .getByRole("link", { name: "발견" })).toHaveAttribute("aria-current", "page");
 });
 
-test("daughter CTA routes are live placeholders, detail path remains 404 and roles are separate", async ({ page }) => {
+test("daughter CTA routes include readable details, placeholders and role isolation", async ({ page }) => {
   await page.goto("/daughter");
   const known = [
     "/daughter/discover", "/daughter/sales",
     "/daughter/community", "/daughter/polls", "/daughter/perspectives",
+    "/daughter/discover/sample-offbeat-playlist",
+    "/daughter/discover/sample-beauty-notes",
+    "/daughter/discover/sample-cafe-dessert",
+    "/daughter/discover/sample-late-night-vinyl",
   ];
   const hrefs = await page.locator(".daughter-home a").evaluateAll((els) =>
     els.map((e) => (e as HTMLAnchorElement).getAttribute("href") ?? ""));
@@ -62,9 +67,13 @@ test("daughter CTA routes are live placeholders, detail path remains 404 and rol
   for (const route of known) {
     const response = await page.goto(route);
     expect(response?.status(), route).toBe(200);
-    await expect(page.getByRole("main")).toContainText("준비 중입니다.");
+    if (route === "/daughter/discover" || route.startsWith("/daughter/discover/")) {
+      await expect(page.getByRole("main")).toContainText("시연 콘텐츠");
+    } else {
+      await expect(page.getByRole("main")).toContainText("준비 중입니다.");
+    }
   }
-  expect((await page.goto("/daughter/discover/sample-offbeat-playlist"))?.status()).toBe(404);
+  expect((await page.goto("/daughter/discover/not-in-catalog"))?.status()).toBe(404);
   await page.goto("/dad");
   await expect(page.locator(".dad-home__hero")).toHaveCount(1);
   await expect(page.locator(".dad-home__trend-row")).toHaveCount(4);
@@ -126,7 +135,7 @@ test("keyboard focus, axe WCAG, local self-hosted images and no POST/external re
     if (new URL(r.url()).hostname !== "127.0.0.1") unsafeRequests.push(`remote: ${r.url()}`);
   });
   await page.goto("/daughter");
-  const link = page.getByRole("link", { name: /발견 메뉴에서 살펴보기/ });
+  const link = page.locator(".daughter-home__feature-copy .daughter-home__arrow-link");
   await link.focus();
   await expect(link).toBeFocused();
   expect(await link.evaluate((el) => getComputedStyle(el).outlineStyle)).toBe("solid");

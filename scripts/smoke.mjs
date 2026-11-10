@@ -61,11 +61,44 @@ try {
     assert.equal(image.status, 200, `Expected a self-hosted photograph: ${file}`);
     assert.match(image.headers.get("content-type") ?? "", /image\/jpeg/);
   }
+  // G1-06: all nine exact fixture slugs resolve to safe read-only detail pages.
+  const detailRoutes = [
+    "/dad/trends/example-favorite-word", "/dad/trends/example-short-video",
+    "/dad/trends/example-playlist", "/dad/trends/example-snack", "/dad/trends/example-personal-style",
+    "/daughter/discover/sample-offbeat-playlist", "/daughter/discover/sample-beauty-notes",
+    "/daughter/discover/sample-cafe-dessert", "/daughter/discover/sample-late-night-vinyl",
+  ];
+  for (const path of detailRoutes) {
+    const detail = await fetch(url + path);
+    assert.equal(detail.status, 200, `Expected 200 for demo detail ${path}`);
+    const body = await detail.text();
+    assert.match(body, /시연 콘텐츠/);
+    assert.match(body, /합성 시연 자료/);
+    assert.match(body, /출처/);
+  }
+  const filtered = await fetch(url + "/daughter/discover?category=beauty");
+  assert.equal(filtered.status, 200);
+  const filteredHTML = await filtered.text();
+  assert.match(filteredHTML, /화장대 위/);
+  assert.doesNotMatch(filteredHTML, /조용한 카페에서 고르는 한 접시/);
+  const unknownCategory = await fetch(url + "/daughter/discover?category=not-a-category");
+  assert.equal(unknownCategory.status, 200);
+  assert.match(await unknownCategory.text(), /확인할 수 없는 카테고리/);
+  const invalidDetailPaths = [
+    "/dad/trends/not-a-fixture", "/dad/trends/sample-beauty-notes",
+    "/daughter/discover/not-a-fixture", "/daughter/discover/example-snack",
+    "/daughter/sales/not-verified",
+  ];
+  for (const path of invalidDetailPaths) {
+    const response = await fetch(url + path);
+    assert.equal(response.status, 404, `Expected 404 for unknown ${path}`);
+  }
+
   for (const path of ["/dad/trends/no-fixture", "/daughter/community/no-fixture"]) {
     const res = await fetch(url + path);
     assert.equal(res.status, 404, `Expected 404 for unknown ${path}`);
   }
-  console.log("PASS: landing + 13 role routes + choose HTTP 200; both demo homes; 4 local photos; details 404");
+  console.log("PASS: both homes; 9 safe demo details; filtered discovery; unknown 404; photos, nav and no-JS landing");
 } finally {
   server.kill("SIGTERM");
 }

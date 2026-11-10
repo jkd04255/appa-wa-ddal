@@ -108,8 +108,8 @@ export function DaughterHome() {
               <p className="daughter-home__tiny-note">THE QUIET SIDE OF CULTURE</p>
               <h3>{DAUGHTER_FEATURE.title}</h3>
               <p className="daughter-home__summary">{DAUGHTER_FEATURE.summary}</p>
-              <Link href="/daughter/discover" className="daughter-home__arrow-link">
-                발견 메뉴에서 살펴보기 <span aria-hidden="true">↗</span>
+              <Link href={`/daughter/discover/${DAUGHTER_FEATURE.slug}`} className="daughter-home__arrow-link">
+                이야기 읽기 <span aria-hidden="true">↗</span>
               </Link>
             </div>
           </div>
@@ -155,8 +155,8 @@ export function DaughterHome() {
                 </div>
                 <h3>{item.title}</h3>
                 <p>{item.summary}</p>
-                <Link href="/daughter/discover" className="daughter-home__card-link">
-                  발견 메뉴 보기 <span aria-hidden="true">↗</span>
+                <Link href={`/daughter/discover/${item.slug}`} className="daughter-home__card-link">
+                  이야기 읽기 <span aria-hidden="true">↗</span>
                 </Link>
               </article>
             ))}
@@ -232,7 +232,7 @@ export function DaughterHome() {
         <p className="daughter-home__footnotes">
           모든 이야기·쇼핑 노트·커뮤니티·투표는 시연용 합성 데이터입니다. 실제 인기·할인·응답 결과나 사용자 게시물이 아닙니다.
           사진은 주제의 분위기를 표현하기 위한 이미지이며 실제 콘텐츠의 출처를 뜻하지 않습니다.
-          사진 출처와 사용권은 개발 문서에서 확인할 수 있습니다. 상세 콘텐츠와 작성·투표 기능은 아직 준비 중입니다.
+          사진 출처와 사용권은 개발 문서에서 확인할 수 있습니다. 이야기 상세는 가상 편집글이며 작성·투표 기능은 아직 준비 중입니다.
         </p>
       </div>
     </main>
