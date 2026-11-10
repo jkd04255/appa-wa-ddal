@@ -136,8 +136,7 @@ test("switching spaces discards unsubmitted draft and reveals no old draft",asyn
 test("community mobile 320-430px, tablet 768/1024 and 200% zoom avoid overflow",async({page})=>{
   for(const width of [320,360,375,390,430,768,1024]) {
     await page.setViewportSize({width,height:820});
-    for(const route of ["/dad/community","/daughter/community","/dad/community/new","/daughter/community/daughter-post-demo-01".replace("daughter/community/daughter","daughter/community/daughter")]) {
-      if (route.includes("dad/community/daughter-")) throw new Error("Invalid test case");
+    for(const route of ["/dad/community","/daughter/community","/dad/community/new","/daughter/community/daughter-post-demo-01"]) {
       await page.goto(route);
       expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),route+" "+width).toBe(true);
       const nav=page.getByRole("navigation",{name:route.startsWith("/dad")?"아빠의 공간 주요 메뉴":"딸의 공간 주요 메뉴"});
