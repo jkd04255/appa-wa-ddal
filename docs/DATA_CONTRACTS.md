@@ -105,14 +105,19 @@ type DemoPoll = Readonly<{
   // Phase 1: real vote counts and percentages unavailable
 }>;
 
-type ApprovedPerspective = Readonly<{
+type PerspectivePublication =
+  | { kind: "demo"; demoNotice: "시연 콘텐츠" }
+  | { kind: "consented-editorial"; consentVerified: true;
+      publicationReview: "approved"; disclosure: string };
+
+type PerspectiveEditorial = Readonly<{
   kind: "editorial-perspective";
   id: ContentId;
   slug: Slug;
   title: string;
   dadSide: readonly string[];
   daughterSide: readonly string[];
-  disclosure: string;
+  publication: PerspectivePublication;
   // no original post ID, username, contact details or source URL
 }>;
 ~~~
@@ -167,7 +172,7 @@ const demoPost: DemoCommunityPost = {
 | SaleItem | 유효 행사 기간·상태·확인일·HTTPS URL | 실제 검증/만료 정보 또는 데모 표시 | 확인 전 ‘현재 세일 중’ |
 | DemoCommunityPost | 현재 공간의 허용 board, 모든 샘플 표기 | 합성 제목·내용·합성 댓글 | 실제 연락처·작성자 계정·저장 |
 | DemoPoll | 가상 질문과 옵션, 샘플 표시 | 구조 시연 | 가짜 응답 수·퍼센트 |
-| ApprovedPerspective | 별도 편집/합성 메타, 승인된 요약 | 다양한 관점의 편집본 | 원문 ID/링크·정확 인용·소표본 노출 |
+| PerspectiveEditorial | 별도 편집/합성 메타, 승인된 요약 | 다양한 관점의 편집본 | 원문 ID/링크·정확 인용·소표본 노출 |
 
 - 렌더링 전에 public view-model allowlist를 적용한다.
 - 콘텐츠 메타의 URL은 HTTPS·올바른 호스트·출처 검증, 불필요한 개인정보 매개변수 제거 대상이다.
