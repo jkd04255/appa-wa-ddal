@@ -31,7 +31,7 @@ try {
   assert.match(html, /딸로 들어가기/);
   const routes = [
     "/dad", "/dad/trends", "/dad/briefing", "/dad/questions", "/dad/talk", "/dad/community", "/dad/perspectives",
-    "/daughter", "/daughter/discover", "/daughter/community",
+    "/daughter", "/daughter/discover", "/daughter/sales", "/daughter/polls", "/daughter/community",
     "/daughter/perspectives", "/?choose=1",
   ];
   for (const path of routes) {
@@ -49,11 +49,23 @@ try {
   assert.match(dadHTML, /아빠의 1분 브리핑/);
   assert.match(dadHTML, /시연 콘텐츠/);
   assert.match(dadHTML, /실제 저장되지 않습니다/);
+  const daughterResponse = await fetch(url + "/daughter");
+  const daughterHTML = await daughterResponse.text();
+  assert.match(daughterHTML, /지금 눈여겨볼 이야기/);
+  assert.match(daughterHTML, /발견한 장면들/);
+  assert.match(daughterHTML, /샘플 게시글/);
+  assert.match(daughterHTML, /실제 투표 결과가 아닙니다/);
+  assert.match(daughterHTML, /시연 콘텐츠/);
+  for (const file of ["headphones-magazine.jpg", "beauty-stilllife.jpg", "cafe-dessert.jpg", "vinyl-night.jpg"]) {
+    const image = await fetch(url + "/editorial/" + file);
+    assert.equal(image.status, 200, `Expected a self-hosted photograph: ${file}`);
+    assert.match(image.headers.get("content-type") ?? "", /image\/jpeg/);
+  }
   for (const path of ["/dad/trends/no-fixture", "/daughter/community/no-fixture"]) {
     const res = await fetch(url + path);
     assert.equal(res.status, 404, `Expected 404 for unknown ${path}`);
   }
-  console.log("PASS: landing + 11 role routes + choose HTTP 200; dad home demos; unknown details 404; shared nav");
+  console.log("PASS: landing + 13 role routes + choose HTTP 200; both demo homes; 4 local photos; details 404");
 } finally {
   server.kill("SIGTERM");
 }
