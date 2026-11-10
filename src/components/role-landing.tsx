@@ -93,7 +93,7 @@ export function RoleLanding() {
             <section className="landing-intro" aria-labelledby="landing-heading">
               <p className="landing-kicker">서로 다른 하루, 하나의 이야기</p>
               <h1 className="landing-heading" id="landing-heading">
-                같은 집,<span>조금 다른 세상.</span>
+                같은 집,{" "}<span>조금 다른 세상.</span>
               </h1>
               <p className="landing-subtitle">우리가 몰랐던 서로의 이야기.</p>
               <p className="landing-question">어떤 공간을 둘러보시겠어요?</p>
