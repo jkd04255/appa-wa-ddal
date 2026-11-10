@@ -1,4 +1,4 @@
-name: G1 scaffold CI
+name: G1 verified CI
 on:
   pull_request:
     branches: [main]
@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NEXT_TELEMETRY_DISABLED: "1"
+      CI: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -27,3 +28,7 @@ jobs:
         run: npm run typecheck
       - name: Smoke test root HTTP route
         run: npm run test:smoke
+      - name: Install Chromium for browser QA
+        run: npx playwright install --with-deps chromium
+      - name: Browser role, responsive and accessibility QA
+        run: npm run test:e2e
