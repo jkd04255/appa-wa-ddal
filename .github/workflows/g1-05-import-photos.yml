@@ -1,0 +1,48 @@
+name: G1-05 one-time licensed editorial photo import
+on:
+  push:
+    branches: [feat/g1-05-daughter-underground-home]
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download only individually verified Unsplash License still-life photos
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p public/editorial
+          download() {
+            local photo_id="$1"
+            local output="$2"
+            if [ -s "public/editorial/$output" ]; then return; fi
+            curl -fLsS --retry 3 --connect-timeout 15 --max-time 75 \
+              "https://unsplash.com/photos/$photo_id/download?force=true&w=1100&q=80" \
+              -o "public/editorial/$output"
+            local mime
+            mime=$(file --brief --mime-type "public/editorial/$output")
+            if [ "$mime" != "image/jpeg" ]; then
+              echo "Expected JPEG for $output, received $mime" >&2
+              exit 1
+            fi
+            test "$(wc -c < "public/editorial/$output")" -gt 15000
+            test "$(wc -c < "public/editorial/$output")" -lt 3500000
+          }
+          download "YoYEaWHqKqA" "headphones-magazine.jpg"
+          download "L_0g0Tkj4pI" "beauty-stilllife.jpg"
+          download "dVKIpaoSAyU" "cafe-dessert.jpg"
+          download "u_d17v_Buqk" "vinyl-night.jpg"
+          file public/editorial/*.jpg
+      - name: Commit self-hosted assets to feature branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/editorial/*.jpg
+          if ! git diff --staged --quiet; then
+            git commit -m "assets(g1-05): self-host licensed editorial still-life photographs"
+            git push origin HEAD:feat/g1-05-daughter-underground-home
+          fi
