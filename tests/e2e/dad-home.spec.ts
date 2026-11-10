@@ -67,7 +67,7 @@ test("320-430px mobile hero and supporting cards fit alongside fixed 4-tab nav",
   }
 });
 
-test("desktop splits featured art and text; daughter home remains untouched", async ({ page }) => {
+test("dad desktop hero remains intact and daughter home is separately themed", async ({ page }) => {
   await page.setViewportSize({ width: 1024, height: 900 });
   await page.goto("/dad");
   const artwork = await page.locator(".dad-home__art--hero").boundingBox();
@@ -77,7 +77,8 @@ test("desktop splits featured art and text; daughter home remains untouched", as
   await page.goto("/daughter");
   await expect(page.getByRole("heading", { name: "딸의 공간" })).toBeVisible();
   expect(await page.locator(".dad-home").count()).toBe(0);
-  await expect(page.getByRole("main")).toContainText("G1-05");
+  await expect(page.locator(".daughter-home")).toHaveCount(1);
+  await expect(page.locator(".daughter-home__feature-grid")).toHaveCount(1);
 });
 
 test("dad home links are keyboard operable, axe clean and read-only", async ({ page }) => {
