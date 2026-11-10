@@ -39,7 +39,7 @@ export function CommunityIndex({ space, posts, boards }: CommunityDemoProps) {
             ? "각자의 속도로 대화를 시작하는 가상의 이야기들."
             : "겉은 조용한 취향 노트, 안에는 조금 더 솔직한 작은 이야기."}</p>
           <p className="community-demo__notice">
-            <strong>샘플 커뮤니티입니다.</strong> 실제 작성자·회원·댓글이 없으며, 게시글과 댓글은 모두 합성 예시입니다.
+            <strong>시연 콘텐츠 · 샘플 커뮤니티입니다.</strong> 실제 작성자·회원·댓글이 없으며, 게시글과 댓글은 모두 합성 예시입니다.
             이 공간 선택은 신원·연령·작성 권한을 인증하지 않습니다.
           </p>
         </header>
