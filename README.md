@@ -1,42 +1,46 @@
 # 아빠와 딸
 
-> **G1-01 최소 개발환경** — 아직 역할 선택 UI, 커뮤니티 기능 또는 실서비스 배포가 없습니다.
+> **G1-02: 모바일 역할 선택 랜딩·재방문 UX 구현.** 역할별 실제 홈 콘텐츠와 커뮤니티는 아직 개발하지 않았습니다.
 
-사춘기 딸과 가까워지고 싶은 아빠, 또래의 취향과 고민을 나누고 싶은 딸을 위한 두 공간형 플랫폼을 단계적으로 개발합니다. 최신 개발 기준은 [docs/DEVELOPMENT_PLAN.md](docs/DEVELOPMENT_PLAN.md)를 참고하세요.
+“같은 집, 조금 다른 세상.” / “우리가 몰랐던 서로의 이야기.”
 
-## 환경
+아빠와 딸이 각자의 관심사 공간을 둘러볼 수 있도록 단계별로 구현하는 프로젝트입니다. [최신 개발 계획서](docs/DEVELOPMENT_PLAN.md)와 [정보구조](docs/INFORMATION_ARCHITECTURE.md), [디자인 시스템](docs/DESIGN_SYSTEM.md)을 개발 기준으로 사용합니다.
 
-- Node.js 22.x (권장 LTS 계열; `package.json`의 Node 범위 준수)
-- npm 10.x
-- Next.js 16.4.6 / React 19.3.1 / TypeScript 5.9.3 / Tailwind CSS 4.3.5
-- 정확히 고정된 직접 의존성 및 `package-lock.json` (npm lockfile v3)
+## 실행 환경
 
-## 로컬 설치·실행
+- Node.js 22.x, npm 10.x
+- Next.js 16.4.6, React 19.3.1, TypeScript strict, Tailwind CSS 4.3.5
+- 고정 의존성 + package-lock.json v3 (npm ci 권장)
+- Playwright/axe 자동 브라우저 테스트 포함
 
-```bash
+### 로컬 실행
+
+~~~bash
 npm ci
 npm run dev
-```
+~~~
 
-브라우저에서 `http://localhost:3000/`을 열면 개발 환경 준비 중 안내만 표시됩니다. 계정·로그인·댓글·투표·실제 데이터 저장은 없습니다.
+브라우저에서 http://localhost:3000/ 으로 접속합니다. 첫 방문에는 두 개의 역할 선택 카드가 표시됩니다. 아빠/딸 카드 선택 시 각각 /dad, /daughter의 **이동 확인용 안내 화면**으로 이동합니다. 실제 콘텐츠 홈 화면이 아닙니다.
 
-## 검증 명령
+재방문 시 이전 선택값 dad/daughter가 있으면 마지막 공간으로 들어갑니다. **수동으로 다시 선택하려면 /?choose=1** 로 접속하거나 안내 화면에서 ‘공간 다시 선택하기’를 누르세요. 저장값은 단순 탐색 편의이며 실제 연령·가족관계·게시 권한을 인증하지 않습니다. 브라우저 저장소가 차단되면 탐색은 계속 가능하지만 마지막 공간을 기억하지 못합니다.
 
-```bash
+### 검증
+
+~~~bash
 npm run lint
 npm run build
 npm run typecheck
 npm run test:smoke
-```
+npx playwright install chromium
+npm run test:e2e
+~~~
 
-`test:smoke`는 **빌드 이후** 실행하며, 일시적으로 `next start` 서버를 실행해 루트 HTTP 200, 한글 문서 속성, 임시 안내 문구, 역할 선택 UI의 부재를 점검합니다.
+smoke와 e2e는 production build 후 실행합니다. CI에서 npm ci, lint, build, typecheck, 기본 HTTP smoke, Chromium 8개 Playwright 테스트 및 axe 접근성 검사를 실행합니다. 자동 모바일 뷰포트(320/360/375/390/430px)는 실기기 Safari/Android 검증을 대체하지 않습니다.
 
-GitHub PR에서는 `.github/workflows/ci.yml`이 `npm ci`와 전체 검증을 수행합니다. 기존 문서 전용 G0 계획의 안전 제약은 계속 유지합니다.
+결과 및 실패 수정 내역: [G1-02 QA 기록](docs/G1_02_QA.md).
 
-## 프로젝트 진행 방식
+## 단계별 개발·안전 제한
 
-- 하나의 G1 단계당 별도 브랜치 / PR / 테스트 / 계획서 갱신
-- 실제 사용자 게시물·Auth·DB·DM·사진 업로드·공개 배포는 아직 금지
-- **다음 단계 G1-02:** 첫 방문 역할 선택, 재방문 마지막 공간 복귀 및 명시적 공간 재선택 기능. 서버 권한/연령 인증과 무관하게 탐색 경험으로만 구현
+각 단계는 별도 브랜치/PR/CI/계획서 갱신으로 진행합니다. **로그인·Supabase DB/Auth·실사용자 게시글/댓글·DM·사진 업로드·쇼핑/유행 실시간 수집·유료 API·공개 배포를 하지 않았습니다.**
 
-[정보구조](docs/INFORMATION_ARCHITECTURE.md) · [디자인 시스템](docs/DESIGN_SYSTEM.md) · [와이어프레임](docs/WIREFRAMES.md) · [기술 계약](docs/TECHNICAL_ARCHITECTURE.md)
+다음 작업은 **G1-03 공용 내비게이션(아빠·딸 각각 4탭)**입니다. 이후 G1-04/05에서 각 홈의 콘텐츠를 한 단계씩 구현합니다.
