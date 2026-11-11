@@ -13,13 +13,13 @@
 | --- | --- | --- |
 | ADR-04-01 | App Router 파일 라우팅과 루트/역할별 중첩 layout | IA의 아빠/딸 URL 유지. 상단·하단 navigation의 중복 제거 |
 | ADR-04-02 | 기본 Server Component, 최소 Client island | 콘텐츠 HTML 우선/초기 JS 최소화. 필터·공간 선택·데모 입력만 클라이언트 |
-| ADR-04-03 | Phase 1 읽기 전용 TS 합성 fixture | 개인 데이터/실계정 저장 없이 UI 검증 |
+| ADR-04-03 | 초기 제품은 검수된 읽기 전용 콘텐츠 fixture; 지정 운영자가 고정 선택지 투표·토너먼트 fixture를 관리 | 이용자 선택은 세션 내 상태만, 저장·집계 없음; 콘텐츠 수정은 리뷰된 정적 변경으로 한정 |
 | ADR-04-04 | 최초 / 랜딩, 재방문 마지막 선택 공간, 수동 랜딩 복귀 | 제품 v2.0 요구. 익명 탐색 상태 ≠ 계정/역할 인증 |
 | ADR-04-05 | URL로 ‘아빠/딸’을 탐색할 수 있지만 쓰기 권한은 0 | Phase 1은 기능 데모만. G2 별도 서버 검증 없이는 실제 역할 전용 쓰기 불가 |
 | ADR-04-06 | 공용 콘텐츠/사연 원문을 한 저장소로 합치지 않음 | 원문 역추적/재식별을 설계 단계부터 방지 |
 | ADR-04-07 | 단계별 구현·검증 PR, 기본 브랜치 직접 변경 금지 | 기능과 QA 회귀 범위 최소화 |
 
-**초기 공개 배포 금지:** G0-04에서는 UI 코드, Supabase Auth/DB/RLS, API, server actions, 실사용자 게시글/투표 저장, 로그인, 유료 API, 개인정보 수집, 서비스 배포 모두 보류.
+**초기 공개 배포 금지:** G0-04에서는 UI 코드, 운영자 CMS/Auth, Supabase Auth/DB/RLS, API, server actions, 실사용자 게시글·댓글·투표 응답의 저장/집계, 로그인, 유료 API, 개인정보 수집, 서비스 배포 모두 보류. 운영자 작성 fixture와 응답 없는 프로토타입 선택 UI는 실제 운영 권한이나 투표 집계가 아니다.
 
 ## 2. 라우트와 레이아웃
 
@@ -94,7 +94,7 @@ docs/                                # actual G0 documents, tracked today
 | /daughter | 딸 홈 | 홈 | G1-05 |
 | /daughter/discover, /daughter/discover/[slug], /daughter/sales/[slug] | 발견/쇼핑 | 발견 | G1-06 |
 | /daughter/community, /daughter/community/new, /daughter/community/[id] | 딸 샘플 커뮤니티 | 커뮤니티 | G1-07 |
-| /daughter/polls, /daughter/father-notes | 시연 투표/편집 콘텐츠 | 홈 또는 연결 페이지 | G1-08 |
+| /daughter/polls, /daughter/father-notes | 운영자 작성 고정 선택지 투표·토너먼트 시연; 이용자 선택은 세션 한정·비저장·비집계 | 홈 또는 연결 페이지 | G1-08 |
 | /daughter/perspectives, /daughter/perspectives/[slug] | 공통 편집 콘텐츠의 딸 뷰 | 서로의 시선 | G1-08 |
 
 하단 탭은 **각 역할에서 정확히 4개**. 상세/보조 페이지는 부모 탭의 active state를 사용하고 뒤로 가기와 해당 목록 복귀 링크를 제공한다. 서버 페이지의 동적 params는 **선택된 Next.js 버전에 맞는 타입**으로 읽고, 최신 App Router 문서 예시에서는 비동기 params를 await한다. 정적 경로 /community/new가 동적 [id]와 충돌하지 않도록 직접 테스트한다. 미구현 경로는 임의의 더미 ‘성공 페이지’ 대신 명확한 준비 중 화면 또는 404로 처리한다.
