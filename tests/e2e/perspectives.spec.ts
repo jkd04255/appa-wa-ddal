@@ -21,7 +21,7 @@ test("public perspective contract contains no raw UGC import, author, vote or sa
     expect(fixture, String(term)).not.toMatch(term);
   }
   expect(model).not.toMatch(/import\s.*community/);
-  expect(fixture).toContain("완전히");
+  expect(fixture).toContain("hand-written fictional editorial pairs");
 });
 
 for (const space of spaces) {
@@ -52,7 +52,7 @@ for (const space of spaces) {
       await expect(page.getByRole("heading",{name:"자료 상태·출처"})).toBeVisible();
       await expect(page.getByRole("main")).toContainText("원문 없음");
       await expect(page.getByRole("main")).toContainText("확인일 해당 없음");
-      await expect(page.getByRole("main")).toContainText("모든 관점은 합성".replace("모든 관점은 합성","합성된 편집 관점"));
+      await expect(page.getByRole("main")).toContainText("합성된 편집 관점");
       await page.getByRole("link",{name:/서로의 시선 목록으로 돌아가기/}).click();
       await expect(page).toHaveURL(new RegExp(`/${space}/perspectives$`));
     }
