@@ -114,9 +114,10 @@ test("daughter standalone poll matches home fictional prompt with no results, st
   await expect(page.getByRole("heading",{name:"이번 주 질문",level:1})).toBeVisible();
   await expect(page.getByText("오늘 기분을 표현한다면?")).toBeVisible();
   await expect(page.getByRole("radio")).toHaveCount(3);
+  await expect(page.getByRole("main")).toContainText("실제 투표·응답 수집·집계");
   await page.getByRole("radio",{name:"음악"}).check();
   await expect(page.locator(".perspectives__choice-preview")).toContainText("음악");
-  await expect(page.getByRole("main")).toContainText("실제 투표·응답 수집·집계");
+  await expect(page.locator(".perspectives__choice-preview")).toContainText("투표 결과가 아닙니다");
   expect(requests).toEqual([]);
   await page.reload();
   await expect(page.locator(".perspectives__choice-preview")).toHaveCount(0);
