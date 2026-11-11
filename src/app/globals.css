@@ -468,3 +468,169 @@ a:focus-visible {
   .app-header__space { display: none; }
   .app-nav__link { padding-inline: 8px; font-size: 12px; }
 }
+
+/* G1-14: a quieter, publication-led entry with two distinct editorial rooms. */
+:root {
+  --paper: #f4f0e8;
+  --ink: #202c31;
+  --line: #d9d4ca;
+  --dad-accent: #275467;
+  --daughter-accent: #774a61;
+}
+
+html { scroll-behavior: smooth; }
+body { color: var(--ink); }
+.landing-page {
+  background: var(--paper);
+  color: var(--ink);
+}
+.landing-shell {
+  width: min(100%, 1320px);
+  max-width: 1320px;
+  padding: 24px clamp(20px, 5.4vw, 76px) max(24px, env(safe-area-inset-bottom));
+}
+.landing-header {
+  border-bottom-color: var(--line);
+  padding-bottom: 16px;
+}
+.landing-brand {
+  font-size: 19px;
+  letter-spacing: -.07em;
+  color: #202c31;
+}
+.landing-index { color: #5e6464; font-size: 12px; }
+.landing-spread {
+  display: grid;
+  gap: 28px;
+  margin-block: auto;
+  padding-block: clamp(48px, 9vh, 100px) 36px;
+}
+.landing-intro {
+  margin: 0;
+  padding: 0;
+  max-width: 620px;
+}
+.landing-kicker {
+  color: #675f54;
+  font-size: 13px;
+  letter-spacing: 0;
+  margin-bottom: 17px;
+}
+.landing-heading {
+  color: #202c31;
+  font-size: clamp(42px, 6.4vw, 82px);
+  letter-spacing: -.085em;
+  line-height: 1.12;
+}
+.landing-heading span { display: inline; }
+.landing-subtitle {
+  color: #4c5658;
+  font-size: clamp(17px, 2vw, 21px);
+  margin-top: 18px;
+}
+.landing-question {
+  color: #202c31;
+  font-weight: 700;
+  margin-top: 30px;
+}
+.role-choices { gap: 11px; }
+.role-card {
+  min-height: 190px;
+  border: 0;
+  border-radius: 2px;
+  padding: 21px 22px;
+  box-shadow: none;
+  isolation: isolate;
+}
+.role-card--dad { background: #244653; color: #fff; }
+.role-card--daughter { background: #684354; color: #fff; }
+.role-card__top,
+.role-card__bottom,
+.role-card__arrow { position: relative; z-index: 2; }
+.role-card__eyebrow { font-size: 13px; font-weight: 700; }
+.role-card__title { font-size: clamp(22px, 2.4vw, 29px); letter-spacing: -.07em; }
+.role-card__description { max-width: 24ch; color: rgb(255 255 255 / .88); font-size: 14px; }
+.role-card__photo {
+  position: absolute;
+  z-index: 0;
+  inset: 0 0 0 auto;
+  width: 47%;
+  overflow: hidden;
+  opacity: .56;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 60%);
+  mask-image: linear-gradient(90deg, transparent, #000 60%);
+}
+.role-card__photo img { object-fit: cover; object-position: center 42%; mix-blend-mode: luminosity; }
+.role-card--daughter .role-card__photo { opacity: .48; }
+.role-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgb(29 39 43 / .13); }
+.role-card:focus-visible { outline-color: #c7829f; }
+.role-card__arrow { right: 0; bottom: 0; color: #fff; }
+.landing-disclosure {
+  margin: 0 0 30px;
+  color: #52585a;
+  font-size: 12px;
+}
+.landing-footer {
+  border-top-color: var(--line);
+  color: #6b6d68;
+  letter-spacing: 0;
+  font-size: 11px;
+}
+.app-header {
+  background: #fbfaf7;
+  border-bottom: 1px solid #e5e0d8;
+}
+.app-header__inner {
+  min-height: 68px;
+  width: min(calc(100% - 40px), 1200px);
+}
+.app-header__brand { color: #202c31; letter-spacing: -.06em; }
+.app-header__switch {
+  border-radius: 2px;
+  border-color: #c9c4ba;
+  background: transparent;
+}
+.app-nav {
+  border-top-color: #e6e0d8;
+  background: #fbfaf7;
+  box-shadow: 0 -8px 24px rgb(37 42 47 / .04);
+}
+.app-nav__link { color: #555b5b; }
+.app-nav__link[aria-current="page"] {
+  color: var(--space-heading);
+  background: var(--space-accent-soft);
+  border-radius: 2px;
+}
+.app-shell:has(.daughter-home) {
+  --space-heading: #30262c;
+  --space-accent: #774a61;
+  --space-accent-soft: #f0e6eb;
+  --space-background: #faf8f4;
+}
+@media (max-width: 767px) {
+  .landing-shell { padding-inline: 20px; }
+  .landing-spread { padding-block: 54px 26px; gap: 30px; }
+  .landing-heading { font-size: clamp(40px, 10vw, 58px); }
+  .landing-disclosure { margin-bottom: 30px; }
+}
+@media (min-width: 768px) {
+  .landing-shell { padding-inline: clamp(32px, 5.4vw, 76px); }
+  .landing-spread {
+    grid-template-columns: minmax(0, 1.03fr) minmax(340px, .97fr);
+    align-items: center;
+    gap: clamp(38px, 7vw, 104px);
+    min-height: 68vh;
+  }
+  .role-choices { grid-template-columns: 1fr; gap: 13px; }
+  .role-card { min-height: 192px; padding: 22px 25px; }
+  .landing-intro { margin: 0; }
+}
+@media (min-width: 1100px) {
+  .role-choices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .role-card { min-height: 310px; }
+  .role-card__photo { inset: 0; width: 100%; opacity: .24; mask-image: linear-gradient(0deg, #000 0%, transparent 83%); }
+  .role-card--daughter .role-card__photo { opacity: .32; }
+  .role-card__bottom { padding-right: 0; }
+  .role-card__description { max-width: 20ch; }
+}
+

@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./editorial-refresh.css";
 
 export const metadata: Metadata = {
   title: "아빠와 딸 | 같은 집, 조금 다른 세상.",
+  robots: { index: false, follow: false },
   description: "우리가 몰랐던 서로의 이야기. 아빠와 딸, 각자의 공간을 둘러보세요.",
 };
 
@@ -15,3 +17,4 @@ export default function RootLayout({
     </html>
   );
 }
+

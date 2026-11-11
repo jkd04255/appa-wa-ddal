@@ -25,10 +25,10 @@ function EditorialArtwork({
       aria-label="실제 사진이 아닌 가상 콘텐츠용 그래픽 자리"
       className={`dad-home__art dad-home__art--${tone}${hero ? " dad-home__art--hero" : ""}`}
     >
-      <span aria-hidden="true" className="dad-home__art-grid" />
+      <span aria-hidden="true" className="dad-home__art-word">{({ slate: "최애", mist: "웃음", plum: "음악", sand: "간식", moss: "취향" })[tone]}</span>
       <span aria-hidden="true" className="dad-home__art-orbit" />
       <span aria-hidden="true" className="dad-home__art-caption">
-        STUDIO / SAMPLE
+        가상 편집 그래픽
       </span>
     </div>
   );
@@ -36,13 +36,11 @@ function EditorialArtwork({
 
 function SectionHeading({
   id,
-  eyebrow,
   title,
   href,
   cta,
 }: {
   id: string;
-  eyebrow: string;
   title: string;
   href?: string;
   cta?: string;
@@ -50,7 +48,6 @@ function SectionHeading({
   return (
     <div className="dad-home__section-header">
       <div>
-        <p className="dad-home__eyebrow">{eyebrow}</p>
         <h2 className="dad-home__section-title" id={id}>{title}</h2>
       </div>
       {href && cta ? <Link className="dad-home__section-link" href={href}>{cta} <span aria-hidden="true">↗</span></Link> : null}
@@ -65,13 +62,13 @@ export function DadHome() {
     <main id="main-content" className="dad-home">
       <div className="dad-home__container">
         <div className="dad-home__intro">
-          <p className="dad-home__eyebrow">APP A / CURATED EDITION</p>
+          <p className="dad-home__eyebrow">서로의 하루를 이해하는 읽을거리</p>
           <h1>아빠의 공간</h1>
           <p>조금 낯선 이야기도, 가볍게 알아볼 수 있도록.</p>
         </div>
 
         <section className="dad-home__section dad-home__trends" aria-labelledby="dad-trends-heading">
-          <SectionHeading id="dad-trends-heading" eyebrow="01 / DISCOVER" title="오늘의 딸 트렌드" />
+          <SectionHeading id="dad-trends-heading" title="오늘의 딸 트렌드" />
           <div className="dad-home__hero">
             <EditorialArtwork tone={featured.tone} hero />
             <div className="dad-home__hero-copy">
@@ -84,7 +81,7 @@ export function DadHome() {
             </div>
           </div>
           <div className="dad-home__subsection">
-            <SectionHeading id="dad-more-trends" eyebrow="SHORT READS" title="함께 살펴볼 이야기" href="/dad/trends" cta="전체 보기" />
+            <SectionHeading id="dad-more-trends" title="함께 살펴볼 이야기" href="/dad/trends" cta="전체 보기" />
             <div className="dad-home__trend-list" aria-labelledby="dad-more-trends">
               {secondary.map((item) => (
                 <article className="dad-home__trend-row" key={item.id}>
@@ -102,7 +99,7 @@ export function DadHome() {
         </section>
 
         <section className="dad-home__section" aria-labelledby="dad-briefing-heading">
-          <SectionHeading id="dad-briefing-heading" eyebrow="02 / ONE MINUTE" title="아빠의 1분 브리핑" href="/dad/briefing" cta="브리핑 보기" />
+          <SectionHeading id="dad-briefing-heading" title="아빠의 1분 브리핑" href="/dad/briefing" cta="브리핑 보기" />
           <div className="dad-home__brief">
             {DAD_BRIEFING.map((item, index) => (
               <article className="dad-home__brief-row" key={item.id}>
@@ -118,7 +115,7 @@ export function DadHome() {
         </section>
 
         <section className="dad-home__section" aria-labelledby="dad-community-heading">
-          <SectionHeading id="dad-community-heading" eyebrow="03 / COMMUNITY" title="아빠들의 이야기" href="/dad/community" cta="커뮤니티 보기" />
+          <SectionHeading id="dad-community-heading" title="아빠들의 이야기" href="/dad/community" cta="커뮤니티 보기" />
           <div className="dad-home__community">
             <div className="dad-home__community-copy">
               <p className="dad-home__community-lead">비슷한 고민을 나누는 자리</p>
@@ -137,7 +134,7 @@ export function DadHome() {
         </section>
 
         <section className="dad-home__section" aria-labelledby="dad-questions-heading">
-          <SectionHeading id="dad-questions-heading" eyebrow="04 / CONVERSATION" title="궁금한 질문 · 대화 소재" href="/dad/polls" cta="질문·토너먼트 보기" />
+          <SectionHeading id="dad-questions-heading" title="궁금한 질문 · 대화 소재" href="/dad/polls" cta="질문·토너먼트 보기" />
           <div className="dad-home__prompts">
             {DAD_CONVERSATION.map((item) => (
               <article className="dad-home__prompt" key={item.kind}>
@@ -151,7 +148,7 @@ export function DadHome() {
         </section>
 
         <section className="dad-home__section dad-home__last-section" aria-labelledby="dad-perspective-heading">
-          <SectionHeading id="dad-perspective-heading" eyebrow="05 / PERSPECTIVES" title="서로의 시선" href="/dad/perspectives" cta="살펴보기" />
+          <SectionHeading id="dad-perspective-heading" title="서로의 시선" href="/dad/perspectives" cta="살펴보기" />
           <div className="dad-home__perspective">
             <DemoStamp />
             <h3>{DAD_PERSPECTIVE.title}</h3>
@@ -170,3 +167,4 @@ export function DadHome() {
     </main>
   );
 }
+

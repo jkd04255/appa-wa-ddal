@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useSyncExternalStore } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   readLastSpace,
@@ -17,28 +18,28 @@ const choices: ReadonlyArray<{
   eyebrow: string;
   title: string;
   description: string;
-  number: string;
+  image: string;
 }> = [
   {
     space: "dad",
     eyebrow: "아빠의 공간",
     title: "아빠로 들어가기",
     description: "우리 딸의 세상이 궁금하다면",
-    number: "01",
+    image: "/editorial/vinyl-night.jpg",
   },
   {
     space: "daughter",
     eyebrow: "딸의 공간",
     title: "딸로 들어가기",
     description: "내 취향과 이야기가 모이는 곳",
-    number: "02",
+    image: "/editorial/headphones-magazine.jpg",
   },
 ];
 
 function ChoiceLinks() {
   return (
     <div className="role-choices" aria-label="둘러볼 공간 선택">
-      {choices.map(({ space, eyebrow, title, description, number }) => (
+      {choices.map(({ space, eyebrow, title, description, image }) => (
         <a
           className={`role-card role-card--${space}`}
           href={`/${space}`}
@@ -47,12 +48,13 @@ function ChoiceLinks() {
         >
           <span className="role-card__top">
             <span className="role-card__eyebrow">{eyebrow}</span>
-            <span className="role-card__number" aria-hidden="true">{number}</span>
+            
           </span>
           <span className="role-card__bottom">
             <span className="role-card__title">{title}</span>
             <span className="role-card__description">{description}</span>
           </span>
+          <span className="role-card__photo" aria-hidden="true"><Image src={image} alt="" fill sizes="(min-width: 900px) 180px, 120px" /></span>
           <span className="role-card__arrow" aria-hidden="true">↗</span>
         </a>
       ))}
@@ -88,6 +90,7 @@ export function RoleLanding({ chooseExplicitly }: { chooseExplicitly: boolean })
 
         {showChoices ? (
           <>
+            <div className="landing-spread">
             <section className="landing-intro" aria-labelledby="landing-heading">
               <p className="landing-kicker">서로 다른 하루, 하나의 이야기</p>
               <h1 className="landing-heading" id="landing-heading">
@@ -98,6 +101,7 @@ export function RoleLanding({ chooseExplicitly }: { chooseExplicitly: boolean })
             </section>
 
             <ChoiceLinks />
+            </div>
 
             <p className="landing-disclosure">
               이 선택은 둘러볼 공간을 정하는 기능입니다.
@@ -122,10 +126,11 @@ export function RoleLanding({ chooseExplicitly }: { chooseExplicitly: boolean })
         </noscript>
 
         <footer className="landing-footer">
-          <span>APP A · WA · DDAL</span>
+          <span>아빠와 딸 · 시연 매거진</span>
           <span>서로를 이해하는 또 하나의 방법</span>
         </footer>
       </div>
     </main>
   );
 }
+
