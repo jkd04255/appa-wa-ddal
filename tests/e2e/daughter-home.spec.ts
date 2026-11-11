@@ -53,6 +53,7 @@ test("category chips link to filtered discovered stories", async ({ page }) => {
 
 test("daughter CTA routes include readable details, placeholders and role isolation", async ({ page }) => {
   await page.goto("/daughter");
+  await expect(page.getByRole("link", { name: "질문·토너먼트 보기" })).toHaveAttribute("href", "/daughter/polls");
   const known = [
     "/daughter/discover", "/daughter/sales",
     "/daughter/community", "/daughter/polls", "/daughter/perspectives",
