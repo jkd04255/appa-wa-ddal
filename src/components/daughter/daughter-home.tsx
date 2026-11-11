@@ -205,7 +205,7 @@ export function DaughterHome() {
 
         <section className="daughter-home__section daughter-home__poll-section" aria-labelledby="daughter-poll-heading">
           <SectionHeading id="daughter-poll-heading" number="06 / QUESTION OF THE WEEK"
-            title="이번 주 질문" href="/daughter/polls" aside="질문 살펴보기" />
+            title="이번 주 질문" href="/daughter/polls" aside="질문·토너먼트 보기" />
           <div className="daughter-home__poll-panel">
             <div>
               <DemoLabel>시연 질문 · {DAUGHTER_POLL.demoNotice}</DemoLabel>
@@ -232,7 +232,7 @@ export function DaughterHome() {
         <p className="daughter-home__footnotes">
           모든 이야기·쇼핑 노트·커뮤니티·투표는 시연용 합성 데이터입니다. 실제 인기·할인·응답 결과나 사용자 게시물이 아닙니다.
           사진은 주제의 분위기를 표현하기 위한 이미지이며 실제 콘텐츠의 출처를 뜻하지 않습니다.
-          사진 출처와 사용권은 개발 문서에서 확인할 수 있습니다. 이야기 상세는 가상 편집글이며 작성·투표 기능은 아직 준비 중입니다.
+          사진 출처와 사용권은 개발 문서에서 확인할 수 있습니다. 이야기 상세는 가상 편집글입니다. 개인 작성은 제공하지 않으며, 질문·토너먼트 선택은 화면에서만 체험할 수 있습니다.
         </p>
       </div>
     </main>

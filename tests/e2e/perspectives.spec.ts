@@ -123,6 +123,47 @@ test("daughter standalone poll matches home fictional prompt with no results, st
   await expect(page.locator(".perspectives__choice-preview")).toHaveCount(0);
 });
 
+test("daughter operator tournament advances fixed brackets and resets without saving responses", async ({ page }) => {
+  const writes: string[] = [];
+  page.on("request", (request) => {
+    if (!["GET", "HEAD", "OPTIONS"].includes(request.method())) writes.push(request.method());
+    if (new URL(request.url()).hostname !== "127.0.0.1") writes.push("external request");
+  });
+
+  await page.goto("/daughter/polls");
+  const bracket = page.getByRole("region", { name: "쉬는 날의 작은 취향 토너먼트" });
+  await expect(bracket).toBeVisible();
+  await expect(bracket.getByRole("button")).toHaveText(["집에서 영화 보기", "친구와 카페 가기"]);
+  await bracket.getByRole("button", { name: "친구와 카페 가기" }).click();
+
+  await expect(bracket.getByRole("button")).toHaveText(["산책하며 음악 듣기", "좋아하는 음식 먹기"]);
+  await bracket.getByRole("button", { name: "좋아하는 음식 먹기" }).click();
+
+  await expect(bracket.getByRole("button")).toHaveText(["친구와 카페 가기", "좋아하는 음식 먹기"]);
+  await bracket.getByRole("button", { name: "좋아하는 음식 먹기" }).click();
+  const result = bracket.getByRole("status");
+  await expect(result).toContainText("나의 우승 선택: 좋아하는 음식 먹기");
+  await expect(result).toContainText("전체 결과나 순위가 아닙니다");
+
+  await expect(page.getByRole("main")).toContainText("저장·집계되지 않습니다");
+  expect(await page.evaluate(() => ({
+    local: Object.keys(localStorage),
+    session: Object.keys(sessionStorage),
+    cookies: document.cookie,
+  }))).toEqual({ local: [], session: [], cookies: "" });
+  expect(writes).toEqual([]);
+
+  await page.reload();
+  await expect(bracket.getByRole("button")).toHaveText(["집에서 영화 보기", "친구와 카페 가기"]);
+  await expect(bracket).not.toContainText("나의 우승 선택: 좋아하는 음식 먹기");
+  await bracket.getByRole("button", { name: "집에서 영화 보기" }).click();
+  await bracket.getByRole("button", { name: "산책하며 음악 듣기" }).click();
+  await bracket.getByRole("button", { name: "집에서 영화 보기" }).click();
+  await bracket.getByRole("button", { name: "처음부터 다시 고르기" }).click();
+  await expect(bracket.getByRole("button")).toHaveText(["집에서 영화 보기", "친구와 카페 가기"]);
+  expect(writes).toEqual([]);
+});
+
 test("simulated response vanishes after role re-selection; only prior UX key persists",async({page})=>{
   await page.goto("/?choose=1");
   await page.getByRole("link",{name:/아빠로 들어가기/}).click();
