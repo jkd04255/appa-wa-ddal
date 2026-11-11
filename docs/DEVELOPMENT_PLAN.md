@@ -2,10 +2,10 @@
 
 > 프로젝트: 아빠와 딸 (가칭)  
 > 기준 요구사항: 「아빠와 딸을 위한 양방향 트렌드·익명 커뮤니티 개발 프롬프트 v2.0」  
-> 문서 버전: v0.13.0-rc.1  
+> 문서 버전: v0.13.0  
 > 최초 작성: 2026-11-10 (KST)  
 > 관리 위치: docs/DEVELOPMENT_PLAN.md  
-> 현재 게이트: G1-09 — 전 화면 UI/접근성 감사·키보드 초점/입력창 대비 수정, PR #22 최종 QA·병합 대기  
+> 현재 게이트: G1-09 완료(브라우저 자동 QA) — G2-01 정책 문서 사전 검토 대기, G2 전체 Gate HOLD  
 > 배포 상태: 미배포. 회원가입·실제 게시글·개인정보 저장 기능 미연결.
 
 ## 1. 목적과 제품 원칙
@@ -64,7 +64,7 @@
 | G1-06 | 트렌드 목록/상세 | 아빠 5·딸 4 합성 편집글 목록/정확한 slug 상세, 분류 필터·404·검증 안전 상태 | **완료** | [G1-06 QA](./G1_06_QA.md), [PR #16](https://github.com/jkd04255/appa-wa-ddal/pull/16) main 병합 377bca61, Chromium 41/41 통과 |
 | G1-07 | 커뮤니티 시연 UI | 아빠·딸 독립 합성 3글씩·검색·주제·정렬·정확 ID 상세·샘플 댓글·메모리 전용 미리보기 | **완료** | [G1-07 QA](./G1_07_QA.md), [PR #18](https://github.com/jkd04255/appa-wa-ddal/pull/18) main 병합 22cbbb16, Chromium 55/55 통과 |
 | G1-08 | 서로의 시선/설문 UI | 공용 합성 관점 3쌍/각 3상세, 가상 선택 3곳, 원문·응답수·작성자 없는 편집 구조 | **완료** | [G1-08 QA](./G1_08_QA.md), [PR #20](https://github.com/jkd04255/appa-wa-ddal/pull/20) main 병합 bf5c99df, Chromium 69/69 통과 |
-| G1-09 | 전체 시제품 회귀 검증 | 랜딩·2홈·9개 트렌드 상세·6개 커뮤니티 상세·서로의 시선·가상 질문 전체 감사, 스킵링크 초점·입력 경계 대비 수정 | **검증 대기(PR #22)** | [G1-09 QA](./G1_09_QA.md), 기존 69 + 신규 6 = Chromium 75개 Gate, 실기기/수동 SR 미검증 |
+| G1-09 | 전체 시제품 회귀 검증 | 전 화면 구조 감사, 스킵링크 실제 본문 초점·입력 필드 5.29:1 대비 개선, 7개 폭·200% 확대·axe/보안 회귀 | **완료(자동 QA 한정)** | [G1-09 QA](./G1_09_QA.md), [PR #22](https://github.com/jkd04255/appa-wa-ddal/pull/22) main 병합 11327f7a, Chromium **75/75** 통과, 실기기·수동 QA 미실시 |
 | G2-01 | 청소년 안전·법률·운영 정책 | 연령, 동의, 신고·검토·보존/삭제·접근 제한 | **보류** | 실제 이용자 쓰기 전 법률·운영 절차 점검 |
 | G2-02 | 계정/Auth/권한/RLS 부정 테스트 | 서버 권한, 역할 검증, RLS·API 직접 접근·기본 거부 테스트 | **보류** | 역할 선택만으로 다른 게시판 원문/쓰기 우회 불가 |
 | G2-03 | 폐쇄형 커뮤니티 시험 운영 | 제한된 글·댓글·신고·검토·삭제 기능 | **보류** | G2-01/02 통과 전 공개 운영 금지 |
@@ -274,13 +274,13 @@
 - 최초 CI [#42938642362](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42938642362): **68/69**; 기존 실제 UI 정상, 신규 테스트의 선택 전후 안내 비교 순서 오류 1건. 테스트를 교정해 [#42938849291](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42938849291) npm ci/lint/typecheck/build/HTTP smoke/Chromium **69/69 성공**. 기존 55 + 신규 14: 공용 ID/내용 일치·원문 비참조 정적 검사·무효 404·React 라디오 저장/전송 0·모바일 320~1024px·200% 글자·axe 자동 검사.
 - [G1-08 QA](./G1_08_QA.md)에 오류 수정/검증 이력을 기록. 최종 PR HEAD `f3b1a76175b58f6522ab6ac8879f8f605b58485a`의 [Actions #42939450376](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42939450376) **npm ci/lint/build/typecheck/HTTP smoke/Chromium 69/69 전체 success** 확인 후 PR #20을 main squash 병합(`bf5c99df4fdcb23a2f10b96ace4163d47fd7dcd8`). main에 2개 목록·6개 상세·가상 투표·TS fixture·테스트·QA/계획서 존재 확인. **실제 iPhone Safari/Android Chrome·수동 VoiceOver/TalkBack 검증 미실시**.
 
-### G1-09 전체 UI/UX·접근성·회귀 감사 (PR #22 최종 QA/병합 대기)
+### G1-09 완료 — 전 화면 브라우저 자동 QA ([PR #22](https://github.com/jkd04255/appa-wa-ddal/pull/22) main 병합)
 - 기준: main v0.12.0 + G0-02 정보구조·G0-03 디자인 시스템·G0-04 기술/보안 계약 및 G1-04~08 화면. 전체 랜딩/아빠·딸 홈/9개 트렌드·발견 상세/양쪽 커뮤니티·6개 글 상세/쓰기 미리보기·서로의 시선 6개 상세/딸 질문/공용 4탭을 **코드·CSS·기존 자동 회귀** 기준으로 재검토.
 - **UX-09-01 키보드 초점:** 기존 '본문으로 바로가기'는 `#main-content` 해시 위치/가시성만 검증. `SkipToMain` Client component가 활성화 시 `main#main-content`에 `tabIndex=-1`을 주고 실제 DOM 초점을 옮기도록 수정. 기본 `href=#main-content` 해시 앵커는 유지하고 다음 Tab이 본문 내부로 이어지도록 검증. JS 비활성 심층 라우트 실동작은 별도 완료로 주장하지 않음.
 - **UX-09-02 입력 경계 대비:** `community-demo.css` 기본 검색/주제/정렬/글쓰기 입력 필드의 `#aaa6a8` on white 대비 **2.41:1** → `#6f6a70` on white **5.29:1**로 개선. 3:1 비텍스트 경계 목표와 44px 높이를 수치로 검증. 기존 양 공간 색상·편집 미감·사진 자산/구조 유지.
 - 기존 **69개** Chromium 회귀+신규 **6개** G1-09 감사 테스트: 10개 대표 경로의 스킵키 실제 초점/다음 Tab, 기본 해시 앵커 DOM, 두 공간 각 입력 테두리, 7개 뷰포트 320/360/375/390/430/768/1024px 고정탭 가림·오버플로, 320px·200% 확대, axe·메모리 데이터 서버 전송 0.
 - [G1-09 QA](./G1_09_QA.md)에 화면별 코드/스타일 감사 범위·근거·한계/수정 사항을 기록. **스크린샷의 실제 사람 육안 대조, iPhone Safari/Android 실기기 및 수동 VoiceOver/TalkBack·Lighthouse 실측은 미실시**. 자동 Chromium/axe 통과로 이를 대체하거나 완전한 접근성·실서비스 안전성을 보증하지 않음.
-- 최종 README·QA·계획서 포함 **PR #22 head 전체 npm ci/lint/typecheck/build/HTTP smoke/Chromium 75/75 성공**과 변경 범위 검증 후 main 병합. 그 전까지 상태 완료 처리 금지.
+- README·QA·계획서가 포함된 PR #22 최종 HEAD `62f40d7d46e9d7ff0867ff6fa95514495ec5e068`의 [Actions #42942426487](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42942426487) **npm ci/lint/typecheck/build/HTTP smoke/Chromium 75/75 전체 success** 확인 및 변경 범위 검토 후 [PR #22](https://github.com/jkd04255/appa-wa-ddal/pull/22) main squash 병합(`11327f7aa54fbe0cf26d7d8f96b18284506a4009`). main에서 실제 SkipToMain/SpaceShell/CSS/QA/계획서 재조회 확인. 실제 기기·수동 스크린리더·화면 스크린샷 육안 감리는 **미실시**.
 
 ### 다음 예정 — G2-01 청소년 안전·법률·운영 정책 사전 문서 검토 (G2 Gate HOLD)
 - 역할·연령·부모 동의/검증, 청소년 유해 접근·그루밍/신고·제재·검수 운영, 사연 원문 분리·동의/비식별·재식별, 개인정보/보존·삭제 정책을 **별도 문서 브랜치**에서 검토. 전문 법률 자문 및 연령 적격 검증 전 실서비스 오픈 승인 주장 금지.
@@ -382,9 +382,9 @@
 | 2026-11-11 | 본문 스킵 링크 실제 키보드 초점 경계 | 기존 테스트 공백 발견, G1-09 Client fix 및 신규 검사 |
 | 2026-11-11 | 커뮤니티 검색/작성 입력 테두리 대비 | **2.41:1→5.29:1** (색상 계산) |
 | 2026-11-11 | 초기 Chromium 75 중 신규 측정 2건 실패 | **73/75**, JS-off 별도 컨텍스트 타임아웃/부드러운 스크롤 측정 타이밍 → 테스트 개선 |
-| 2026-11-11 | npm ci/lint/build/typecheck/HTTP/기존 69+신규 6 Chromium·axe | 수정 포함 최종 CI 완료 대기 |
+| 2026-11-11 | npm ci/lint/build/typecheck/HTTP/기존 69+신규 6 Chromium·axe | **75/75 통과**, 최종 PR HEAD Actions #42942426487 |
 | 2026-11-11 | 실제 Safari·Android·VoiceOver/TalkBack/스크린샷 수동 비교 | **미실시**, 미검증 |
-| 2026-11-11 | PR #22 최종 문서 HEAD CI 및 main 병합 | 성공 여부 확인 전 **HOLD** |
+| 2026-11-11 | PR #22 최종 HEAD CI 및 main 병합 | **완료**, Actions #42942426487 success, merge 11327f7a |
 
 ### 문서 변경 이력
 | 날짜(KST) | 버전 | 내용 |
@@ -411,7 +411,8 @@
 | 2026-11-11 | v0.11.0 | PR #18 최종 HEAD CI 55/55 성공·main 병합 확인, G1-07 완료와 G1-08 대기 확정 |
 | 2026-11-11 | v0.12.0-rc.1 | G1-08 공용 합성 관점/가상 설문·재식별 방지, Chromium 69/69 성공, 최종 PR CI 및 병합 대기 |
 | 2026-11-11 | v0.12.0 | PR #20 최종 CI 69/69 성공·main 병합 확인, G1-08 완료/G1-09 종합 QA 대기 |
-| 2026-11-11 | **v0.13.0-rc.1** | G1-09 키보드 스킵 초점·입력 경계 대비 개선, 전체 시제품 75-case QA 브랜치/PR 진행 중 |
+| 2026-11-11 | v0.13.0-rc.1 | G1-09 키보드 스킵 초점·입력 경계 대비 개선, 전체 시제품 75-case QA 브랜치/PR 진행 중 |
+| 2026-11-11 | **v0.13.0** | G1-09 PR #22 75/75 최종 CI 성공·main 병합, 자동화 범위 완료/실기기·수동·시각 육안 검증 미실시, G2 전체 HOLD 확정 |
 
 ---
 
