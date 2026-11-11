@@ -31,7 +31,7 @@ test("briefing, demo community, prompts and perspectives are explicitly syntheti
 test("dad home CTA routes include readable sample details, placeholders and unknown 404", async ({ page }) => {
   const paths = [
     "/dad/trends", "/dad/briefing", "/dad/community",
-    "/dad/questions", "/dad/talk", "/dad/perspectives",
+    "/dad/questions", "/dad/talk", "/dad/polls", "/dad/perspectives",
     "/dad/trends/example-favorite-word", "/dad/trends/example-short-video",
     "/dad/trends/example-playlist", "/dad/trends/example-snack", "/dad/trends/example-personal-style",
   ];
@@ -40,11 +40,12 @@ test("dad home CTA routes include readable sample details, placeholders and unkn
     (elements) => elements.map((a) => (a as HTMLAnchorElement).getAttribute("href"))
   );
   for (const path of paths) expect(destinations).toContain(path);
+  await expect(page.getByRole("link", { name: "질문·토너먼트 보기" })).toHaveAttribute("href", "/dad/polls");
   expect(destinations.every((target) => !!target && paths.includes(target))).toBe(true);
   for (const path of paths) {
     const response = await page.goto(path);
     expect(response?.status(), path).toBe(200);
-    if (path === "/dad/trends" || path.startsWith("/dad/trends/") || path === "/dad/community" || path === "/dad/perspectives") {
+    if (path === "/dad/trends" || path.startsWith("/dad/trends/") || path === "/dad/community" || path === "/dad/polls" || path === "/dad/perspectives") {
       await expect(page.getByRole("main")).toContainText("시연 콘텐츠");
     } else {
       await expect(page.getByRole("main")).toContainText("준비 중입니다.");
