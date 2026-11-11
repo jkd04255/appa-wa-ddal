@@ -1,5 +1,6 @@
-import { SectionPlaceholder } from "@/components/section-placeholder";
+import { PerspectiveIndex } from "@/components/perspectives/perspective-index";
+import "../../perspectives.css";
 
 export default function DaughterPerspectivesPage() {
-  return <SectionPlaceholder space="daughter" title="서로의 시선" />;
+  return <PerspectiveIndex space="daughter" />;
 }
