@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import type { ExploreSpace } from "@/lib/role-preference";
 import { SiteNavigation } from "@/components/site-navigation";
+import { SkipToMain } from "@/components/skip-to-main";
 
 export function SpaceShell({
   space,
@@ -14,7 +15,7 @@ export function SpaceShell({
 
   return (
     <div className={`app-shell app-shell--${space}`} data-current-space={space}>
-      <a className="app-skip-link" href="#main-content">본문으로 바로가기</a>
+      <SkipToMain />
       <header className="app-header">
         <div className="app-header__inner">
           <Link href={`/${space}`} className="app-header__brand" aria-label={`아빠와 딸 — ${label} 홈`}>
