@@ -106,6 +106,30 @@ test("same shared detail ID presents identical editorial words across both space
   }
 });
 
+test("dad operator page uses fixed dad question and shared tournament with no storage", async ({ page }) => {
+  const writes: string[] = [];
+  page.on("request", (request) => {
+    if (!["GET", "HEAD", "OPTIONS"].includes(request.method())) writes.push(request.method());
+    if (new URL(request.url()).hostname !== "127.0.0.1") writes.push("external request");
+  });
+  const response = await page.goto("/dad/polls");
+  expect(response?.status()).toBe(200);
+  await expect(page.getByRole("heading", { level: 1, name: "이번 주 질문" })).toBeVisible();
+  await expect(page.getByText("가상의 대화 상황이라면 어떤 시작이 편할까요?")).toBeVisible();
+  await expect(page.getByRole("radio")).toHaveCount(3);
+  const bracket = page.getByRole("region", { name: "쉬는 날의 작은 취향 토너먼트" });
+  await expect(bracket).toBeVisible();
+  await expect(bracket.getByRole("button")).toHaveText(["집에서 영화 보기", "친구와 카페 가기"]);
+  await page.getByRole("link", { name: "아빠 홈으로 돌아가기" }).click();
+  await expect(page).toHaveURL(/\/dad$/);
+  expect(writes).toEqual([]);
+  expect(await page.evaluate(() => ({
+    local: Object.keys(localStorage),
+    session: Object.keys(sessionStorage),
+    cookies: document.cookie,
+  }))).toEqual({ local: [], session: [], cookies: "" });
+});
+
 test("daughter standalone poll matches home fictional prompt with no results, storage or submit",async({page})=>{
   const requests:string[]=[];
   page.on("request", r=>{ if(!["GET","HEAD","OPTIONS"].includes(r.method()))requests.push(r.method());});
