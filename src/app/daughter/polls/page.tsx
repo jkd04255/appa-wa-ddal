@@ -1,5 +1,6 @@
-import { SectionPlaceholder } from "@/components/section-placeholder";
+import { StandaloneDemoPoll } from "@/components/perspectives/standalone-poll";
+import "../../perspectives.css";
 
 export default function DaughterPollsPage() {
-  return <SectionPlaceholder space="daughter" title="이번 주 질문" />;
+  return <StandaloneDemoPoll />;
 }
