@@ -137,7 +137,7 @@ export function DadHome() {
         </section>
 
         <section className="dad-home__section" aria-labelledby="dad-questions-heading">
-          <SectionHeading id="dad-questions-heading" eyebrow="04 / CONVERSATION" title="궁금한 질문 · 대화 소재" />
+          <SectionHeading id="dad-questions-heading" eyebrow="04 / CONVERSATION" title="궁금한 질문 · 대화 소재" href="/dad/polls" cta="질문·토너먼트 보기" />
           <div className="dad-home__prompts">
             {DAD_CONVERSATION.map((item) => (
               <article className="dad-home__prompt" key={item.kind}>
@@ -164,7 +164,7 @@ export function DadHome() {
 
         <p className="dad-home__fineprint">
           모든 카드·브리핑·게시글·관점은 디자인 검증용 합성 예시이며 실제 SNS 최신 동향, 게시글, 설문 결과가 아닙니다.
-          트렌드 목록과 가상 상세는 읽을 수 있지만 실제 SNS 조사·실사용자 커뮤니티는 제공하지 않습니다.
+          트렌드 목록과 가상 상세는 읽을 수 있지만 실제 SNS 조사·실사용자 커뮤니티는 제공하지 않습니다. 질문·토너먼트 선택은 화면에서만 체험하며 저장·집계하지 않습니다.
         </p>
       </div>
     </main>
