@@ -207,7 +207,7 @@ test("simulated response vanishes after role re-selection; only prior UX key per
 test("320–1024px list/detail/choice layouts, and 320px 200% text, do not overflow",async({page})=>{
   const routes=[
     "/dad/perspectives","/dad/perspectives/a-comfortable-distance",
-    "/daughter/perspectives","/daughter/perspectives/the-pace-of-a-conversation","/daughter/polls",
+    "/daughter/perspectives","/daughter/perspectives/the-pace-of-a-conversation","/daughter/polls","/dad/polls",
   ];
   for(const width of [320,360,375,390,430,768,1024]){
     await page.setViewportSize({width,height:790});
@@ -231,7 +231,7 @@ test("axe WCAG automatic, keyboard and explicit status on both lists, both detai
   for(const route of [
     "/dad/perspectives","/daughter/perspectives",
     "/dad/perspectives/a-comfortable-distance",
-    "/daughter/perspectives/a-comfortable-distance","/daughter/polls",
+    "/daughter/perspectives/a-comfortable-distance","/daughter/polls","/dad/polls",
   ]){
     await page.goto(route);
     const link=page.locator(".perspectives a").first();
