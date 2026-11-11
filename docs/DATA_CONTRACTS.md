@@ -6,7 +6,8 @@
 
 ## 1. 안전한 데이터 경계
 
-- Phase 1은 합성 데이터만 로컬 읽기 전용으로 사용한다. 실사용자 게시글·댓글·설문 결과·개인정보를 파일이나 서버/브라우저 장기 저장소에 기록하지 않는다.
+- 초기 서비스의 기사·투표 주제·선택지·토너먼트 대진은 지정 운영자가 검수 후 정적 fixture로 등록한다. 이용자는 고정 선택지를 누르는 것만 허용하며, 개인 게시글·댓글·질문/선택지 생성은 제공하지 않는다.
+- 이용자의 투표/토너먼트 선택은 현재 범위에서 세션 중에만 유지하고 파일·서버·브라우저 장기 저장소에 기록하거나 전체 응답으로 집계하지 않는다. 실제 응답 저장·집계는 별도 법률·개인정보·보안 검토와 Gate 승인 전 금지한다.
 - 공개 편집 콘텐츠, 커뮤니티 샘플, 서로의 시선 편집본은 서로 다른 타입/폴더/렌더링 뷰 모델로 구분한다.
 - 아빠/딸은 콘텐츠 탐색 공간이지 검증된 사용자 권한이 아니다.
 - 모든 합성 카드에는 가상 데이터임을 알리는 명시적 문구가 필요하다.
@@ -96,13 +97,24 @@ type DemoCommunityPost = Readonly<{
   comments: readonly DemoCommunityComment[];
 }>;
 
-type DemoPoll = Readonly<{
-  kind: "demo-poll";
+type OperatorPollFixture = Readonly<{
+  kind: "operator-poll";
   id: ContentId;
   question: string;
-  options: readonly string[];
-  demoNotice: "실제 투표 결과가 아닙니다";
-  // Phase 1: real vote counts and percentages unavailable
+  options: readonly string[]; // authored and reviewed by a designated operator
+  interaction: "session-only";
+  persistResponses: false;
+  aggregateResponses: false;
+}>;
+
+type OperatorTournamentFixture = Readonly<{
+  kind: "operator-tournament";
+  id: ContentId;
+  title: string;
+  entries: readonly string[]; // fixed operator-authored bracket entries
+  interaction: "session-only";
+  persistResponses: false;
+  aggregateResponses: false;
 }>;
 
 type PerspectivePublication =
