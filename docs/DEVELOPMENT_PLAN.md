@@ -2,10 +2,10 @@
 
 > 프로젝트: 아빠와 딸 (가칭)  
 > 기준 요구사항: 「아빠와 딸을 위한 양방향 트렌드·익명 커뮤니티 개발 프롬프트 v2.0」  
-> 문서 버전: v0.12.0-rc.1  
+> 문서 버전: v0.12.0  
 > 최초 작성: 2026-11-10 (KST)  
 > 관리 위치: docs/DEVELOPMENT_PLAN.md  
-> 현재 게이트: G1-08 — 공용 합성 관점 3쌍/각 3상세·가상 설문 구현·Chromium 69/69 통과, PR #20 최종 CI·병합 대기  
+> 현재 게이트: G1-08 완료 — G1-09 전체 시제품 디자인·접근성·회귀 검증 대기  
 > 배포 상태: 미배포. 회원가입·실제 게시글·개인정보 저장 기능 미연결.
 
 ## 1. 목적과 제품 원칙
@@ -63,7 +63,7 @@
 | G1-05 | 딸 홈 | 사진 중심 Polished Underground 발견·뷰티·먹거리·쇼핑·샘플 커뮤니티·질문 | **완료** | [QA](./G1_05_QA.md), [PR #14](https://github.com/jkd04255/appa-wa-ddal/pull/14) main 병합 ede2a162, CI 31/31 통과 |
 | G1-06 | 트렌드 목록/상세 | 아빠 5·딸 4 합성 편집글 목록/정확한 slug 상세, 분류 필터·404·검증 안전 상태 | **완료** | [G1-06 QA](./G1_06_QA.md), [PR #16](https://github.com/jkd04255/appa-wa-ddal/pull/16) main 병합 377bca61, Chromium 41/41 통과 |
 | G1-07 | 커뮤니티 시연 UI | 아빠·딸 독립 합성 3글씩·검색·주제·정렬·정확 ID 상세·샘플 댓글·메모리 전용 미리보기 | **완료** | [G1-07 QA](./G1_07_QA.md), [PR #18](https://github.com/jkd04255/appa-wa-ddal/pull/18) main 병합 22cbbb16, Chromium 55/55 통과 |
-| G1-08 | 서로의 시선/설문 UI | 공용 합성 관점 3쌍/각 3상세, 가상 선택 3곳, 원문·응답수·작성자 없는 편집 구조 | **1차 검증 통과(병합 대기)** | [G1-08 QA](./G1_08_QA.md), 기존 55 + 신규 14 = Chromium 69/69, PR #20 최종 HEAD 병합 조건 |
+| G1-08 | 서로의 시선/설문 UI | 공용 합성 관점 3쌍/각 3상세, 가상 선택 3곳, 원문·응답수·작성자 없는 편집 구조 | **완료** | [G1-08 QA](./G1_08_QA.md), [PR #20](https://github.com/jkd04255/appa-wa-ddal/pull/20) main 병합 bf5c99df, Chromium 69/69 통과 |
 | G1-09 | 전체 시제품 회귀 검증 | 모바일·접근성·시각 QA 기록 | 미착수 | 치명적 결함 없음·피드백 수집 |
 | G2-01 | 청소년 안전·법률·운영 정책 | 연령, 동의, 신고·검토·보존/삭제·접근 제한 | **보류** | 실제 이용자 쓰기 전 법률·운영 절차 점검 |
 | G2-02 | 계정/Auth/권한/RLS 부정 테스트 | 서버 권한, 역할 검증, RLS·API 직접 접근·기본 거부 테스트 | **보류** | 역할 선택만으로 다른 게시판 원문/쓰기 우회 불가 |
@@ -266,13 +266,13 @@
 - 초기 CI [#42866166154](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42866166154)에서 **51/55**, 기존 회귀 4개가 커뮤니티의 '시연 콘텐츠' 고지를 찾지 못해 실패. 페이지 상단 **'시연 콘텐츠 · 샘플 커뮤니티입니다.'** 고지를 추가하여 일관성/명료성을 높임. 수정 CI [#42866863039](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42866863039)에서 npm ci/lint/build/typecheck/HTTP smoke·Chromium **55/55 성공**. 기존 41개+신규 14개: 역할/ID 404·검색/정렬·임시 입력 소멸·React 이스케이프·로컬/네트워크 비저장·320~1024px·200%·axe 자동 검사.
 - [G1-07 QA](./G1_07_QA.md)에 실패 수정·최종 증거 기재. 최종 PR HEAD `ac6371a84378f77463c0cdfff0574cb201d6bd1f`의 [GitHub Actions #42867591890](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42867591890) npm ci/lint/build/typecheck/HTTP smoke/Chromium **55/55 전체 success** 확인 후 [PR #18](https://github.com/jkd04255/appa-wa-ddal/pull/18)을 main squash 병합(`22cbbb16183f273a0bd757123494ed48ee64458a`). main에서 목록/글 상세/작성 체험/QA·계획서 실제 재조회 완료. **실제 iPhone Safari·Android Chrome·수동 VoiceOver/TalkBack 검증은 미실시**.
 
-### G1-08 서로의 시선·가상 질문 (1차 QA 통과·PR #20 병합 대기)
+### G1-08 완료 ([PR #20](https://github.com/jkd04255/appa-wa-ddal/pull/20) main 병합)
 - `feat/g1-08-shared-perspectives-demo` 브랜치에서 공용 TS 타입 `perspective-editorial.ts` 및 **독립적으로 창작한 `shared-perspectives.ts`** 합성 fixture 작성. **3개 공용 편집 ID**와 동일한 내용이 아빠/딸 각자 별도 스타일의 목록 `/dad/perspectives`, `/daughter/perspectives` 및 6개 `/[slug]` 상세에 노출. ID 3개 외 허용하지 않으며 커뮤니티 게시글 ID/오류 slug는 404.
 - 각 상세는 가상 아빠/딸 관점, 가상 맥락, 부담 없는 질문, **시연 콘텐츠·원문 없음·확인일 해당 없음** 출처 안내를 제공. 다른 공간의 실 게시물·댓글 원문, 게시글 ID, 작성자/개인정보/민감 사연·소표본/인구통계·실응답 수·인용을 참조하거나 전달하지 않음. G2 이전 실데이터 접근·실집계 구현 금지.
 - 아빠 아이보리·블루그레이, 딸 크림·차콜·베리 Polished Underground 미감과 4탭·반응형·키보드/스크린리더 명료성을 유지. 홈/기존 9개 트렌드 상세/양쪽 커뮤니티·메모리 전용 작성 체험 보존.
 - 양쪽 관점 목록 및 `/daughter/polls`에 합성 질문·보기 3개 체험. React 메모리 상태의 라디오 선택/미리보기/선택 지우기만 허용, **서버 전송·영구 저장·실투표·통계/응답 수·완료 표시 없음**. 최초 역할 선택값은 탐색 편의일 뿐 인증과 무관함.
 - 최초 CI [#42938642362](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42938642362): **68/69**; 기존 실제 UI 정상, 신규 테스트의 선택 전후 안내 비교 순서 오류 1건. 테스트를 교정해 [#42938849291](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42938849291) npm ci/lint/typecheck/build/HTTP smoke/Chromium **69/69 성공**. 기존 55 + 신규 14: 공용 ID/내용 일치·원문 비참조 정적 검사·무효 404·React 라디오 저장/전송 0·모바일 320~1024px·200% 글자·axe 자동 검사.
-- [G1-08 QA](./G1_08_QA.md)에 이력을 기록. **실제 iPhone Safari/Android Chrome·수동 VoiceOver/TalkBack 검증 미실시**; 문서 포함 **최종 PR HEAD CI 전부 성공과 소스 변경 범위 검토 후에만** main 병합.
+- [G1-08 QA](./G1_08_QA.md)에 오류 수정/검증 이력을 기록. 최종 PR HEAD `f3b1a76175b58f6522ab6ac8879f8f605b58485a`의 [Actions #42939450376](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42939450376) **npm ci/lint/build/typecheck/HTTP smoke/Chromium 69/69 전체 success** 확인 후 PR #20을 main squash 병합(`bf5c99df4fdcb23a2f10b96ace4163d47fd7dcd8`). main에 2개 목록·6개 상세·가상 투표·TS fixture·테스트·QA/계획서 존재 확인. **실제 iPhone Safari/Android Chrome·수동 VoiceOver/TalkBack 검증 미실시**.
 
 ### 다음 예정 — G1-09 (G1-08 병합 이후)
 - 전체 시제품의 **전문 웹 디자이너·개발자 관점 시각/인터랙션/반응형·QA 종합 감사**. 320~1024px, 200% 글자 확대, 키보드/axe WCAG, 역할 선택·9개 상세·두 커뮤니티·관점 페이지·가상 설문 전체 흐름 회귀를 유지하며 치명적 문제를 작은 PR로 수정.
@@ -365,7 +365,7 @@
 | 2026-11-11 | 첫 신규 설문 테스트, 선택 전후 안내 문장 비교 순서 | **오류 1건 수정**, 68/69 → 69/69 |
 | 2026-11-11 | 기존 55개 Chromium·신규 14개 (공용 ID/원문 분리·가상 응답·재식별·axe·모바일) | **69/69 통과**, CI #42938849291 |
 | 2026-11-11 | iPhone Safari/Android·수동 스크린리더 | **미실시**, 후속 G1-09 |
-| 2026-11-11 | PR #20 최종 문서 HEAD CI 및 main 병합 | 확인 대기 |
+| 2026-11-11 | PR #20 최종 문서 HEAD CI 및 main 병합 | **통과**, Actions #42939450376 69/69, merge bf5c99df |
 
 ### 문서 변경 이력
 | 날짜(KST) | 버전 | 내용 |
@@ -390,7 +390,8 @@
 | 2026-11-11 | v0.10.0 | G1-06 PR #16 최종 CI 41/41·main 병합 확인, G1-07 합성 커뮤니티 시연 대기 |
 | 2026-11-11 | v0.11.0-rc.1 | G1-07 양쪽 합성 커뮤니티·메모리 글쓰기·55/55 Chromium 성공, PR #18 최종 검증 대기 |
 | 2026-11-11 | v0.11.0 | PR #18 최종 HEAD CI 55/55 성공·main 병합 확인, G1-07 완료와 G1-08 대기 확정 |
-| 2026-11-11 | **v0.12.0-rc.1** | G1-08 공용 합성 관점/가상 설문·재식별 방지, Chromium 69/69 성공, 최종 PR CI 및 병합 대기 |
+| 2026-11-11 | v0.12.0-rc.1 | G1-08 공용 합성 관점/가상 설문·재식별 방지, Chromium 69/69 성공, 최종 PR CI 및 병합 대기 |
+| 2026-11-11 | **v0.12.0** | PR #20 최종 CI 69/69 성공·main 병합 확인, G1-08 완료/G1-09 종합 QA 대기 |
 
 ---
 
