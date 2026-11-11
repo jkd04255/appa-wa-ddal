@@ -124,11 +124,44 @@ try {
     const response = await fetch(url + path);
     assert.equal(response.status, 404, `Expected sample detail 404 for ${path}`);
   }
+  // G1-08: both spaces use exactly the same three independent synthetic editorial IDs.
+  const perspectiveSlugs = [
+    "a-comfortable-distance", "the-pace-of-a-conversation", "different-tastes-together",
+  ];
+  for (const space of ["dad", "daughter"]) {
+    const list = await fetch(url + `/${space}/perspectives`);
+    assert.equal(list.status, 200, `Expected 200 for ${space} fictional perspective list`);
+    const html = await list.text();
+    assert.match(html, /서로의 시선/);
+    assert.match(html, /시연 콘텐츠/);
+    assert.match(html, /가상 질문/);
+    assert.doesNotMatch(html, /dad-post-demo-0[123]|daughter-post-demo-0[123]/);
+    assert.doesNotMatch(html, /<form\\b/);
+    for (const slug of perspectiveSlugs) {
+      const res = await fetch(url + `/${space}/perspectives/${slug}`);
+      assert.equal(res.status, 200, `Expected fictional perspective detail ${space}/${slug}`);
+      const body = await res.text();
+      assert.match(body, /가상의 아빠 관점/);
+      assert.match(body, /가상의 딸 관점/);
+      assert.match(body, /원문 없음/);
+      assert.doesNotMatch(body, /dad-post-demo-0[123]|daughter-post-demo-0[123]/);
+    }
+    for (const invalid of ["not-a-perspective", "dad-post-demo-01", "daughter-post-demo-01"]) {
+      const res = await fetch(url + `/${space}/perspectives/${invalid}`);
+      assert.equal(res.status, 404, `Expected 404 for invalid ${space} editorial slug`);
+    }
+  }
+  const demoPoll = await fetch(url + "/daughter/polls");
+  assert.equal(demoPoll.status, 200);
+  const pollHtml = await demoPoll.text();
+  assert.match(pollHtml, /오늘 기분을 표현한다면/);
+  assert.match(pollHtml, /실제 투표/);
+  assert.doesNotMatch(pollHtml, /<form\\b/);
   for (const path of ["/dad/trends/no-fixture", "/daughter/community/no-fixture"]) {
     const res = await fetch(url + path);
     assert.equal(res.status, 404, `Expected 404 for unknown ${path}`);
   }
-  console.log("PASS: both homes; 9 editorial details; both demo communities + 6 sample details + 2 memory-only composers; 404; photos; nav");
+  console.log("PASS: two homes, 9 editorial details, 2 sample communities, 6 sample posts, 2 memory-only composers, 2 perspective lists, 6 shared editorials, 1 fake poll, strict 404");
 } finally {
   server.kill("SIGTERM");
 }
