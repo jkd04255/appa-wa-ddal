@@ -2,7 +2,6 @@
 
 import { useId, useState } from "react";
 import { OPERATOR_TOURNAMENT } from "@/data/fixtures/operator-activities";
-import "./operator-activities.css";
 
 export function OperatorTournamentDemo() {
   const headingId = useId();
