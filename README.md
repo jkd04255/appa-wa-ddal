@@ -45,7 +45,7 @@ npx playwright install chromium
 npm run test:e2e
 ~~~
 
-smoke와 e2e는 production build 후 실행합니다. CI에서 npm ci, lint, build, typecheck, HTTP smoke(9개 합성 상세·카테고리·404·사진 4개), Chromium 기존 **55개 + 신규 서로의 시선/개인정보 방지 검사 13개 = 총 68개** Playwright 테스트와 axe 접근성 검사를 실행합니다. 자동 모바일 뷰포트(320/360/375/390/430px)는 실기기 Safari/Android 검증을 대체하지 않습니다.
+smoke와 e2e는 production build 후 실행합니다. CI에서 npm ci, lint, build, typecheck, HTTP smoke(9개 합성 상세·카테고리·404·사진 4개), Chromium 기존 **55개 + 신규 서로의 시선/개인정보 방지 검사 14개 = 총 69개** Playwright 테스트와 axe 접근성 검사를 실행합니다. 자동 모바일 뷰포트(320/360/375/390/430px)는 실기기 Safari/Android 검증을 대체하지 않습니다.
 
 결과 및 실패 수정 내역: [G1-02 QA](docs/G1_02_QA.md) · [G1-03 QA](docs/G1_03_QA.md) · [G1-04 QA](docs/G1_04_QA.md) · [G1-05 QA](docs/G1_05_QA.md) · [G1-06 QA](docs/G1_06_QA.md) · [G1-07 QA](docs/G1_07_QA.md) · [G1-08 QA](docs/G1_08_QA.md) · [딸 홈 사진 출처](docs/G1_05_PHOTO_ASSETS.md).
 
