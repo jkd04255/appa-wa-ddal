@@ -16,7 +16,7 @@ export function StandaloneDemoPoll({ space = "daughter" }: { space?: DemoSpace }
         <nav className="perspectives__breadcrumb" aria-label="위치">
           <Link href={`/${space}`}>{homeLabel}</Link>
           <span aria-hidden="true">/</span>
-          <Link href={`/${space}/perspectives`}>{sectionLabel}</Link>
+          <span aria-current="page">{sectionLabel}</span>
         </nav>
         <header className="perspectives__masthead perspectives__masthead--poll">
           <p className="perspectives__eyebrow">{space === "dad" ? "SIDE A" : "SIDE B"} / OPERATOR EDITION</p>
