@@ -94,7 +94,7 @@ docs/                                # actual G0 documents, tracked today
 | /daughter | 딸 홈 | 홈 | G1-05 |
 | /daughter/discover, /daughter/discover/[slug], /daughter/sales/[slug] | 발견/쇼핑 | 발견 | G1-06 |
 | /daughter/community, /daughter/community/new, /daughter/community/[id] | 딸 샘플 커뮤니티 | 커뮤니티 | G1-07 |
-| /daughter/polls, /daughter/father-notes | 시연 투표/편집 콘텐츠 | 홈 또는 연결 페이지 | G1-08 |
+| /daughter/polls, /daughter/father-notes | 운영자 작성 고정 선택지 투표·토너먼트 시연; 이용자 선택은 세션 한정·비저장·비집계 | 홈 또는 연결 페이지 | G1-08 |
 | /daughter/perspectives, /daughter/perspectives/[slug] | 공통 편집 콘텐츠의 딸 뷰 | 서로의 시선 | G1-08 |
 
 하단 탭은 **각 역할에서 정확히 4개**. 상세/보조 페이지는 부모 탭의 active state를 사용하고 뒤로 가기와 해당 목록 복귀 링크를 제공한다. 서버 페이지의 동적 params는 **선택된 Next.js 버전에 맞는 타입**으로 읽고, 최신 App Router 문서 예시에서는 비동기 params를 await한다. 정적 경로 /community/new가 동적 [id]와 충돌하지 않도록 직접 테스트한다. 미구현 경로는 임의의 더미 ‘성공 페이지’ 대신 명확한 준비 중 화면 또는 404로 처리한다.
