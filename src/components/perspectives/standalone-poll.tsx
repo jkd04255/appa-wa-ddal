@@ -7,7 +7,7 @@ type DemoSpace = "dad" | "daughter";
 
 export function StandaloneDemoPoll({ space = "daughter" }: { space?: DemoSpace }) {
   const homeLabel = space === "dad" ? "아빠 홈" : "딸 홈";
-  const sectionLabel = space === "dad" ? "서로의 시선" : "서로의 시선";
+  const sectionLabel = "서로의 시선";
   const isDaughter = space === "daughter";
 
   return (
