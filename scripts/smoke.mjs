@@ -30,7 +30,7 @@ try {
   assert.match(html, /아빠로 들어가기/);  // no-JS fallback
   assert.match(html, /딸로 들어가기/);
   const routes = [
-    "/dad", "/dad/trends", "/dad/briefing", "/dad/questions", "/dad/talk", "/dad/community", "/dad/perspectives",
+    "/dad", "/dad/trends", "/dad/briefing", "/dad/questions", "/dad/talk", "/dad/polls", "/dad/community", "/dad/perspectives",
     "/daughter", "/daughter/discover", "/daughter/sales", "/daughter/polls", "/daughter/community",
     "/daughter/perspectives", "/?choose=1",
   ];
@@ -151,6 +151,14 @@ try {
       assert.equal(res.status, 404, `Expected 404 for invalid ${space} editorial slug`);
     }
   }
+  const dadPoll = await fetch(url + "/dad/polls");
+  assert.equal(dadPoll.status, 200);
+  const dadPollHtml = await dadPoll.text();
+  assert.match(dadPollHtml, /가상의 대화 상황이라면 어떤 시작이 편할까요/);
+  assert.match(dadPollHtml, /쉬는 날의 작은 취향 토너먼트/);
+  assert.match(dadPollHtml, /응답·결과·집계를 저장하거나 제공하지 않습니다/);
+  assert.doesNotMatch(dadPollHtml, /<form\b/);
+
   const demoPoll = await fetch(url + "/daughter/polls");
   assert.equal(demoPoll.status, 200);
   const pollHtml = await demoPoll.text();
@@ -161,7 +169,7 @@ try {
     const res = await fetch(url + path);
     assert.equal(res.status, 404, `Expected 404 for unknown ${path}`);
   }
-  console.log("PASS: two homes, 9 editorial details, 2 sample communities, 6 sample posts, 2 memory-only composers, 2 perspective lists, 6 shared editorials, 1 fake poll, strict 404");
+  console.log("PASS: two homes, 9 editorial details, 2 sample communities, 6 sample posts, 2 memory-only composers, 2 perspective lists, 6 shared editorials, 2 fake poll routes, strict 404");
 } finally {
   server.kill("SIGTERM");
 }
