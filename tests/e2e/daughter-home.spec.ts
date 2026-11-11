@@ -67,7 +67,7 @@ test("daughter CTA routes include readable details, placeholders and role isolat
   for (const route of known) {
     const response = await page.goto(route);
     expect(response?.status(), route).toBe(200);
-    if (route === "/daughter/discover" || route.startsWith("/daughter/discover/") || route === "/daughter/community") {
+    if (route === "/daughter/discover" || route.startsWith("/daughter/discover/") || route === "/daughter/community" || route === "/daughter/polls" || route === "/daughter/perspectives") {
       await expect(page.getByRole("main")).toContainText("시연 콘텐츠");
     } else {
       await expect(page.getByRole("main")).toContainText("준비 중입니다.");
