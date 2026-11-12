@@ -84,7 +84,7 @@ try {
   assert.equal(filtered.status, 200);
   const filteredHTML = await filtered.text();
   assert.match(filteredHTML, /사진에선 로즈/);
-  assert.doesNotMatch(filteredHTML, /바이럴 사진은 완벽했는데/);
+  assert.doesNotMatch(filteredHTML, /필터에선 쿨핑크였는데/);
   const unknownCategory = await fetch(url + "/daughter/discover?category=not-a-category");
   assert.equal(unknownCategory.status, 200);
   assert.match(await unknownCategory.text(), /확인할 수 없는 카테고리/);

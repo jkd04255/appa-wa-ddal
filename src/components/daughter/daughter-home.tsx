@@ -55,7 +55,7 @@ const FEED_SECTIONS: readonly FeedSection[] = [
     id: "school",
     kicker: "친구 · 학교",
     title: "단톡방 한 줄에 분위기가 바뀐 순간",
-    category: "culture",
+    href: "/daughter/discover?category=culture",
     items: [DAUGHTER_DISCOVERY[4], DAUGHTER_DISCOVERY[5]],
   },
   {

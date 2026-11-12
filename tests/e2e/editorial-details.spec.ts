@@ -11,13 +11,13 @@ const dad = [
 ] as const;
 
 const daughter = [
-  ["sample-offbeat-playlist", "최애가 추천한 곡인데… 댓글은 ‘취향 존중’과 ‘이건 별로’로 갈렸다"],
-  ["sample-beauty-notes", "사진에선 로즈, 교실 조명 아래선 형광 핑크? 립 색이 뒤집히는 순간"],
-  ["sample-cafe-dessert", "바이럴 사진은 완벽했는데 한 입 뒤 반응은 반전? 디저트 기대가 갈리는 순간"],
-  ["sample-late-night-vinyl", "최애가 같은데 ‘진짜 팬’ 기준은 왜 다를까? 굿즈 하나로 갈린 댓글"],
-  ["sample-fan-rule", "굿즈 안 샀다고 팬 아니야? ‘진짜 팬’ 기준에 댓글이 갈린 이유"],
-  ["sample-group-chat", "단톡방에 나만 빠진 약속… ‘실수’라는 말, 믿어도 될까?"],
-  ["sample-joke-boundary", "“장난인데 왜 그래?” 웃지 못한 사람은 예민한 걸까?"],
+  ["sample-offbeat-playlist", "최애 곡에 ‘별로’ 한마디 했더니… “팬 맞아?” 역공 시작"],
+  ["sample-beauty-notes", "필터에선 쿨핑크였는데… 내 입술에 바르자 형광? 후기 믿은 날의 반전"],
+  ["sample-cafe-dessert", "40분 줄 서서 샀는데 한 입 뒤 정적… 사진만 믿은 대가?"],
+  ["sample-late-night-vinyl", "최애 생일 광고에 돈 안 보탰다고 아웃? 팬덤 인증이 돼버린 응원"],
+  ["sample-fan-rule", "굿즈 못 샀다고 ‘팬 아님’… 지갑 사정까지 시험대 오른 팬심"],
+  ["sample-group-chat", "약속 사진은 다 올라왔는데 나만 몰랐다… ‘너한테 말한 줄’이 진짜 실수일까?"],
+  ["sample-joke-boundary", "싫다고 했는데 세 번 더… 아직도 ‘장난’이라고 넘겨야 하나?"],
 ] as const;
 
 test("source status guard refuses unreviewed verified/expired labels", () => {
@@ -50,7 +50,7 @@ test("daughter discovery filters are URL-driven and visibly selected", async ({ 
   await page.goto("/daughter/discover");
   await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(7);
   const categories: [string, number, string][] = [
-    ["beauty", 1, "사진에선 로즈"],
+    ["beauty", 1, "필터에선 쿨핑크"],
     ["food", 1, "바이럴 사진"],
     ["culture", 5, "팬덤"],
   ];
@@ -64,7 +64,7 @@ test("daughter discovery filters are URL-driven and visibly selected", async ({ 
     await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(count);
   }
   await page.getByRole("navigation", { name: "발견 필터" }).getByRole("link", { name: "전체" }).click();
-  await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(4);
+  await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(7);
   await expect(page.getByRole("navigation", { name: "딸의 공간 주요 메뉴" })
     .getByRole("link", { name: "발견" })).toHaveAttribute("aria-current", "page");
 });
@@ -78,8 +78,8 @@ test("invalid or repeated categories do not leak data or pretend verified result
     const response = await page.goto(url);
     expect(response?.status()).toBe(200);
     await expect(page.getByRole("status")).toContainText("확인할 수 없는 카테고리");
-    await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(4);
-    await expect(page.locator(".editorial-page__stamp")).toHaveCount(4);
+    await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(7);
+    await expect(page.locator(".editorial-page__stamp")).toHaveCount(7);
   }
 });
 

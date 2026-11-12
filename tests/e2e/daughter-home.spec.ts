@@ -7,8 +7,8 @@ test("daughter home shows a compact fictional feed and keeps topic links inside 
   await expect(page.locator(".daughter-home__feature-grid")).toHaveCount(0);
   await expect(page.locator(".daughter-home__feed-section")).toHaveCount(3);
   await expect(page.locator(".daughter-home__story-card")).toHaveCount(7);
-  await expect(page.getByText("최애가 추천한 곡인데… 댓글은 ‘취향 존중’과 ‘이건 별로’로 갈렸다")).toBeVisible();
-  await expect(page.getByText("단톡방에 나만 빠진 약속… ‘실수’라는 말, 믿어도 될까?")).toBeVisible();
+  await expect(page.getByText("최애 곡에 ‘별로’ 한마디 했더니… “팬 맞아?” 역공 시작")).toBeVisible();
+  await expect(page.getByText("약속 사진은 다 올라왔는데 나만 몰랐다… ‘너한테 말한 줄’이 진짜 실수일까?")).toBeVisible();
   const topicMenu = page.locator(".daughter-home__topic-menu");
   await expect(topicMenu).not.toHaveAttribute("open");
   const topics = page.getByRole("navigation", { name: "관심 주제" });
@@ -46,7 +46,7 @@ test("topic menu links open the closest available discovery category", async ({ 
   await nav.getByRole("link", { name: "메이크업" }).click();
   await expect(page).toHaveURL(/\/daughter\/discover\?category=beauty$/);
   await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(1);
-  await expect(page.locator(".editorial-page__tile--daughter")).toContainText("사진에선 로즈");
+  await expect(page.locator(".editorial-page__tile--daughter")).toContainText("필터에선 쿨핑크");
   await expect(page.getByRole("navigation", { name: "딸의 공간 주요 메뉴" })
     .getByRole("link", { name: "발견" })).toHaveAttribute("aria-current", "page");
 });
