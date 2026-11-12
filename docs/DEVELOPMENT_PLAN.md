@@ -14,7 +14,7 @@
 - 범위: 딸 진입 카드와 딸 홈에 20개 청소년 관심 주제를 배치하고, 검정·코럴·보라색의 독립적인 언더그라운드 편집 스타일을 발견·커뮤니티·질문 화면에도 적용한다. 감성형 안내는 기능 이름으로 바꾸고, 딸 경로의 세대 간 관점 화면·fixture·타입을 제거한다. Dad 화면의 디자인·카피는 유지한다. 사용자가 Git으로 시연 배포와 링크 공유를 요청해 비공개 저장소를 유지한 채 G1 합성 정적 화면만 GitHub Pages에 배포하도록 구성한다.
 - 사용성 수정: 토너먼트 단계·우승 결과·초기화 뒤 키보드 초점 연결, 발견 글마다 구별되는 링크 이름, 발견 화면의 영문 장식과 순번 제거, 공간 전환 링크의 모바일 글자 크기 상향, 동작 줄이기에서 hover 이동 제거.
 - 보호 범위: 사진·합성 콘텐츠 표시·역할별 4탭·비저장/비집계 시연을 유지한다. G2-01/02/03 전체 HOLD와 실제 Auth·DB·UGC·투표 저장/집계·SNS 수집 금지는 그대로 유지한다.
-- 상태: 첫 branch CI #43150686757은 daughter community `board: "음악"`이 `DaughterBoard`에 포함되지 않아 build typecheck에서 실패했다. Fixture를 승인된 게시판 값 `취향 기록`으로 고쳤다. GitHub Pages 경로 `/appa-wa-ddal/`용 `basePath`·이미지 경로·정적 export와 정확한 브랜치 CI 성공 뒤에만 실행되는 Pages 배포 job을 추가했다. 현재 HEAD CI 및 Pages 배포 결과 대기. 저장소 private, G2-01/02/03 HOLD, 실제 Auth·DB·UGC·응답 저장/집계·SNS 수집 없음. 기존 G1-14 owner-only 시연은 유지한다.
+- 상태: 이전 CI #43150686757의 `board: "음악"` 타입 오류는 게시판 값 `취향 기록`으로 수정했다. 최신 HEAD `b56fd5254f30fee91309c11edf1b8de05736a648`의 push/PR CI #43152124243·#43152128496에서 lint·production build·typecheck는 통과했으나, smoke test가 삭제된 `/daughter/perspectives`의 200 응답을 기대해 404로 실패했다. Smoke 경로와 딸 화면 문구 기대값을 새 동작에 맞춰 고쳤다. Pages 경로 `/appa-wa-ddal/`용 `basePath`·이미지 경로·정적 export와 정확한 브랜치 CI 성공 뒤에만 실행되는 Pages 배포 job은 추가했지만 아직 실행되지 않았다. PR #41 초안, 최신 HEAD 전체 QA 및 Pages 결과 대기. 저장소 private, G2-01/02/03 HOLD, 실제 Auth·DB·UGC·응답 저장/집계·SNS 수집 없음. 기존 G1-14 owner-only 시연은 유지한다.
 - 다음 작업: 정확한 PR HEAD에서 lint/typecheck/build·HTTP smoke·일반/정적 Chromium/axe 전체 회귀와 GitHub Pages 배포 결과를 확인한다. GitHub Pages는 공개 URL이며 정적 합성 시연만 게시한다. iPhone Safari/Android·VoiceOver/TalkBack은 별도 미검증으로 둔다.
 - 이전 편집형 개편의 승인 범위·배포·QA 기록: [G1-14 디자인·배포 기록](./G1_14_EDITORIAL_REFRESH.md).
 
@@ -532,4 +532,4 @@
 
 | 2026-11-12 | v0.14.0 | G1-14 UI 전면 개편·정적 시연 배포 완료; PR #39 main `87d723f`, Actions #43143650118 일반/정적 81/81 통과, Site source `1a408d5`; owner-only 배포, G2 HOLD 유지 |
 | 2026-11-12 | v0.15.0-rc.1 | G1-15 딸 화면 독립 디자인·20개 관심 주제·세대 관점 경로 제거·사용성 후속 수정을 기능 브랜치에 저장; QA/PR/배포 전, G2 HOLD 유지 |
-| 2026-11-12 | v0.15.0-rc.2 | Actions #43150686757의 `DaughterBoard` 타입 오류 확인·수정, GitHub Pages 하위 경로 정적 export와 CI 통과 후 배포 job 추가; 현재 HEAD 전체 QA/Pages 결과 대기, 저장소 비공개·G2 HOLD 유지 |
+| 2026-11-12 | v0.15.0-rc.2 | Actions #43150686757의 `DaughterBoard` 타입 오류 확인·수정; #43152124243/#43152128496의 production build/typecheck 통과 및 smoke 기대값 불일치 수정; GitHub Pages 하위 경로 export와 CI 통과 후 배포 job 추가, 최신 HEAD 전체 QA/Pages 결과 대기, 저장소 비공개·G2 HOLD 유지 |
