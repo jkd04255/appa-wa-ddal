@@ -53,7 +53,7 @@ try {
   const daughterHTML = await daughterResponse.text();
   assert.match(daughterHTML, /관심사/);
   assert.match(daughterHTML, /관심 주제/);
-  assert.match(daughterHTML, /20개 주제/);
+  assert.match(daughterHTML, /20(?:<!-- -->)?개 주제/);
   assert.match(daughterHTML, /샘플 게시글/);
   assert.match(daughterHTML, /실제 투표 결과가 아닙니다/);
   assert.match(daughterHTML, /시연 콘텐츠/);
