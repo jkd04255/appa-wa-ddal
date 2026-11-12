@@ -53,10 +53,11 @@ try {
   const daughterHTML = await daughterResponse.text();
   assert.match(daughterHTML, /관심사/);
   assert.match(daughterHTML, /관심 주제/);
-  assert.match(daughterHTML, /20(?:<!-- -->)?개 주제/);
+  assert.match(daughterHTML, /주제 둘러보기/);
+  assert.match(daughterHTML, /daughter-home__topic-count">20/);
   assert.match(daughterHTML, /샘플 게시글/);
-  assert.match(daughterHTML, /실제 투표 결과가 아닙니다/);
-  assert.match(daughterHTML, /시연 콘텐츠/);
+  assert.match(daughterHTML, /결과 저장 안 됨/);
+  assert.match(daughterHTML, /가상 편집 피드/);
   for (const file of ["headphones-magazine.jpg", "beauty-stilllife.jpg", "cafe-dessert.jpg", "vinyl-night.jpg"]) {
     const image = await fetch(url + "/editorial/" + file);
     assert.equal(image.status, 200, `Expected a self-hosted photograph: ${file}`);
