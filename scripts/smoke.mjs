@@ -83,8 +83,8 @@ try {
   const filtered = await fetch(url + "/daughter/discover?category=beauty");
   assert.equal(filtered.status, 200);
   const filteredHTML = await filtered.text();
-  assert.match(filteredHTML, /사진에선 로즈/);
-  assert.doesNotMatch(filteredHTML, /필터에선 쿨핑크였는데/);
+  assert.match(filteredHTML, /필터에선 쿨핑크/);
+  assert.doesNotMatch(filteredHTML, /40분 줄 서서 샀는데/);
   const unknownCategory = await fetch(url + "/daughter/discover?category=not-a-category");
   assert.equal(unknownCategory.status, 200);
   assert.match(await unknownCategory.text(), /확인할 수 없는 카테고리/);
