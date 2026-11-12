@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DAUGHTER_ITEMS, findDaughterDiscovery } from "@/lib/editorial-catalog";
 import { sourceDisplay } from "@/domain/editorial-detail";
+import { publicAsset } from "@/lib/public-asset";
 import "../../../editorial.css";
 
 export function generateStaticParams() {
@@ -35,7 +36,7 @@ export default async function DaughterDiscoveryDetail({
           </header>
           <figure className="editorial-page__article-photo">
             <div className="editorial-page__photo">
-              <Image src={item.cover} alt={item.coverAlt} fill priority
+              <Image src={publicAsset(item.cover)} alt={item.coverAlt} fill priority
                 sizes="(min-width: 800px) 720px, 100vw" />
             </div>
             <figcaption>분위기를 표현한 예시 사진 · 실제 게시물·상품 이미지가 아닙니다.</figcaption>

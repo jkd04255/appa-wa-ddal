@@ -2,12 +2,14 @@
 
 import { useEffect, useSyncExternalStore } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   readLastSpace,
   saveLastSpace,
   type ExploreSpace,
 } from "@/lib/role-preference";
+import { publicAsset } from "@/lib/public-asset";
 
 const subscribeToBrowser = () => () => {};
 const isBrowser = () => true;
@@ -40,7 +42,7 @@ function ChoiceLinks() {
   return (
     <div className="role-choices" aria-label="둘러볼 공간 선택">
       {choices.map(({ space, eyebrow, title, description, image }) => (
-        <a
+        <Link
           className={`role-card role-card--${space}`}
           href={`/${space}`}
           key={space}
@@ -54,9 +56,9 @@ function ChoiceLinks() {
             <span className="role-card__title">{title}</span>
             <span className="role-card__description">{description}</span>
           </span>
-          <span className="role-card__photo" aria-hidden="true"><Image src={image} alt="" fill sizes="(min-width: 900px) 180px, 120px" /></span>
+          <span className="role-card__photo" aria-hidden="true"><Image src={publicAsset(image)} alt="" fill sizes="(min-width: 900px) 180px, 120px" /></span>
           <span className="role-card__arrow" aria-hidden="true">↗</span>
-        </a>
+        </Link>
       ))}
     </div>
   );
@@ -119,8 +121,8 @@ export function RoleLanding({ chooseExplicitly }: { chooseExplicitly: boolean })
             <h1>같은 집, 조금 다른 세상.</h1>
             <p>우리가 몰랐던 서로의 이야기.</p>
             <p>어떤 공간을 둘러보시겠어요?</p>
-            <p><a href="/dad">아빠로 들어가기</a></p>
-            <p><a href="/daughter">딸로 들어가기</a></p>
+            <p><Link href="/dad">아빠로 들어가기</Link></p>
+            <p><Link href="/daughter">딸로 들어가기</Link></p>
             <p>공간 선택은 실제 연령·가족관계나 게시 권한 인증이 아닙니다.</p>
           </section>
         </noscript>

@@ -69,7 +69,7 @@ export const DAUGHTER_SHOPPING = [
 export const DAUGHTER_COMMUNITY = [
   {
     kind: "demo-community-post", id: "daughter-post-demo-01", space: "daughter",
-    board: "음악", title: "최근 저장한 플레이리스트",
+    board: "취향 기록", title: "최근 저장한 플레이리스트",
     demoNotice: "샘플 게시글 · 실제 저장되지 않습니다",
   },
   {

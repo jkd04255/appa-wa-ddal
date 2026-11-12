@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { publicAsset } from "@/lib/public-asset";
 import { getDaughterCategory, listDaughterDiscovery } from "@/lib/editorial-catalog";
 import { sourceDisplay } from "@/domain/editorial-detail";
 
@@ -46,7 +47,7 @@ export function DiscoveryContent({ query }: { query?: string | string[] }) {
             return (
               <article className="editorial-page__tile editorial-page__tile--daughter" key={item.id}>
                 <div className="editorial-page__photo">
-                  <Image src={item.cover} alt={item.coverAlt} fill
+                  <Image src={publicAsset(item.cover)} alt={item.coverAlt} fill
                     sizes="(min-width: 960px) 330px, (min-width: 640px) 46vw, 100vw"
                     priority={index === 0} />
                 </div>

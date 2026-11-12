@@ -2,20 +2,20 @@
 
 > 프로젝트: 아빠와 딸 (가칭)  
 > 기준 요구사항: 「아빠와 딸을 위한 양방향 트렌드·익명 커뮤니티 개발 프롬프트 v2.0」  
-> 문서 버전: v0.15.0-rc.1  
+> 문서 버전: v0.15.0-rc.2  
 > 최초 작성: 2026-11-10 (KST)  
 > 관리 위치: docs/DEVELOPMENT_PLAN.md  
 > 현재 게이트: 초기 제품은 개인 게시 없는 편집형 콘텐츠 + 운영자 작성 투표/토너먼트; 응답 비저장·비집계 — **G2-01·02·03 전체 HOLD**  
-> 배포 상태: G1-14 정적 시연은 소유자 전용으로 배포 완료; G1-15는 기능 브랜치에서 QA 대기. 회원가입·실제 게시글·개인정보 저장 기능 미연결.
+> 배포 상태: G1-14 정적 시연은 소유자 전용 배포 유지; G1-15는 사용자가 요청한 GitHub Pages 공개 정적 시연을 위해 기능 브랜치 CI·배포 구성을 추가했다. 회원가입·실제 게시글·개인정보 저장 기능 미연결.
 
 ## 현재 작업 G1-15 — 딸 화면 독립 디자인 및 사용성 보완
 
 - 승인: 사용자가 [G1-14 UI 검토 PR #40](https://github.com/jkd04255/appa-wa-ddal/pull/40)의 개선 제안을 구현하고, 딸 화면을 아빠 화면과 콘텐츠·시각 면에서 분리하도록 명시적으로 요청했다.
-- 범위: 딸 진입 카드와 딸 홈에 20개 청소년 관심 주제를 배치하고, 검정·코럴·보라색의 독립적인 언더그라운드 편집 스타일을 발견·커뮤니티·질문 화면에도 적용한다. 감성형 안내는 기능 이름으로 바꾸고, 딸 경로의 세대 간 관점 화면·fixture·타입을 제거한다. Dad 화면의 디자인·카피는 유지한다.
+- 범위: 딸 진입 카드와 딸 홈에 20개 청소년 관심 주제를 배치하고, 검정·코럴·보라색의 독립적인 언더그라운드 편집 스타일을 발견·커뮤니티·질문 화면에도 적용한다. 감성형 안내는 기능 이름으로 바꾸고, 딸 경로의 세대 간 관점 화면·fixture·타입을 제거한다. Dad 화면의 디자인·카피는 유지한다. 사용자가 Git으로 시연 배포와 링크 공유를 요청해 비공개 저장소를 유지한 채 G1 합성 정적 화면만 GitHub Pages에 배포하도록 구성한다.
 - 사용성 수정: 토너먼트 단계·우승 결과·초기화 뒤 키보드 초점 연결, 발견 글마다 구별되는 링크 이름, 발견 화면의 영문 장식과 순번 제거, 공간 전환 링크의 모바일 글자 크기 상향, 동작 줄이기에서 hover 이동 제거.
 - 보호 범위: 사진·합성 콘텐츠 표시·역할별 4탭·비저장/비집계 시연을 유지한다. G2-01/02/03 전체 HOLD와 실제 Auth·DB·UGC·투표 저장/집계·SNS 수집 금지는 그대로 유지한다.
-- 상태: 기능 브랜치 `feat/daughter-underground`, 코드 commit `3fe885cf22f6514358e2862852b3ccba167db5e8`에 소스 변경을 저장했다. 테스트·lint·typecheck·build·브라우저 QA는 미실행이며 PR·main 병합·Site 배포 전이다. 기존 G1-14 owner-only 시연 배포는 유지된다.
-- 다음 작업: 정확한 PR HEAD에서 프로젝트의 전체 lint/typecheck/build 및 일반·정적 Chromium/axe 회귀를 수행한 뒤, 통과 결과로 PR과 owner-only 시연 배포를 이어간다. iPhone Safari/Android·VoiceOver/TalkBack은 별도 미검증으로 둔다.
+- 상태: 첫 branch CI #43150686757은 daughter community `board: "음악"`이 `DaughterBoard`에 포함되지 않아 build typecheck에서 실패했다. Fixture를 승인된 게시판 값 `취향 기록`으로 고쳤다. GitHub Pages 경로 `/appa-wa-ddal/`용 `basePath`·이미지 경로·정적 export와 정확한 브랜치 CI 성공 뒤에만 실행되는 Pages 배포 job을 추가했다. 현재 HEAD CI 및 Pages 배포 결과 대기. 저장소 private, G2-01/02/03 HOLD, 실제 Auth·DB·UGC·응답 저장/집계·SNS 수집 없음. 기존 G1-14 owner-only 시연은 유지한다.
+- 다음 작업: 정확한 PR HEAD에서 lint/typecheck/build·HTTP smoke·일반/정적 Chromium/axe 전체 회귀와 GitHub Pages 배포 결과를 확인한다. GitHub Pages는 공개 URL이며 정적 합성 시연만 게시한다. iPhone Safari/Android·VoiceOver/TalkBack은 별도 미검증으로 둔다.
 - 이전 편집형 개편의 승인 범위·배포·QA 기록: [G1-14 디자인·배포 기록](./G1_14_EDITORIAL_REFRESH.md).
 
 ## 1. 목적과 제품 원칙
@@ -80,7 +80,7 @@
 | G1-12 | 아빠 공간 운영자 질문·토너먼트 | `/dad/polls` 고정 질문·공용 토너먼트·아빠 홈 진입 | **완료(자동 QA 기준)** | [G1-12 QA](./G1_12_QA.md), PR #31 Actions #42972194829 Chromium/axe 77/77 통과; G2 전체 HOLD 유지 |
 | G1-13 | 아빠 투표 화면 반응형·접근성 회귀 보강 | `/dad/polls`를 320–1024px·200% 확대·키보드·axe 경로에 추가 | **완료(자동 QA 기준)** | [G1-13 QA](./G1_13_QA.md), PR #32 Actions #42974211914 전체 77/77 통과; G2 전체 HOLD 유지 |
 | G1-14 | 편집형 UI 전면 개편·정적 시연 | [디자인·배포 QA](./G1_14_EDITORIAL_REFRESH.md), 일반·정적 회귀 | **완료(자동 QA·시연 배포)** | PR #39 병합 `87d723f`; Actions #43143650118 일반/정적 81/81 통과; 소유자 전용 [시연](https://appa-wa-ddal-demo.gpt20250313.chatgpt.site), 실기기 미검증 |
-| G1-15 | 딸 화면 독립 언더그라운드 디자인·사용성 후속 수정 | 20개 관심 주제·세대 간 관점 분리·G1-14 UI 검토 적용 | **구현 완료(검증 전)** | 기능 브랜치 `feat/daughter-underground`; 정확한 HEAD 전체 QA 전 미병합·미배포, G2 전체 HOLD 유지 |
+| G1-15 | 딸 화면 독립 언더그라운드 디자인·GitHub Pages 시연 | 20개 관심 주제·세대 간 관점 분리·G1-14 UI 검토·Pages 정적 배포 | **CI/배포 대기** | `feat/daughter-underground`; 정확한 HEAD 전체 QA 성공 후 Pages 배포, G2 전체 HOLD 유지 |
 | G2-01 | 청소년 안전·법률·운영 정책 | [현행법 근거·정책 초안](./G2_01_CHILD_SAFETY_POLICY_DRAFT.md) · [운영 Playbook](./G2_01_MODERATION_PLAYBOOK.md) · [결정/위험/Gate](./G2_01_DECISIONS_AND_RISKS.md) · [외부 자문 요청 패키지](./G2_01_EXTERNAL_COUNSEL_REVIEW_PACKET.md) · [G2-01B 사업성·증거 패키지](./G2_01B_FEASIBILITY_AND_EVIDENCE.md) | **보류(HOLD: 사전 문서 검토만 수행)** | 외부 전문가 의견·운영 주체/예산·연령/역할 증빙·사건 대응·동의/보존 검증 및 명시적 Gate 승인 전 불가 |
 | G2-01B | 대안별 사업성·운영량·사전 증거 패키지 | A/B/C/D 비교, 비용 산식, 공급자·조직 증거, 탁상 훈련, DEC-SAFE 위험 레지스터 연결 | **문서 초안 완료; 외부 검토 대기** | [G2-01B](./G2_01B_FEASIBILITY_AND_EVIDENCE.md), [결정·위험 레지스터](./G2_01_DECISIONS_AND_RISKS.md), G2 HOLD |
 | G2-02 | 계정/Auth/권한/RLS 부정 테스트 | 서버 권한, 역할 검증, RLS·API 직접 접근·기본 거부 테스트 | **보류** | 역할 선택만으로 다른 게시판 원문/쓰기 우회 불가 |
@@ -532,3 +532,4 @@
 
 | 2026-11-12 | v0.14.0 | G1-14 UI 전면 개편·정적 시연 배포 완료; PR #39 main `87d723f`, Actions #43143650118 일반/정적 81/81 통과, Site source `1a408d5`; owner-only 배포, G2 HOLD 유지 |
 | 2026-11-12 | v0.15.0-rc.1 | G1-15 딸 화면 독립 디자인·20개 관심 주제·세대 관점 경로 제거·사용성 후속 수정을 기능 브랜치에 저장; QA/PR/배포 전, G2 HOLD 유지 |
+| 2026-11-12 | v0.15.0-rc.2 | Actions #43150686757의 `DaughterBoard` 타입 오류 확인·수정, GitHub Pages 하위 경로 정적 export와 CI 통과 후 배포 job 추가; 현재 HEAD 전체 QA/Pages 결과 대기, 저장소 비공개·G2 HOLD 유지 |

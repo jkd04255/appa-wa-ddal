@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { publicAsset } from "@/lib/public-asset";
 import {
   DAUGHTER_COMMUNITY,
   DAUGHTER_DISCOVERY,
@@ -37,7 +38,7 @@ function EditorialPhoto({
   return (
     <div className="daughter-home__photo">
       <Image
-        src={src}
+        src={publicAsset(src)}
         alt={alt}
         fill
         priority={priority}
