@@ -82,7 +82,7 @@ test("dad desktop hero remains intact and daughter home is separately themed", a
   expect(artwork?.x ?? 0).toBeLessThan(copy?.x ?? 0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.goto("/daughter");
-  await expect(page.getByRole("heading", { name: "관심사" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "관심사", exact: true })).toBeVisible();
   expect(await page.locator(".dad-home").count()).toBe(0);
   await expect(page.locator(".daughter-home")).toHaveCount(1);
   await expect(page.locator(".daughter-home__feature-grid")).toHaveCount(1);

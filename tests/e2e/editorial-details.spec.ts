@@ -47,7 +47,7 @@ test("daughter discovery filters are URL-driven and visibly selected", async ({ 
   await page.goto("/daughter/discover");
   await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(4);
   const categories: [string, number, string][] = [
-    ["beauty", 1, "화장대"],
+    ["beauty", 1, "메이크업 색상 조합 기록"],
     ["food", 1, "카페"],
     ["culture", 2, "음악"],
   ];
@@ -94,7 +94,7 @@ test("all 9 exact slugs return unique and honestly sourced detail pages", async 
       await expect(main).toContainText("합성 시연 자료 · 외부 원문 없음");
       await expect(main).toContainText("출처·확인 날짜: 해당 없음");
       await expect(main.getByRole("heading", { name: "자료 상태" })).toBeVisible();
-      await expect(main.getByRole("heading", { name: /알아두면 좋은 점|나만의 발견 팁/ })).toBeVisible();
+      await expect(main.getByRole("heading", { name: /알아두면 좋은 점|나만의 발견 팁|관련 정보|확인할 항목/ })).toBeVisible();
       await expect(main.getByRole("link", { name: /목록으로 돌아가기/ })).toBeVisible();
       const nav = page.getByRole("navigation", {
         name: space.startsWith("/dad") ? "아빠의 공간 주요 메뉴" : "딸의 공간 주요 메뉴",

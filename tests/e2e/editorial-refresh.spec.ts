@@ -17,7 +17,7 @@ for (const width of [320, 390, 768, 1280]) {
     }
     await page.screenshot({ path: testInfo.outputPath(`landing-${width}.png`), fullPage: true });
     await choice.click();
-    await expect(page.getByRole("heading", { name: "관심사" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "관심사", exact: true })).toBeVisible();
     await expect.poll(() => page.locator(".daughter-home__feature img").evaluateAll((images) =>
       images.every((image) => (image as HTMLImageElement).naturalWidth > 0)
     )).toBe(true);

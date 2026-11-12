@@ -280,6 +280,8 @@ body .daughter-home__community-board { color:#ff8ba0; }
 body .daughter-home__community-title { color:#f2edf2; }
 body .daughter-home__poll-panel { border:1px solid #5b4b59; border-left:4px solid #9279ff; border-radius:0; background:#17161c; }
 body .daughter-home__poll-options span { color:#f2edf2; background:#25222c; border:1px solid #9279ff; border-radius:1px; }
+body .daughter-home__discovery-card .daughter-home__meta span:last-child { color:#e7dff0; }
+body .daughter-home__shopping-index { color:#e4d9ff; }
 body .daughter-home__footnotes { color:#c5bdc8; border-color:#49434d; }
 body .daughter-home a:focus-visible { outline:3px solid #ff8ba0; outline-offset:3px; }
 body .app-shell--daughter .editorial-page--daughter {
