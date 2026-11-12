@@ -14,7 +14,7 @@ const routes: Record<Space, readonly [string, string][]> = {
     ["홈", "/daughter"],
     ["발견", "/daughter/discover"],
     ["커뮤니티", "/daughter/community"],
-    ["서로의 시선", "/daughter/perspectives"],
+    ["밸런스", "/daughter/polls"],
   ],
 };
 
@@ -34,7 +34,7 @@ for (const space of ["dad", "daughter"] as const) {
       await nav.getByRole("link", { name: label }).click();
       await expect(page).toHaveURL(new RegExp(`${href}$`));
       await expect(nav.getByRole("link", { name: label })).toHaveAttribute("aria-current", "page");
-      if (href === "/dad/trends" || href === "/daughter/discover" || href.endsWith("/community") || href.endsWith("/perspectives")) {
+      if (href === "/dad/trends" || href === "/daughter/discover" || href.endsWith("/community") || href.endsWith("/perspectives") || href.endsWith("/polls")) {
         await expect(page.getByRole("main")).toContainText("시연 콘텐츠");
       } else {
         await expect(page.getByRole("main").getByText("준비 중입니다.")).toBeVisible();
@@ -79,6 +79,7 @@ test("unknown detail routes 404, without fake articles or community content", as
     "/daughter/discover/no-fixture",
     "/dad/trends/not-yet-created",
     "/daughter/perspectives/no-fixture",
+    "/daughter/perspectives",
   ]) {
     const response = await page.goto(path);
     expect(response?.status(), path).toBe(404);
@@ -154,7 +155,7 @@ test("keyboard skip link, focus, axe accessibility and read-only network", async
 
 test("two-hundred-percent font scale remains operable on 320px", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 720 });
-  await page.goto("/daughter/perspectives");
+  await page.goto("/daughter");
   await page.evaluate(() => { document.documentElement.style.fontSize = "200%"; });
   const nav = page.getByRole("navigation", { name: menuLabel("daughter") });
   await expect(nav.getByRole("link")).toHaveCount(4);
@@ -173,3 +174,4 @@ test("two-hundred-percent font scale remains operable on 320px", async ({ page }
   expect(measurements.targets).toBe(true);
   expect(measurements.reserve).toBeGreaterThanOrEqual(measurements.navHeight);
 });
+

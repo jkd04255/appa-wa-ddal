@@ -1,6 +1,6 @@
-import { PerspectiveIndex } from "@/components/perspectives/perspective-index";
-import "../../perspectives.css";
+import { notFound } from "next/navigation";
 
 export default function DaughterPerspectivesPage() {
-  return <PerspectiveIndex space="daughter" />;
+  notFound();
 }
+

@@ -1,10 +1,9 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-test("daughter home renders polished magazine masthead, photo cover and 3 discovery images", async ({ page }) => {
+test("daughter home renders a dark interest feed with twenty topic links and story photos", async ({ page }) => {
   await page.goto("/daughter");
-  await expect(page.getByRole("heading", { level: 1, name: /딸의 공간/ })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "지금 눈여겨볼 이야기" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "관심사" })).toBeVisible();
   await expect(page.locator(".daughter-home__feature-grid")).toHaveCount(1);
   await expect(page.locator(".daughter-home__discovery-card")).toHaveCount(3);
   await expect(page.locator(".daughter-home__photo img")).toHaveCount(4);
@@ -20,33 +19,35 @@ test("daughter home renders polished magazine masthead, photo cover and 3 discov
 
 test("all editorial cards, demo shopping, community, poll and perspective show honest labels", async ({ page }) => {
   await page.goto("/daughter");
-  await expect(page.locator(".daughter-home__demo")).toHaveCount(10);
+  await expect(page.locator(".daughter-home__demo")).toHaveCount(9);
   await expect(page.locator(".daughter-home__shopping-item")).toHaveCount(2);
   await expect(page.locator(".daughter-home__community li")).toHaveCount(2);
   await expect(page.locator(".daughter-home__community .daughter-home__demo")).toHaveCount(2);
   await expect(page.locator(".daughter-home__poll-options span")).toHaveCount(3);
-  await expect(page.locator(".daughter-home__perspectives")).toHaveCount(1);
+  await expect(page.locator(".daughter-home__perspectives")).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "관심 주제" })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "관심 주제" }).getByRole("link")).toHaveCount(20);
+  await expect(page.getByRole("main")).not.toContainText("서로의 시선");
+  await expect(page.getByRole("main")).not.toContainText("아빠 관점");
+  await expect(page.getByRole("navigation", { name: "딸의 공간 주요 메뉴" }).getByRole("link", { name: "밸런스" })).toHaveAttribute("href", "/daughter/polls");
   await expect(page.getByText(/실시간 할인·구매 안내가 아닙니다/)).toBeVisible();
   await expect(page.getByText(/실제 인기·할인·응답 결과나 사용자 게시물이 아닙니다/)).toBeVisible();
   expect(await page.locator('form, input, textarea, button[type="submit"]').count()).toBe(0);
 });
 
-test("category chips link to filtered discovered stories", async ({ page }) => {
+test("interest links open the closest available discovery category", async ({ page }) => {
   await page.goto("/daughter");
-  const nav = page.getByRole("navigation", { name: "관심사 카테고리" });
-  await expect(nav.getByRole("link")).toHaveCount(4);
+  const nav = page.getByRole("navigation", { name: "관심 주제" });
+  await expect(nav.getByRole("link")).toHaveCount(20);
   const hrefs = await nav.getByRole("link").evaluateAll((elements) =>
     elements.map((element) => (element as HTMLAnchorElement).getAttribute("href")));
-  expect(hrefs).toEqual([
-    "/daughter/discover?category=beauty",
-    "/daughter/discover?category=food",
-    "/daughter/discover?category=culture",
-    "/daughter/discover",
-  ]);
-  await nav.getByRole("link", { name: /뷰티/ }).click();
+  expect(hrefs).toContain("/daughter/discover?category=beauty");
+  expect(hrefs).toContain("/daughter/discover?category=food");
+  expect(hrefs).toContain("/daughter/discover?category=culture");
+  await nav.getByRole("link", { name: "메이크업" }).click();
   await expect(page).toHaveURL(/\/daughter\/discover\?category=beauty$/);
   await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(1);
-  await expect(page.locator(".editorial-page__tile--daughter")).toContainText("화장대 위, 취향을 기록하는 방법");
+  await expect(page.locator(".editorial-page__tile--daughter")).toContainText("메이크업 색상 조합 기록");
   await expect(page.getByRole("navigation", { name: "딸의 공간 주요 메뉴" })
     .getByRole("link", { name: "발견" })).toHaveAttribute("aria-current", "page");
 });
@@ -56,7 +57,7 @@ test("daughter CTA routes include readable details, placeholders and role isolat
   await expect(page.getByRole("link", { name: "질문·토너먼트 보기" })).toHaveAttribute("href", "/daughter/polls");
   const known = [
     "/daughter/discover", "/daughter/sales",
-    "/daughter/community", "/daughter/polls", "/daughter/perspectives",
+    "/daughter/community", "/daughter/polls",
     "/daughter/discover/sample-offbeat-playlist",
     "/daughter/discover/sample-beauty-notes",
     "/daughter/discover/sample-cafe-dessert",
@@ -68,7 +69,7 @@ test("daughter CTA routes include readable details, placeholders and role isolat
   for (const route of known) {
     const response = await page.goto(route);
     expect(response?.status(), route).toBe(200);
-    if (route === "/daughter/discover" || route.startsWith("/daughter/discover/") || route === "/daughter/community" || route === "/daughter/polls" || route === "/daughter/perspectives") {
+    if (route === "/daughter/discover" || route.startsWith("/daughter/discover/") || route === "/daughter/community" || route === "/daughter/polls") {
       await expect(page.getByRole("main")).toContainText("시연 콘텐츠");
     } else {
       await expect(page.getByRole("main")).toContainText("준비 중입니다.");
@@ -81,7 +82,7 @@ test("daughter CTA routes include readable details, placeholders and role isolat
   expect(await page.locator(".daughter-home").count()).toBe(0);
 });
 
-test("mobile 320, 360, 375, 390, 430px: 4:5 cover above title without horizontal scrolling", async ({ page }) => {
+test("mobile 320, 360, 375, 390, 430px: landscape cover above title without horizontal scrolling", async ({ page }) => {
   for (const width of [320, 360, 375, 390, 430]) {
     await page.setViewportSize({ width, height: 740 });
     await page.goto("/daughter");
@@ -90,8 +91,8 @@ test("mobile 320, 360, 375, 390, 430px: 4:5 cover above title without horizontal
     const copy = await page.locator(".daughter-home__feature-copy").boundingBox();
     expect(photo?.y ?? 0).toBeLessThan(copy?.y ?? 0);
     const aspect = (photo?.width ?? 0) / (photo?.height ?? 1);
-    expect(aspect).toBeGreaterThan(0.78);
-    expect(aspect).toBeLessThan(0.82);
+    expect(aspect).toBeGreaterThan(1.45);
+    expect(aspect).toBeLessThan(1.8);
     const nav = page.getByRole("navigation", { name: "딸의 공간 주요 메뉴" });
     await expect(nav.getByRole("link")).toHaveCount(4);
     await expect(nav.getByRole("link", { name: "홈" })).toHaveAttribute("aria-current", "page");
@@ -119,7 +120,7 @@ test("200% root font on 320px preserves navigation and readable layout", async (
   await page.goto("/daughter");
   await page.evaluate(() => { document.documentElement.style.fontSize = "200%"; });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await expect(page.getByRole("heading", { level: 1, name: /딸의 공간/ })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "관심사" })).toBeVisible();
   const nav = page.getByRole("navigation", { name: "딸의 공간 주요 메뉴" });
   await expect(nav.getByRole("link")).toHaveCount(4);
   expect(await page.evaluate(() => {
@@ -146,3 +147,4 @@ test("keyboard focus, axe WCAG, local self-hosted images and no POST/external re
   expect(result.violations, JSON.stringify(result.violations, null, 2)).toEqual([]);
   expect(unsafeRequests).toEqual([]);
 });
+

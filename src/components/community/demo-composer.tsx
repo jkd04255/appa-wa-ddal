@@ -22,7 +22,7 @@ export function DemoComposer({ space }: { space: CommunitySpace }) {
           <span>글쓰기 체험</span>
         </nav>
         <header className="community-demo__masthead community-demo__masthead--composer">
-          <p className="community-demo__index">{space === "dad" ? "SIDE A" : "SIDE B"} / PRIVATE DRAFT</p>
+          <p className="community-demo__index">{space === "dad" ? "SIDE A / PRIVATE DRAFT" : "글 작성 시연"}</p>
           <h1>글쓰기 체험</h1>
           <p>입력한 내용을 이 화면에서만 미리 볼 수 있습니다.</p>
           <p className="community-demo__notice" role="note">
@@ -33,18 +33,18 @@ export function DemoComposer({ space }: { space: CommunitySpace }) {
           </p>
         </header>
         <section className="community-demo__draft" aria-labelledby="draft-fields-heading">
-          <h2 id="draft-fields-heading">나만의 샘플 문장</h2>
+          <h2 id="draft-fields-heading">샘플 게시글 작성</h2>
           <label className="community-demo__field community-demo__field--wide">
             <span>제목 (최대 80자)</span>
             <input type="text" name="demo-title" autoComplete="off" maxLength={80}
               value={title} onChange={(e) => { setTitle(e.target.value); setPreview(null); }}
-              placeholder="가상의 취향 이야기를 입력해보세요"/>
+              placeholder="가상의 게시글 제목을 입력하세요"/>
           </label>
           <label className="community-demo__field community-demo__field--wide">
             <span>내용 (최대 500자)</span>
             <textarea name="demo-body" autoComplete="off" maxLength={500} rows={6}
               value={body} onChange={(e) => { setBody(e.target.value); setPreview(null); }}
-              placeholder="실제 개인정보나 민감한 사연 없이 UI만 체험해보세요"/>
+              placeholder="시연용 글 내용을 입력하세요"/>
           </label>
           <div className="community-demo__draft-actions">
             <button type="button" className="community-demo__preview-button" disabled={!canPreview}
@@ -72,3 +72,4 @@ export function DemoComposer({ space }: { space: CommunitySpace }) {
     </main>
   );
 }
+

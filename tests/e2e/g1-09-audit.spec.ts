@@ -5,7 +5,7 @@ const routes = [
   "/dad", "/dad/trends", "/dad/community", "/dad/community/new",
   "/dad/perspectives/a-comfortable-distance",
   "/daughter", "/daughter/discover", "/daughter/community/new",
-  "/daughter/perspectives", "/daughter/polls",
+  "/daughter/polls",
 ] as const;
 
 test("skip link transfers actual keyboard focus to main across editorial, community and demo routes", async ({ page }) => {
@@ -138,3 +138,4 @@ test("contrast fix keeps visible keyboard focus, axe AA and no writes on both co
   }
   expect(requests).toEqual([]);
 });
+

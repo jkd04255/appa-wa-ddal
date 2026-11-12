@@ -28,7 +28,7 @@ export default async function DaughterDiscoveryDetail({
         </nav>
         <article className="editorial-page__article">
           <header className="editorial-page__article-head">
-            <p className="editorial-page__index">SIDE B / {item.categoryLabel}</p>
+            <p className="editorial-page__index">{item.categoryLabel}</p>
             <span className="editorial-page__stamp">{status.label}</span>
             <h1>{item.title}</h1>
             <p>{item.summary}</p>
@@ -42,19 +42,19 @@ export default async function DaughterDiscoveryDetail({
           </figure>
           <div className="editorial-page__article-body">
             <section aria-labelledby="daughter-detail-background">
-              <h2 id="daughter-detail-background">이야기 배경</h2>
+              <h2 id="daughter-detail-background">글 안내</h2>
               <p>{detail.background}</p>
             </section>
             <section aria-labelledby="daughter-detail-context">
-              <h2 id="daughter-detail-context">조금 더 보기</h2>
+              <h2 id="daughter-detail-context">자료 범위</h2>
               <p>{detail.context}</p>
             </section>
             <section aria-labelledby="daughter-detail-tip">
-              <h2 id="daughter-detail-tip">나만의 발견 팁</h2>
+              <h2 id="daughter-detail-tip">관련 정보</h2>
               <p>{detail.tip}</p>
             </section>
             <section className="editorial-page__conversation" aria-labelledby="daughter-detail-prompt">
-              <h2 id="daughter-detail-prompt">스스로에게 던지는 질문</h2>
+              <h2 id="daughter-detail-prompt">확인할 항목</h2>
               <p>{detail.conversation}</p>
             </section>
             <aside className="editorial-page__source" aria-label="자료 상태와 출처">
@@ -71,3 +71,4 @@ export default async function DaughterDiscoveryDetail({
     </main>
   );
 }
+

@@ -34,6 +34,14 @@ function TabIcon({ name }: { name: NavigationKey }) {
         <path d="m9 15-3-3-3 3" />
       </>
     ),
+    activity: (
+      <>
+        <path d="M7 4v16M17 4v16" />
+        <path d="M3 8h8M13 16h8" />
+        <circle cx="7" cy="8" r="2" fill="currentColor" />
+        <circle cx="17" cy="16" r="2" fill="currentColor" />
+      </>
+    ),
   };
 
   return (
@@ -70,3 +78,4 @@ export function SiteNavigation({ space }: { space: ExploreSpace }) {
     </nav>
   );
 }
+

@@ -11,10 +11,10 @@ const dad = [
 ] as const;
 
 const daughter = [
-  ["sample-offbeat-playlist", "남들이 잘 모르는 노래를 좋아하는 마음"],
-  ["sample-beauty-notes", "화장대 위, 취향을 기록하는 방법"],
-  ["sample-cafe-dessert", "조용한 카페에서 고르는 한 접시"],
-  ["sample-late-night-vinyl", "조금 낯선 음악이 더 오래 남을 때"],
+  ["sample-offbeat-playlist", "인디 음악 플레이리스트"],
+  ["sample-beauty-notes", "메이크업 색상 조합 기록"],
+  ["sample-cafe-dessert", "카페 디저트 사진"],
+  ["sample-late-night-vinyl", "바이닐 음악 편집글"],
 ] as const;
 
 test("source status guard refuses unreviewed verified/expired labels", () => {
@@ -201,3 +201,4 @@ test("two lists and two details meet axe AA, keyboard and read-only no-external 
   }
   expect(violations).toEqual([]);
 });
+

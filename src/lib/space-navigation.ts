@@ -1,6 +1,6 @@
 import type { ExploreSpace } from "@/lib/role-preference";
 
-export type NavigationKey = "home" | "explore" | "community" | "perspectives";
+export type NavigationKey = "home" | "explore" | "community" | "perspectives" | "activity";
 
 export type NavigationItem = Readonly<{
   key: NavigationKey;
@@ -19,7 +19,7 @@ export const NAV_ITEMS: Readonly<Record<ExploreSpace, readonly NavigationItem[]>
     { key: "home", label: "홈", href: "/daughter" },
     { key: "explore", label: "발견", href: "/daughter/discover" },
     { key: "community", label: "커뮤니티", href: "/daughter/community" },
-    { key: "perspectives", label: "서로의 시선", href: "/daughter/perspectives" },
+    { key: "activity", label: "밸런스", href: "/daughter/polls" },
   ],
 };
 
@@ -37,7 +37,9 @@ export function activeNavigationKey(
   if (space === "dad" && rest === "trends") return "explore";
   if (space === "daughter" && (rest === "discover" || rest === "sales")) return "explore";
   if (rest === "community") return "community";
+  if (space === "daughter" && rest === "polls") return "activity";
   if (rest === "perspectives") return "perspectives";
   // Later home-associated supporting routes (e.g. briefing/questions/polls).
   return "home";
 }
+

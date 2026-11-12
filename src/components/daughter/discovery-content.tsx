@@ -20,9 +20,7 @@ export function DiscoveryContent({ query }: { query?: string | string[] }) {
     <main id="main-content" className="editorial-page editorial-page--daughter">
       <div className="editorial-page__inner">
         <header className="editorial-page__masthead">
-          <p className="editorial-page__index">SIDE B / THE DISCOVERY INDEX</p>
-          <h1>나의 취향을 발견하는 페이지.</h1>
-          <p>작은 사진과 문장들로 구성된 가상의 취향 매거진.</p>
+          <h1>발견</h1>
           <p className="editorial-page__disclaimer">모든 항목은 <strong>시연 콘텐츠</strong>이며 실제 유행·쇼핑 소식이 아닙니다.</p>
         </header>
         <nav className="editorial-page__categories" aria-label="발견 필터">
@@ -53,12 +51,14 @@ export function DiscoveryContent({ query }: { query?: string | string[] }) {
                     priority={index === 0} />
                 </div>
                 <div className="editorial-page__tile-copy">
-                  <p className="editorial-page__eyebrow">{String(index + 1).padStart(2, "0")} / {item.categoryLabel}</p>
+                  <p className="editorial-page__eyebrow">{item.categoryLabel}</p>
                   <span className="editorial-page__stamp">{status.label}</span>
                   <h2>{item.title}</h2>
                   <p>{item.summary}</p>
-                  <Link href={`/daughter/discover/${item.slug}`} className="editorial-page__action">
-                    이야기 읽기 <span aria-hidden="true">↗</span>
+                  <Link href={`/daughter/discover/${item.slug}`} className="editorial-page__action"
+                    aria-label={`${item.title} · 이야기 읽기`}>
+                    <span className="editorial-page__action-label">이야기 읽기</span>
+                    <span aria-hidden="true">↗</span>
                   </Link>
                 </div>
               </article>
