@@ -63,12 +63,14 @@ try {
     assert.equal(image.status, 200, `Expected a self-hosted photograph: ${file}`);
     assert.match(image.headers.get("content-type") ?? "", /image\/jpeg/);
   }
-  // G1-06: all nine exact fixture slugs resolve to safe read-only detail pages.
+  // G1-06: all twelve exact fixture slugs resolve to safe read-only detail pages.
   const detailRoutes = [
     "/dad/trends/example-favorite-word", "/dad/trends/example-short-video",
     "/dad/trends/example-playlist", "/dad/trends/example-snack", "/dad/trends/example-personal-style",
     "/daughter/discover/sample-offbeat-playlist", "/daughter/discover/sample-beauty-notes",
     "/daughter/discover/sample-cafe-dessert", "/daughter/discover/sample-late-night-vinyl",
+    "/daughter/discover/sample-fan-rule", "/daughter/discover/sample-group-chat",
+    "/daughter/discover/sample-joke-boundary",
   ];
   for (const path of detailRoutes) {
     const detail = await fetch(url + path);
@@ -81,8 +83,8 @@ try {
   const filtered = await fetch(url + "/daughter/discover?category=beauty");
   assert.equal(filtered.status, 200);
   const filteredHTML = await filtered.text();
-  assert.match(filteredHTML, /메이크업 색상 조합 기록/);
-  assert.doesNotMatch(filteredHTML, /카페 디저트 사진/);
+  assert.match(filteredHTML, /사진에선 로즈/);
+  assert.doesNotMatch(filteredHTML, /바이럴 사진은 완벽했는데/);
   const unknownCategory = await fetch(url + "/daughter/discover?category=not-a-category");
   assert.equal(unknownCategory.status, 200);
   assert.match(await unknownCategory.text(), /확인할 수 없는 카테고리/);
