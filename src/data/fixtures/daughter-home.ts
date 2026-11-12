@@ -96,12 +96,12 @@ export const DAUGHTER_SHOPPING = [
 export const DAUGHTER_COMMUNITY = [
   {
     kind: "demo-community-post", id: "daughter-post-demo-01", space: "daughter",
-    board: "팬덤", title: "친구가 내 최애를 싫어한대. 취향 차이로 끝내도 돼?",
+    board: "취향 기록", title: "친구가 내 최애를 싫어한대. 취향 차이로 끝내도 돼?",
     demoNotice: "샘플 게시글 · 실제 저장되지 않습니다",
   },
   {
     kind: "demo-community-post", id: "daughter-post-demo-02", space: "daughter",
-    board: "학교·친구", title: "나만 빠진 약속인 걸 뒤늦게 봤다. 바로 물어볼까?",
+    board: "일상", title: "나만 빠진 약속인 걸 뒤늦게 봤다. 바로 물어볼까?",
     demoNotice: "샘플 게시글 · 실제 저장되지 않습니다",
   },
 ] as const satisfies readonly DaughterCommunity[];
