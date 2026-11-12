@@ -23,11 +23,14 @@
 
 ## 인수기준과 QA
 
-- 일반 lint/build/typecheck/HTTP smoke + 기존 77개 Chromium/axe 회귀.
+- 일반 lint/build/typecheck/HTTP smoke + 기존 77개와 신규 4개 Chromium/axe 회귀.
 - 신규 4개 브라우저 여정: 320/390/768/1280px 랜딩 사진 로딩, 글자·사진 겹침 없음, 딸 홈 진입·사진 로딩, 질문으로 이동·토너먼트 다음 단계·수평 넘침 없음, 스크린샷 보관.
 - 정적 내보내기에도 같은 전체 81개 회귀를 실행한다. 기존 검사에 포함된 320/360/375/390/430/768/1024px·200% 확대·키보드·axe를 유지한다.
-- 로컬 일반 lint/build/typecheck 통과. 로컬 preview에서 랜딩/아빠/딸 데스크톱 렌더링 확인. 브라우저 전체/정적 테스트는 GitHub CI의 정확한 HEAD 결과로 판정한다.
+- 로컬 일반 lint/build/typecheck 통과. 로컬 preview에서 랜딩/아빠/딸 렌더링 확인. PR #39 최종 HEAD `a8ff356f43cc97335938fab98faca5befcc62ccd`에서 Actions #43143650118 일반 Chromium/axe 81/81 및 정적 Chromium/axe 81/81 통과. 동일 소스가 main `87d723f8c7c54e74ec31522b0c313420942ee503`에 병합됨.
+- 정적 산출물을 Site source commit `1a408d5755dfb036444744ee0b150ab069b1815b`에서 패키징해 배포 상태 `succeeded` 확인. [소유자 전용 시연](https://appa-wa-ddal-demo.gpt20250313.chatgpt.site). 공개 링크로 변경하지 않음.
 - 실제 iPhone Safari/Android·VoiceOver/TalkBack 및 실제 사용자 조사는 미실시. 자동 검사로 대체했다고 표시하지 않는다.
 - G2-01/02/03 HOLD. 실투표 저장·집계, 실제 게시, 인증·DB·DM·수집·유료 API 없음.
 
-배포 결과와 최종 SHA/CI는 이 작업 PR의 검증 링크 및 후속 기록에서 확인한다. 실패는 완료로 기록하지 않는다.
+## 배포 결과
+
+2026-11-12 배포 성공. 시연 URL은 `https://appa-wa-ddal-demo.gpt20250313.chatgpt.site`이며 접근은 Site 소유자 계정으로 제한된다. 검증용 브라우저 세션에서는 로그인 요구 화면이 표시되어 실제 콘텐츠 화면의 외부 세션 육안 확인은 완료하지 못했다. 배포 API의 `succeeded` 상태와 CI의 정적 산출물·회귀 통과를 확인했다. 실제 iPhone Safari/Android, VoiceOver/TalkBack과 실사용자 QA는 여전히 미실시. G2-01/02/03 전체 HOLD 유지.
