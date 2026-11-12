@@ -38,7 +38,7 @@ export function activeNavigationKey(
   if (space === "daughter" && (rest === "discover" || rest === "sales")) return "explore";
   if (rest === "community") return "community";
   if (space === "daughter" && rest === "polls") return "activity";
-  if (rest === "perspectives") return "perspectives";
+  if (space === "dad" && rest === "perspectives") return "perspectives";
   // Later home-associated supporting routes (e.g. briefing/questions/polls).
   return "home";
 }

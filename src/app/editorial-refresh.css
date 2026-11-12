@@ -212,6 +212,14 @@ body .app-shell--daughter .app-nav__link { color:#c3bbc8; }
 body .app-shell--daughter .app-nav__link--active { color:#ff8ba0; }
 body .app-shell--daughter .app-nav__link--active::after { background:#ff5270; }
 body .app-shell--daughter :focus-visible { outline-color:#ff8ba0; }
+body .role-card--daughter {
+  border-color:#684354; background:#17151b; color:#f2edf2;
+  box-shadow:5px 5px 0 #60283b;
+}
+body .role-card--daughter .role-card__eyebrow { color:#ff9bad; }
+body .role-card--daughter .role-card__arrow { color:#190d12; background:#ff7189; }
+body .role-card--daughter:hover { border-color:#ff7189; }
+body .role-card--daughter:focus-visible { outline:3px solid #ff9bad; outline-offset:4px; }
 body .daughter-home {
   color:#f2edf2; background-color:#101014;
   background-image:repeating-linear-gradient(0deg,transparent 0 3px,#ffffff04 3px 4px);

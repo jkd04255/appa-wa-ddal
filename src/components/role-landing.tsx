@@ -31,7 +31,7 @@ const choices: ReadonlyArray<{
     space: "daughter",
     eyebrow: "딸의 공간",
     title: "딸로 들어가기",
-    description: "내 취향과 이야기가 모이는 곳",
+    description: "관심 주제와 시연 콘텐츠 보기",
     image: "/editorial/headphones-magazine.jpg",
   },
 ];
