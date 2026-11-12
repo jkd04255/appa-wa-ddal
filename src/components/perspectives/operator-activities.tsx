@@ -19,7 +19,7 @@ export function OperatorTournamentDemo() {
   return (
     <section className="operator-activity" aria-labelledby={headingId}>
       <div className="operator-activity__heading">
-        <p className="perspectives__eyebrow">OPERATOR EDITION / FIXED BRACKET</p>
+        <p className="perspectives__eyebrow">네 가지 취향, 나만의 선택</p>
         <h2 id={headingId}>{OPERATOR_TOURNAMENT.title}</h2>
         <p>운영자가 정한 네 가지 보기로 나만의 우승 항목을 골라봅니다.</p>
         <span className="perspectives__stamp">운영자 작성 시연 · 결과 비저장</span>
@@ -61,3 +61,4 @@ export function OperatorTournamentDemo() {
     </section>
   );
 }
+

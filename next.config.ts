@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // G1-01: no external APIs, image sources, redirects, or deployments.
+  devIndicators: false,
+  ...(process.env.STATIC_DEMO === "1" ? {
+    output: "export",
+    images: { unoptimized: true },
+  } : {}),
 };
 
 export default nextConfig;
