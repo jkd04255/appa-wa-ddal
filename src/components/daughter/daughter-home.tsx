@@ -39,7 +39,7 @@ type FeedSection = {
   id: string;
   kicker: string;
   title: string;
-  category: DaughterDiscovery["category"];
+  href: string;
   items: readonly DaughterDiscovery[];
 };
 
@@ -48,7 +48,7 @@ const FEED_SECTIONS: readonly FeedSection[] = [
     id: "fandom",
     kicker: "팬덤 · 미디어",
     title: "같은 취향인데, 왜 댓글은 갈렸을까",
-    category: "culture",
+    href: "/daughter/discover?category=culture",
     items: [DAUGHTER_FEATURE, DAUGHTER_DISCOVERY[2], DAUGHTER_DISCOVERY[3]],
   },
   {
@@ -62,7 +62,7 @@ const FEED_SECTIONS: readonly FeedSection[] = [
     id: "taste",
     kicker: "뷰티 · 먹거리",
     title: "사진으로 본 기대와 실제의 온도차",
-    category: "beauty",
+    href: "/daughter/discover",
     items: [DAUGHTER_DISCOVERY[0], DAUGHTER_DISCOVERY[1]],
   },
 ];
@@ -154,7 +154,7 @@ export function DaughterHome() {
               <SectionHeading
                 id={"daughter-section-" + section.id}
                 title={section.title}
-                href={"/daughter/discover?category=" + section.category}
+                href={section.href}
                 aside="관련 글"
               />
               <div className="daughter-home__story-grid">
@@ -205,7 +205,7 @@ export function DaughterHome() {
             <div className="daughter-home__section-kicker">
               <span>06</span><span>댓글 갈리는 질문</span>
             </div>
-            <SectionHeading id="daughter-poll-heading" title="너라면 먼저 뭐라고 할래?" href="/daughter/polls" aside="질문 더 보기" />
+            <SectionHeading id="daughter-poll-heading" title="너라면 먼저 뭐라고 할래?" href="/daughter/polls" aside="질문·토너먼트 보기" />
             <div className="daughter-home__poll-panel">
               <DemoLabel>가상 질문 · 결과 저장 안 됨</DemoLabel>
               <h3>{DAUGHTER_POLL.question}</h3>

@@ -11,10 +11,13 @@ const dad = [
 ] as const;
 
 const daughter = [
-  ["sample-offbeat-playlist", "인디 음악 플레이리스트"],
-  ["sample-beauty-notes", "메이크업 색상 조합 기록"],
-  ["sample-cafe-dessert", "카페 디저트 사진"],
-  ["sample-late-night-vinyl", "바이닐 음악 편집글"],
+  ["sample-offbeat-playlist", "최애가 추천한 곡인데… 댓글은 ‘취향 존중’과 ‘이건 별로’로 갈렸다"],
+  ["sample-beauty-notes", "사진에선 로즈, 교실 조명 아래선 형광 핑크? 립 색이 뒤집히는 순간"],
+  ["sample-cafe-dessert", "바이럴 사진은 완벽했는데 한 입 뒤 반응은 반전? 디저트 기대가 갈리는 순간"],
+  ["sample-late-night-vinyl", "최애가 같은데 ‘진짜 팬’ 기준은 왜 다를까? 굿즈 하나로 갈린 댓글"],
+  ["sample-fan-rule", "굿즈 안 샀다고 팬 아니야? ‘진짜 팬’ 기준에 댓글이 갈린 이유"],
+  ["sample-group-chat", "단톡방에 나만 빠진 약속… ‘실수’라는 말, 믿어도 될까?"],
+  ["sample-joke-boundary", "“장난인데 왜 그래?” 웃지 못한 사람은 예민한 걸까?"],
 ] as const;
 
 test("source status guard refuses unreviewed verified/expired labels", () => {
@@ -45,11 +48,11 @@ test("dad trend index uses exactly five synthetic cards and readable headings", 
 
 test("daughter discovery filters are URL-driven and visibly selected", async ({ page }) => {
   await page.goto("/daughter/discover");
-  await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(4);
+  await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(7);
   const categories: [string, number, string][] = [
-    ["beauty", 1, "메이크업 색상 조합 기록"],
-    ["food", 1, "카페"],
-    ["culture", 2, "음악"],
+    ["beauty", 1, "사진에선 로즈"],
+    ["food", 1, "바이럴 사진"],
+    ["culture", 5, "팬덤"],
   ];
   for (const [category, count, text] of categories) {
     await page.getByRole("navigation", { name: "발견 필터" })
@@ -80,7 +83,7 @@ test("invalid or repeated categories do not leak data or pretend verified result
   }
 });
 
-test("all 9 exact slugs return unique and honestly sourced detail pages", async ({ page }) => {
+test("all 12 exact slugs return unique and honestly sourced detail pages", async ({ page }) => {
   for (const [space, entries] of [
     ["/dad/trends", dad],
     ["/daughter/discover", daughter],
@@ -134,11 +137,11 @@ test("existing home links open corresponding detail and allow returning to listi
   await expect(page.getByRole("heading", { level: 1 })).toContainText("플레이리스트");
 
   await page.goto("/daughter");
-  await page.locator(".daughter-home__feature-copy .daughter-home__arrow-link").click();
+  await page.locator(".daughter-home__story-link").first().click();
   await expect(page).toHaveURL(/\/daughter\/discover\/sample-offbeat-playlist$/);
   await page.getByRole("link", { name: /목록으로 돌아가기/ }).click();
   await expect(page).toHaveURL(/\/daughter\/discover\?category=culture$/);
-  await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(2);
+  await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(5);
   await page.goBack();
   await expect(page).toHaveURL(/\/daughter\/discover\/sample-offbeat-playlist$/);
 });

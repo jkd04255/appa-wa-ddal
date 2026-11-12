@@ -85,7 +85,8 @@ test("dad desktop hero remains intact and daughter home is separately themed", a
   await expect(page.getByRole("heading", { name: "관심사", exact: true })).toBeVisible();
   expect(await page.locator(".dad-home").count()).toBe(0);
   await expect(page.locator(".daughter-home")).toHaveCount(1);
-  await expect(page.locator(".daughter-home__feature-grid")).toHaveCount(1);
+  await expect(page.locator(".daughter-home__feed-section")).toHaveCount(3);
+  await expect(page.locator(".daughter-home__story-card")).toHaveCount(7);
 });
 
 test("dad home links are keyboard operable, axe clean and read-only", async ({ page }) => {
