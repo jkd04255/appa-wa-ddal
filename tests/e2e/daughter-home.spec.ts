@@ -20,11 +20,11 @@ test("daughter home shows a compact fictional feed and keeps topic links inside 
 
 test("headline sections, shop, sample posts and question clearly mark synthetic content", async ({ page }) => {
   await page.goto("/daughter");
-  await expect(page.locator(".daughter-home__demo")).toHaveCount(15);
+  await expect(page.locator(".daughter-home__demo")).toHaveCount(12);
   await expect(page.locator(".daughter-home__shopping-item")).toHaveCount(2);
   await expect(page.locator(".daughter-home__community li")).toHaveCount(2);
   await expect(page.locator(".daughter-home__poll-options span")).toHaveCount(3);
-  await expect(page.getByRole("heading", { name: "팬덤 · 미디어", exact: true })).toHaveCount(0);
+  await expect(page.locator(".daughter-home__feed-section--fandom .daughter-home__section-kicker")).toContainText("팬덤 · 미디어");
   await expect(page.getByRole("main")).toContainText("실제 인물, 사건, 유행, 할인, 사용자 반응과 무관");
   await expect(page.getByRole("main")).not.toContainText("서로의 시선");
   await expect(page.getByRole("main")).not.toContainText("아빠 관점");
@@ -44,7 +44,7 @@ test("topic menu links open the closest available discovery category", async ({ 
   expect(hrefs).toContain("/daughter/discover?category=food");
   expect(hrefs).toContain("/daughter/discover?category=culture");
   await nav.getByRole("link", { name: "메이크업" }).click();
-  await expect(page).toHaveURL(/\\/daughter\\/discover\\?category=beauty$/);
+  await expect(page).toHaveURL(/\/daughter\/discover\\?category=beauty$/);
   await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(1);
   await expect(page.locator(".editorial-page__tile--daughter")).toContainText("사진에선 로즈");
   await expect(page.getByRole("navigation", { name: "딸의 공간 주요 메뉴" })
