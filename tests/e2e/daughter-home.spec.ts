@@ -15,7 +15,7 @@ test("daughter home renders polished magazine masthead, photo cover and 3 discov
     (imgs) => imgs.every((img) => !!(img as HTMLImageElement).alt)
   )).toBe(true);
   await expect(page.locator(".daughter-home__photo")).toHaveCount(4);
-  await expect(page.getByText("OFF THE RECORD")).toHaveCount(1);
+  await expect(page.getByText("광고가 아닌 시연 콘텐츠")).toHaveCount(1);
 });
 
 test("all editorial cards, demo shopping, community, poll and perspective show honest labels", async ({ page }) => {
