@@ -44,7 +44,7 @@ test("topic menu links open the closest available discovery category", async ({ 
   expect(hrefs).toContain("/daughter/discover?category=food");
   expect(hrefs).toContain("/daughter/discover?category=culture");
   await nav.getByRole("link", { name: "메이크업" }).click();
-  await expect(page).toHaveURL(/\/daughter\/discover\\?category=beauty$/);
+  await expect(page).toHaveURL(/\/daughter\/discover\?category=beauty$/);
   await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(1);
   await expect(page.locator(".editorial-page__tile--daughter")).toContainText("사진에선 로즈");
   await expect(page.getByRole("navigation", { name: "딸의 공간 주요 메뉴" })
