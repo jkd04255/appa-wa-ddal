@@ -51,7 +51,7 @@ test("daughter discovery filters are URL-driven and visibly selected", async ({ 
   await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(7);
   const categories: [string, number, string][] = [
     ["beauty", 1, "필터에선 쿨핑크"],
-    ["food", 1, "바이럴 사진"],
+    ["food", 1, "40분 줄 서서"],
     ["culture", 5, "팬덤"],
   ];
   for (const [category, count, text] of categories) {
