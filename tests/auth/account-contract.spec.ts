@@ -23,7 +23,7 @@ async function mock(page: Page, options: { duplicate?: boolean; failLogin?: bool
     } else if (path === '/auth/v1/user') result=user;
     else if (path === '/auth/v1/signup') result={ ...user, identities: [] };
     else if (path === '/auth/v1/logout') status=204;
-    else if (path === '/rest/v1/balance_poll_results') result={id:'travel-plan',question:'친구랑 여행 갈 때, 나는?',left_label:'분 단위 계획파',right_label:'일단 출발 즉흥파',left_votes:options.zero ? 0 : 6+(voted?1:0),right_votes:options.zero ? 0 : 4,total_votes:options.zero ? 0 : 10+(voted?1:0)};
+    else if (path === '/rest/v1/balance_poll_results') result={id:'travel-plan',question:'친구랑 여행 갈 때, 나는?',left_label:'분 단위 계획파',right_label:'일단 출발 즉흥파',left_votes:options.zero ? 0 : 6+(voted && !options.duplicate?1:0),right_votes:options.zero ? 0 : 4,total_votes:options.zero ? 0 : 10+(voted && !options.duplicate?1:0)};
     else if (path === '/rest/v1/balance_votes' && req.method() === 'POST') {
       voted = true;
       if(options.duplicate) {status=409; result={code:'23505',message:'unique violation'};} else {status=201; result=null;}
@@ -64,7 +64,7 @@ test('signup confirmation and password mismatch do not claim immediate login', a
   await page.getByLabel('비밀번호 확인',{exact:true}).fill('Different-password-456');
   await page.getByRole('checkbox').check();
   await page.getByRole('button',{name:'이메일로 회원가입'}).click();
-  await expect(page.getByRole('alert')).toContainText('일치하지 않습니다');
+  await expect(page.getByRole('main').getByRole('alert')).toContainText('일치하지 않습니다');
   expect(writes).toHaveLength(0);
   await page.getByLabel('비밀번호 확인',{exact:true}).fill('Fixture-password-123');
   await page.getByRole('button',{name:'이메일로 회원가입'}).click();
@@ -77,7 +77,7 @@ test('login errors do not expose whether an account exists', async ({page}) => {
   await page.getByLabel('이메일',{exact:true}).fill(email);
   await page.getByLabel('비밀번호',{exact:true}).fill('wrong');
   await page.getByRole('button',{name:'로그인',exact:true}).last().click();
-  await expect(page.getByRole('alert')).toContainText('이메일·비밀번호와 이메일 인증 여부');
+  await expect(page.getByRole('main').getByRole('alert')).toContainText('이메일·비밀번호와 이메일 인증 여부');
 });
 test('reset request gives the same result without confirming account existence', async ({page}) => {
   const writes=await mock(page); await page.goto('/account');
@@ -92,6 +92,7 @@ test('duplicate vote refreshes the authoritative total without optimistic inflat
   await expect(page.locator('.balance-game__footer')).toContainText('10표 참여');
   await page.getByRole('button',{name:/분 단위 계획파/}).click();
   await expect(page.locator('#balance-game').getByRole('status')).toContainText('이미 참여');
+  await expect(page.locator('.balance-game__footer')).toContainText('10표 참여');
   await expect(page.getByRole('button',{name:/분 단위 계획파/})).toBeDisabled();
   expect(writes.filter(w=>w.path==='/rest/v1/balance_votes')).toHaveLength(1);
 });
@@ -122,6 +123,6 @@ test('Google handoff uses PKCE and returns only to the account route', async ({p
 
 test('untrusted callback error content is never echoed', async ({page}) => {
   await mock(page); await page.goto('/account?error=denied&error_description=malicious-private-token');
-  await expect(page.getByRole('alert')).toContainText('로그인 연결을 완료하지 못했습니다');
+  await expect(page.getByRole('main').getByRole('alert')).toContainText('로그인 연결을 완료하지 못했습니다');
   await expect(page.locator('body')).not.toContainText('malicious-private-token');
 });
