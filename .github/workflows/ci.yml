@@ -20,6 +20,8 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci --no-audit --no-fund
+      - name: Vote database security
+        run: npm run test:vote-security
       - name: Lint
         run: npm run lint
       - name: Build production site
@@ -37,6 +39,14 @@ jobs:
         run: npm run build:demo
       - name: Static demonstration full browser regression
         run: npm run test:e2e:demo
+      - name: Build account contract fixture
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://auth-fixture.supabase.co
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_fixture_only
+          NEXT_PUBLIC_GOOGLE_AUTH_ENABLED: "true"
+        run: npm run build:demo
+      - name: Account and vote API contract tests (intercepted, no live users)
+        run: npm run test:auth
       - name: Build GitHub Pages demonstration
         env:
           NEXT_PUBLIC_BASE_PATH: /appa-wa-ddal

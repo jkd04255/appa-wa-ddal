@@ -11,15 +11,19 @@
     "test:smoke": "node scripts/smoke.mjs",
     "test:e2e": "playwright test",
     "build:demo": "node scripts/build-demo.mjs",
-    "test:e2e:demo": "playwright test --config=playwright.static.config.ts"
+    "test:e2e:demo": "playwright test --config=playwright.static.config.ts",
+    "test:vote-security": "node scripts/test-vote-security.mjs",
+    "test:auth": "playwright test --config=playwright.auth.config.ts"
   },
   "dependencies": {
+    "@supabase/supabase-js": "2.119.0",
     "next": "16.4.6",
     "react": "19.3.1",
     "react-dom": "19.3.1"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.10.2",
+    "@electric-sql/pglite": "0.5.16",
     "@playwright/test": "1.55.0",
     "@tailwindcss/postcss": "4.3.5",
     "@types/node": "22.16.0",

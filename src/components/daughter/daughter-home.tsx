@@ -1,5 +1,7 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
+import Image from "next/image";
+import { BalanceGame } from "./balance-game";
+import { Fragment, type ReactNode } from "react";
 import {
   DAUGHTER_COMMUNITY,
   DAUGHTER_DISCOVERY,
@@ -96,6 +98,7 @@ function StoryCard({ item, index }: { item: DaughterDiscovery; index: number }) 
   return (
     <article className={"daughter-home__story-card daughter-home__story-card--tone-" + (index % 3 + 1)}>
       <Link className="daughter-home__story-link" href={"/daughter/discover/" + item.slug}>
+        {item.id === "daughter-feature-01" && <Image className="daughter-home__story-photo" src={item.cover} alt={item.coverAlt} width={620} height={300} sizes="(min-width: 1020px) 560px, (min-width: 720px) 640px, 280px" />}
         <div className="daughter-home__story-meta">
           <span>{item.categoryLabel}</span>
           <DemoLabel>가상 이슈</DemoLabel>
@@ -142,6 +145,7 @@ export function DaughterHome() {
 
         <div className="daughter-home__bento">
           {FEED_SECTIONS.map((section, sectionIndex) => (
+            <Fragment key={section.id}>
             <section
               className={"daughter-home__feed-section daughter-home__feed-section--" + section.id}
               aria-labelledby={"daughter-section-" + section.id}
@@ -161,6 +165,8 @@ export function DaughterHome() {
                 {section.items.map((item, index) => <StoryCard key={item.id} item={item} index={index} />)}
               </div>
             </section>
+            {section.id === "school" && <BalanceGame />}
+            </Fragment>
           ))}
           <section className="daughter-home__extra-section daughter-home__shopping-section" aria-labelledby="daughter-shopping-heading">
             <div className="daughter-home__section-kicker">

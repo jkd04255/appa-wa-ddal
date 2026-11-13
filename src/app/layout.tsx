@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./account.css";
+import { AccountProvider } from "@/components/account/account-provider";
 import "./editorial-refresh.css";
 
 export const metadata: Metadata = {
@@ -13,7 +15,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body><AccountProvider>{children}</AccountProvider></body>
     </html>
   );
 }

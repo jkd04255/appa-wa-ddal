@@ -54,7 +54,7 @@ test("topic menu links open the closest available discovery category", async ({ 
 test("story and feed links resolve only to known static demo routes", async ({ page }) => {
   await page.goto("/daughter");
   const known = [
-    "/daughter/discover", "/daughter/sales",
+    "/account", "/daughter/discover", "/daughter/sales",
     "/daughter/community", "/daughter/polls",
     "/daughter/discover/sample-offbeat-playlist",
     "/daughter/discover/sample-beauty-notes",
@@ -70,7 +70,9 @@ test("story and feed links resolve only to known static demo routes", async ({ p
   for (const route of known) {
     const response = await page.goto(route);
     expect(response?.status(), route).toBe(200);
-    if (route === "/daughter/discover" || route.startsWith("/daughter/discover/") || route === "/daughter/community" || route === "/daughter/polls") {
+    if (route === "/account") {
+      await expect(page.getByRole("heading", { name: "내 쪽에 한 표" })).toBeVisible();
+    } else if (route === "/daughter/discover" || route.startsWith("/daughter/discover/") || route === "/daughter/community" || route === "/daughter/polls") {
       await expect(page.getByRole("main")).toContainText("시연 콘텐츠");
     } else {
       await expect(page.getByRole("main")).toContainText("준비 중입니다.");
@@ -99,8 +101,8 @@ test("desktop 1024px: two-column feed, compact cards and separated role navigati
   await page.setViewportSize({ width: 1024, height: 900 });
   await page.goto("/daughter");
   const cards = await page.locator(".daughter-home__story-card").all();
-  const first = await cards[0].boundingBox();
-  const second = await cards[1].boundingBox();
+  const first = await cards[1].boundingBox();
+  const second = await cards[2].boundingBox();
   expect(second?.x ?? 0).toBeGreaterThan(first?.x ?? 0);
   expect(Math.abs((second?.y ?? 0) - (first?.y ?? 0))).toBeLessThan(10);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
