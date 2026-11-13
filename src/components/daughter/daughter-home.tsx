@@ -140,7 +140,7 @@ export function DaughterHome() {
           </nav>
         </details>
 
-        <div className="daughter-home__feed">
+        <div className="daughter-home__bento">
           {FEED_SECTIONS.map((section, sectionIndex) => (
             <section
               className={"daughter-home__feed-section daughter-home__feed-section--" + section.id}
@@ -162,29 +162,26 @@ export function DaughterHome() {
               </div>
             </section>
           ))}
-        </div>
+          <section className="daughter-home__extra-section daughter-home__shopping-section" aria-labelledby="daughter-shopping-heading">
+            <div className="daughter-home__section-kicker">
+              <span>04</span><span>장바구니 · 소비</span>
+            </div>
+            <SectionHeading id="daughter-shopping-heading" title="담기 직전, 한 번 더 보게 되는 것" href="/daughter/sales" aside="쇼핑 글" />
+            <div className="daughter-home__shopping-list">
+              {DAUGHTER_SHOPPING.map((item, index) => (
+                <article className="daughter-home__shopping-item" key={item.id}>
+                  <span className="daughter-home__shopping-index" aria-hidden="true">0{index + 1}</span>
+                  <div>
+                    <DemoLabel>가상 장바구니</DemoLabel>
+                    <h3>{item.title}</h3>
+                    <p>{item.summary}</p>
+                  </div>
+                </article>
+              ))}
+              <p className="daughter-home__fine-print">실제 가격·할인·구매 링크는 제공하지 않습니다.</p>
+            </div>
+          </section>
 
-        <section className="daughter-home__extra-section" aria-labelledby="daughter-shopping-heading">
-          <div className="daughter-home__section-kicker">
-            <span>04</span><span>장바구니 · 소비</span>
-          </div>
-          <SectionHeading id="daughter-shopping-heading" title="담기 직전, 한 번 더 보게 되는 것" href="/daughter/sales" aside="쇼핑 글" />
-          <div className="daughter-home__shopping-list">
-            {DAUGHTER_SHOPPING.map((item, index) => (
-              <article className="daughter-home__shopping-item" key={item.id}>
-                <span className="daughter-home__shopping-index" aria-hidden="true">0{index + 1}</span>
-                <div>
-                  <DemoLabel>가상 장바구니</DemoLabel>
-                  <h3>{item.title}</h3>
-                  <p>{item.summary}</p>
-                </div>
-              </article>
-            ))}
-            <p className="daughter-home__fine-print">실제 가격·할인·구매 링크는 제공하지 않습니다.</p>
-          </div>
-        </section>
-
-        <div className="daughter-home__bottom-grid">
           <section className="daughter-home__extra-section daughter-home__community-section" aria-labelledby="daughter-community-heading">
             <div className="daughter-home__section-kicker">
               <span>05</span><span>커뮤니티 미리보기</span>

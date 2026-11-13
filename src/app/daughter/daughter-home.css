@@ -34,11 +34,14 @@
 .daughter-home__topic-links { display: flex; flex-wrap: wrap; gap: 6px; }
 .daughter-home__topic-links a { display: inline-flex; align-items: center; min-height: 34px; padding: 5px 9px; border: 1px solid #59414f; background: #211821; color: #ffeaf1; text-decoration: none; font-size: 12px; font-weight: 750; }
 .daughter-home__topic-links a:hover { border-color: var(--dh-pink); background: #321b2a; }
-.daughter-home__feed { display: grid; gap: 22px; }
+.daughter-home__bento { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; align-items: start; }
 .daughter-home__feed-section, .daughter-home__extra-section { min-width: 0; border: 1px solid var(--dh-line); background: var(--dh-panel); padding: 12px; }
 .daughter-home__feed-section { border-top: 3px solid var(--dh-pink); }
 .daughter-home__feed-section--school { border-top-color: var(--dh-cyan); }
 .daughter-home__feed-section--taste { border-top-color: var(--dh-acid); }
+.daughter-home__shopping-section { border-top: 3px solid var(--dh-lilac); }
+.daughter-home__community-section { border-top: 3px solid var(--dh-pink); }
+.daughter-home__poll-section { border-top: 3px solid var(--dh-cyan); }
 .daughter-home__section-kicker { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; color: var(--dh-pink); font-size: 10px; font-weight: 900; letter-spacing: .04em; }
 .daughter-home__section-kicker span:first-child { font-variant-numeric: tabular-nums; color: var(--dh-muted); }
 .daughter-home__feed-section--school .daughter-home__section-kicker { color: var(--dh-cyan); }
@@ -59,7 +62,7 @@
 .daughter-home__read-link { display: inline-flex; align-items: center; gap: 4px; margin-top: auto; color: #ffe2eb; font-size: 10px; font-weight: 850; }
 .daughter-home__feed-section--school .daughter-home__read-link { color: var(--dh-cyan); }
 .daughter-home__feed-section--taste .daughter-home__read-link { color: var(--dh-acid); }
-.daughter-home__extra-section { margin-top: 22px; }
+.daughter-home__extra-section { margin-top: 0; }
 .daughter-home__extra-section .daughter-home__section-kicker { color: var(--dh-lilac); }
 .daughter-home__shopping-list { border-top: 1px solid var(--dh-line); }
 .daughter-home__shopping-item { display: flex; gap: 9px; align-items: flex-start; padding: 10px 0; }
@@ -69,7 +72,6 @@
 .daughter-home__shopping-item h3 { margin: 4px 0 2px; color: var(--dh-ink); font-size: 14px; font-weight: 850; line-height: 1.4; letter-spacing: -.035em; }
 .daughter-home__shopping-item p { margin: 0; color: var(--dh-muted); font-size: 11px; line-height: 1.5; }
 .daughter-home__fine-print { margin: 4px 0 0; color: var(--dh-muted); font-size: 10px; }
-.daughter-home__bottom-grid { display: grid; gap: 12px; }
 .daughter-home__community { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--dh-line); }
 .daughter-home__community li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 5px 8px; align-items: center; padding: 9px 0; border-bottom: 1px solid #40323f; }
 .daughter-home__community-board { grid-column: 1 / -1; color: var(--dh-pink); font-size: 10px; font-weight: 850; }
@@ -85,16 +87,19 @@
   .daughter-home { padding-block: 30px 60px; }
   .daughter-home__container { width: min(calc(100% - 48px), 1040px); }
   .daughter-home__topic-content { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
-  .daughter-home__feed { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 14px; }
+  .daughter-home__bento { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
   .daughter-home__feed-section { padding: 14px; }
-  .daughter-home__feed-section--fandom { grid-row: span 2; }
+  .daughter-home__feed-section--fandom, .daughter-home__shopping-section { grid-column: span 2; }
   .daughter-home__story-link { min-height: 156px; padding: 11px; }
   .daughter-home__story-card p { display: block; }
   .daughter-home__extra-section { padding: 14px; }
-  .daughter-home__bottom-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
 }
 @media (min-width: 1020px) {
-  .daughter-home__feed { gap: 18px; }
+  .daughter-home__bento { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 14px; }
+  .daughter-home__feed-section--fandom, .daughter-home__shopping-section { grid-column: span 7; }
+  .daughter-home__feed-section--school { grid-column: span 5; }
+  .daughter-home__feed-section--taste { grid-column: span 5; }
+  .daughter-home__community-section, .daughter-home__poll-section { grid-column: span 6; }
   .daughter-home__feed-section { padding: 16px; }
   .daughter-home__story-grid { gap: 9px; }
   .daughter-home__story-link { min-height: 166px; padding: 12px; }
