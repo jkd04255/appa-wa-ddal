@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { publicAsset } from "@/lib/public-asset";
 import { BalanceGame } from "./balance-game";
 import { Fragment, type ReactNode } from "react";
 import {
@@ -98,7 +99,7 @@ function StoryCard({ item, index }: { item: DaughterDiscovery; index: number }) 
   return (
     <article className={"daughter-home__story-card daughter-home__story-card--tone-" + (index % 3 + 1)}>
       <Link className="daughter-home__story-link" href={"/daughter/discover/" + item.slug}>
-        {item.id === "daughter-feature-01" && <Image className="daughter-home__story-photo" src={item.cover} alt={item.coverAlt} width={620} height={300} sizes="(min-width: 1020px) 560px, (min-width: 720px) 640px, 280px" />}
+        {item.id === "daughter-feature-01" && <Image className="daughter-home__story-photo" src={publicAsset(item.cover)} alt={item.coverAlt} width={620} height={300} sizes="(min-width: 1020px) 560px, (min-width: 720px) 640px, 280px" />}
         <div className="daughter-home__story-meta">
           <span>{item.categoryLabel}</span>
           <DemoLabel>가상 이슈</DemoLabel>

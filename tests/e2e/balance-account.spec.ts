@@ -5,6 +5,9 @@ for (const width of [320, 390, 768, 1280]) {
   test(`balance hook fits ${width}px and asks guests to log in`, async ({ page }, testInfo) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/daughter');
+    const photo = page.locator('.daughter-home__story-photo');
+    await expect(photo).toBeVisible();
+    await expect.poll(() => photo.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBe(true);
     const game = page.locator('#balance-game');
     await expect(game.getByRole('heading', { name: '지금, 어느 쪽?' })).toBeVisible();
     await expect(game.getByText('예시 결과 · 실제 투표 아님')).toBeVisible();
