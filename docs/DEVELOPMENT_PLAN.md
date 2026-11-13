@@ -2,7 +2,7 @@
 
 > 프로젝트: 아빠와 딸 (가칭)  
 > 기준 요구사항: 「아빠와 딸을 위한 양방향 트렌드·익명 커뮤니티 개발 프롬프트 v2.0」  
-> 문서 버전: v0.15.0-rc.9  
+> 문서 버전: v0.15.0-rc.10  
 > 최초 작성: 2026-11-10 (KST)  
 > 관리 위치: docs/DEVELOPMENT_PLAN.md  
 > 현재 게이트: 초기 제품은 개인 게시 없는 편집형 콘텐츠 + 운영자 작성 투표/토너먼트; 응답 비저장·비집계 — **G2-01·02·03 전체 HOLD**  
@@ -14,8 +14,8 @@
 - 범위: 딸 홈의 관심 주제 20개는 접힌 메뉴 안에 배치하고, 첫 화면의 팬덤·학교·취향·쇼핑·커뮤니티·질문 영역을 크기가 다른 벤토 그리드로 구성한다. 데스크톱 12열·태블릿 2열·모바일 1열로 재배치하며, 7개의 가상 헤드라인에는 팬덤 소비 압박·단톡방 소외·농담의 경계·기대와 실제의 차이를 다루는 제목과 본문을 사용하고 가상 시나리오임을 표시한다. 검정·코럴·보라색의 독립적인 언더그라운드 스타일을 딸의 발견·커뮤니티·질문 화면에 적용하고, 딸 경로의 세대 간 관점 화면·fixture·타입을 제거한다. 아빠 화면 디자인·카피는 유지한다. PR #41과 GitHub Pages 시연을 위해 저장소는 Public이며, Pages에는 합성 정적 화면만 게시한다.
 - 사용성 수정: 토너먼트 단계·우승 결과·초기화 뒤 키보드 초점 연결, 발견 글마다 구별되는 링크 이름, 발견 화면의 영문 장식과 순번 제거, 공간 전환 링크의 모바일 글자 크기 상향, 동작 줄이기에서 hover 이동 제거.
 - 보호 범위: 사진·합성 콘텐츠 표시·역할별 4탭·비저장/비집계 시연을 유지한다. G2-01/02/03 전체 HOLD와 실제 Auth·DB·UGC·투표 저장/집계·SNS 수집 금지는 그대로 유지한다.
-- 상태: 직전 공개 화면 HEAD `ebe483990b5261d831b34dfba208e117f4de932c`의 전체 QA와 GitHub Pages 배포는 성공했다. 이번 요청에 따라 6개 홈 영역을 벤토 그리드로 재배치하고, 새 HEAD의 lint·build·typecheck·HTTP smoke·일반/정적 Chromium/axe 회귀 및 Pages 재배포를 다시 확인한다. PR #41은 Draft·미병합이다. G2-01/02/03 HOLD, Auth·DB·UGC·응답 저장/집계·SNS 수집 미연결. iPhone Safari·Android·VoiceOver/TalkBack 실기기 검증은 미실시.
-- 다음 작업: 정확한 PR HEAD에서 lint/typecheck/build·HTTP smoke·일반/정적 Chromium/axe 전체 회귀와 GitHub Pages 배포 결과를 확인한다. GitHub Pages는 공개 URL이며 정적 합성 시연만 게시한다. iPhone Safari/Android·VoiceOver/TalkBack은 별도 미검증으로 둔다.
+- 상태: 벤토 그리드 UI HEAD `718acb259a349cd139d4e4f7aef30d4ec6cd507b` 검증 완료. Push Actions [#43364632986](https://github.com/jkd04255/appa-wa-ddal/actions/runs/43364632986)와 PR Actions [#43364639631](https://github.com/jkd04255/appa-wa-ddal/actions/runs/43364639631) 모두 성공했다. Push 실행 로그에서 lint·build·typecheck·HTTP smoke, 일반 Chromium/axe 77/77·정적 Chromium/axe 77/77 및 Pages 배포 성공을 확인했다. 2026-11-13 공개 URL에서 데스크톱 벤토 배치·7개 헤드라인·주제 메뉴 20개·먹거리 필터 이동을 직접 확인했다. 이번 후속 커밋은 진행 기록만 갱신하며 제품 코드는 변경하지 않는다. PR #41 Draft·미병합, main `52b41d7f49421358ba343f7c7feedf2ca6348b9d` 유지. G2-01/02/03 HOLD, 실제 Auth·DB·UGC·응답 저장/집계·SNS 수집 미연결. iPhone Safari·Android·VoiceOver/TalkBack 실기기 검증은 미실시.
+- 다음 작업: [공개 딸 홈](https://jkd04255.github.io/appa-wa-ddal/daughter/)에서 사용자 디자인 피드백을 받아 G1 범위의 후속 수정을 진행한다. 모바일·태블릿 자동 회귀는 위 CI 결과이며 실제 iPhone Safari/Android·VoiceOver/TalkBack 검증과 구분한다. 본 문서 갱신 커밋의 최종 CI·Pages 결과는 PR #41 본문에 기록한다.
 - 이전 편집형 개편의 승인 범위·배포·QA 기록: [G1-14 디자인·배포 기록](./G1_14_EDITORIAL_REFRESH.md).
 
 ## 1. 목적과 제품 원칙
@@ -540,3 +540,4 @@
 | 2026-11-12 | v0.15.0-rc.7 | Actions #43154981313의 정적 브라우저 회귀에서 부모 `/daughter/perspectives` 경로가 200으로 생성됨을 확인; 부모 페이지까지 제거해 역할 관점 URL을 route 부재형 404로 처리, 최신 HEAD 전체 CI/Pages 대기 |
 | 2026-11-12 | v0.15.0-rc.8 | 딸 홈을 6개 소형 영역·접힌 20개 주제 메뉴·7개 강한 가상 헤드라인으로 정리하고, 발견/커뮤니티 본문을 갱신. HEAD `ebe4839`의 Push/PR 전체 QA 통과, Pages 공개 배포·실제 URL 확인; 저장소 Public, PR #41 Draft·미병합, G2 HOLD·실기기 미검증 유지 |
 | 2026-11-13 | v0.15.0-rc.9 | 사용자의 요청에 따라 딸 메인의 6개 콘텐츠 영역을 벤토 그리드로 재배치. 새 HEAD 전체 QA와 GitHub Pages 재배포 대기; PR #41 Draft·미병합, G2 HOLD 유지 |
+| 2026-11-13 | v0.15.0-rc.10 | 벤토 UI HEAD `718acb2`의 Push/PR CI 및 Pages 성공 확인. 일반/정적 Chromium·axe 각 77/77, 공개 화면·주제 메뉴·먹거리 필터 직접 점검. 제품 코드 변경 없이 기록 갱신; PR #41 Draft·미병합, G2 HOLD·실기기 미검증 유지 |
