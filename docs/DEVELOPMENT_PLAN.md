@@ -80,7 +80,7 @@
 | G1-12 | 아빠 공간 운영자 질문·토너먼트 | `/dad/polls` 고정 질문·공용 토너먼트·아빠 홈 진입 | **완료(자동 QA 기준)** | [G1-12 QA](./G1_12_QA.md), PR #31 Actions #42972194829 Chromium/axe 77/77 통과; G2 전체 HOLD 유지 |
 | G1-13 | 아빠 투표 화면 반응형·접근성 회귀 보강 | `/dad/polls`를 320–1024px·200% 확대·키보드·axe 경로에 추가 | **완료(자동 QA 기준)** | [G1-13 QA](./G1_13_QA.md), PR #32 Actions #42974211914 전체 77/77 통과; G2 전체 HOLD 유지 |
 | G1-14 | 편집형 UI 전면 개편·정적 시연 | [디자인·배포 QA](./G1_14_EDITORIAL_REFRESH.md), 일반·정적 회귀 | **완료(자동 QA·시연 배포)** | PR #39 병합 `87d723f`; Actions #43143650118 일반/정적 81/81 통과; 소유자 전용 [시연](https://appa-wa-ddal-demo.gpt20250313.chatgpt.site), 실기기 미검증 |
-| G1-15 | 딸 화면 독립 언더그라운드 디자인·GitHub Pages 시연 | 접힌 20개 주제 메뉴·6개 홈 영역의 벤토 그리드·7개 가상 헤드라인·세대 간 관점 분리·Pages 공개 정적 배포 | **재검증 대기** | 직전 UI HEAD `ebe4839`의 Actions #43189256792/#43189264899와 Pages 배포 성공; Bento 변경 후 새 HEAD의 전체 QA·Pages 재배포 대기; PR #41 Draft·미병합; G2 HOLD 유지 |
+| G1-15 | 딸 화면 독립 언더그라운드 디자인·GitHub Pages 시연 | 접힌 20개 주제 메뉴·6개 홈 영역의 벤토 그리드·7개 가상 헤드라인·세대 간 관점 분리·Pages 공개 정적 배포 | **자동 QA·정적 시연 검증 완료** | 벤토 UI HEAD `718acb2`: Actions #43364632986/#43364639631 성공, 일반/정적 77/77 및 Pages 성공·공개 화면 확인; PR #41 Draft·미병합; G2 HOLD 유지 |
 | G2-01 | 청소년 안전·법률·운영 정책 | [현행법 근거·정책 초안](./G2_01_CHILD_SAFETY_POLICY_DRAFT.md) · [운영 Playbook](./G2_01_MODERATION_PLAYBOOK.md) · [결정/위험/Gate](./G2_01_DECISIONS_AND_RISKS.md) · [외부 자문 요청 패키지](./G2_01_EXTERNAL_COUNSEL_REVIEW_PACKET.md) · [G2-01B 사업성·증거 패키지](./G2_01B_FEASIBILITY_AND_EVIDENCE.md) | **보류(HOLD: 사전 문서 검토만 수행)** | 외부 전문가 의견·운영 주체/예산·연령/역할 증빙·사건 대응·동의/보존 검증 및 명시적 Gate 승인 전 불가 |
 | G2-01B | 대안별 사업성·운영량·사전 증거 패키지 | A/B/C/D 비교, 비용 산식, 공급자·조직 증거, 탁상 훈련, DEC-SAFE 위험 레지스터 연결 | **문서 초안 완료; 외부 검토 대기** | [G2-01B](./G2_01B_FEASIBILITY_AND_EVIDENCE.md), [결정·위험 레지스터](./G2_01_DECISIONS_AND_RISKS.md), G2 HOLD |
 | G2-02 | 계정/Auth/권한/RLS 부정 테스트 | 서버 권한, 역할 검증, RLS·API 직접 접근·기본 거부 테스트 | **보류** | 역할 선택만으로 다른 게시판 원문/쓰기 우회 불가 |
@@ -483,7 +483,7 @@
 | 2026-11-11 | 기존 G1 lint/build/typecheck/HTTP smoke/Playwright Chromium+axe 상태 | PR #34 HEAD CI 및 main CI #42983653554 모두 **성공**; CI는 자동화 범위만 검증 |
 | 2026-11-11 | iOS Safari/Android·VoiceOver/TalkBack 실기기 QA, G2-01/02/03 정책 Gate | **미검증 / 전체 HOLD**. Auth/DB/실게시·댓글/투표 저장·집계/공개 배포 금지 |
 
-**다음 작업:** 벤토 그리드 변경 HEAD의 전체 자동 QA와 GitHub Pages 재배포 상태를 확인한다. 통과 후에도 PR #41은 Draft·미병합으로 두고, iPhone Safari/Android·VoiceOver/TalkBack 실기기 검증을 별도로 진행한다. G2 전체 HOLD를 유지한다.
+**다음 작업:** 검증된 벤토 그리드 공개 시연에 대한 사용자 디자인 피드백을 반영한다. PR #41은 Draft·미병합으로 유지하며, iPhone Safari/Android·VoiceOver/TalkBack 실기기 검증은 별도 과제이다. G2 전체 HOLD를 유지한다.
 
 ### 문서 변경 이력
 | 날짜(KST) | 버전 | 내용 |
