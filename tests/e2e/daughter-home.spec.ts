@@ -1,66 +1,69 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-test("daughter home renders polished magazine masthead, photo cover and 3 discovery images", async ({ page }) => {
+test("daughter home shows a compact fictional feed and keeps topic links inside the menu", async ({ page }) => {
   await page.goto("/daughter");
-  await expect(page.getByRole("heading", { level: 1, name: /딸의 공간/ })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "지금 눈여겨볼 이야기" })).toBeVisible();
-  await expect(page.locator(".daughter-home__feature-grid")).toHaveCount(1);
-  await expect(page.locator(".daughter-home__discovery-card")).toHaveCount(3);
-  await expect(page.locator(".daughter-home__photo img")).toHaveCount(4);
-  await expect.poll(async () => page.locator(".daughter-home__photo img").evaluateAll(
-    (imgs) => imgs.filter((img) => (img as HTMLImageElement).complete && (img as HTMLImageElement).naturalWidth > 0).length
-  )).toBe(4);
-  expect(await page.locator(".daughter-home__photo img").evaluateAll(
-    (imgs) => imgs.every((img) => !!(img as HTMLImageElement).alt)
-  )).toBe(true);
-  await expect(page.locator(".daughter-home__photo")).toHaveCount(4);
-  await expect(page.getByText("광고가 아닌 시연 콘텐츠")).toHaveCount(1);
+  await expect(page.getByRole("heading", { level: 1, name: "관심사" })).toBeVisible();
+  await expect(page.locator(".daughter-home__feature-grid")).toHaveCount(0);
+  await expect(page.locator(".daughter-home__feed-section")).toHaveCount(3);
+  await expect(page.locator(".daughter-home__story-card")).toHaveCount(7);
+  await expect(page.getByText("최애 곡에 ‘별로’ 한마디 했더니… “팬 맞아?” 역공 시작")).toBeVisible();
+  await expect(page.getByText("약속 사진은 다 올라왔는데 나만 몰랐다… ‘너한테 말한 줄’이 진짜 실수일까?")).toBeVisible();
+  const topicMenu = page.locator(".daughter-home__topic-menu");
+  await expect(topicMenu).not.toHaveAttribute("open");
+  const topics = page.getByRole("navigation", { name: "관심 주제" });
+  await expect(topics.getByRole("link")).toHaveCount(0);
+  await topicMenu.locator("summary").click();
+  await expect(topics.getByRole("link")).toHaveCount(20);
+  await expect(topics.getByRole("link", { name: "메이크업" })).toBeVisible();
 });
 
-test("all editorial cards, demo shopping, community, poll and perspective show honest labels", async ({ page }) => {
+test("headline sections, shop, sample posts and question clearly mark synthetic content", async ({ page }) => {
   await page.goto("/daughter");
-  await expect(page.locator(".daughter-home__demo")).toHaveCount(10);
+  await expect(page.locator(".daughter-home__demo")).toHaveCount(12);
   await expect(page.locator(".daughter-home__shopping-item")).toHaveCount(2);
   await expect(page.locator(".daughter-home__community li")).toHaveCount(2);
-  await expect(page.locator(".daughter-home__community .daughter-home__demo")).toHaveCount(2);
   await expect(page.locator(".daughter-home__poll-options span")).toHaveCount(3);
-  await expect(page.locator(".daughter-home__perspectives")).toHaveCount(1);
-  await expect(page.getByText(/실시간 할인·구매 안내가 아닙니다/)).toBeVisible();
-  await expect(page.getByText(/실제 인기·할인·응답 결과나 사용자 게시물이 아닙니다/)).toBeVisible();
+  await expect(page.locator(".daughter-home__feed-section--fandom .daughter-home__section-kicker")).toContainText("팬덤 · 미디어");
+  await expect(page.getByRole("main")).toContainText("합성 시연 콘텐츠");
+  await expect(page.getByRole("main")).toContainText("로그인 회원당 한 표를 저장하며");
+  await expect(page.getByRole("main")).not.toContainText("서로의 시선");
+  await expect(page.getByRole("main")).not.toContainText("아빠 관점");
+  await expect(page.getByRole("navigation", { name: "딸의 공간 주요 메뉴" }).getByRole("link", { name: "밸런스" })).toHaveAttribute("href", "/daughter/polls");
   expect(await page.locator('form, input, textarea, button[type="submit"]').count()).toBe(0);
 });
 
-test("category chips link to filtered discovered stories", async ({ page }) => {
+test("topic menu links open the closest available discovery category", async ({ page }) => {
   await page.goto("/daughter");
-  const nav = page.getByRole("navigation", { name: "관심사 카테고리" });
-  await expect(nav.getByRole("link")).toHaveCount(4);
+  const menu = page.locator(".daughter-home__topic-menu");
+  await menu.locator("summary").click();
+  const nav = page.getByRole("navigation", { name: "관심 주제" });
+  await expect(nav.getByRole("link")).toHaveCount(20);
   const hrefs = await nav.getByRole("link").evaluateAll((elements) =>
     elements.map((element) => (element as HTMLAnchorElement).getAttribute("href")));
-  expect(hrefs).toEqual([
-    "/daughter/discover?category=beauty",
-    "/daughter/discover?category=food",
-    "/daughter/discover?category=culture",
-    "/daughter/discover",
-  ]);
-  await nav.getByRole("link", { name: /뷰티/ }).click();
+  expect(hrefs).toContain("/daughter/discover?category=beauty");
+  expect(hrefs).toContain("/daughter/discover?category=food");
+  expect(hrefs).toContain("/daughter/discover?category=culture");
+  await nav.getByRole("link", { name: "메이크업" }).click();
   await expect(page).toHaveURL(/\/daughter\/discover\?category=beauty$/);
   await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(1);
-  await expect(page.locator(".editorial-page__tile--daughter")).toContainText("화장대 위, 취향을 기록하는 방법");
+  await expect(page.locator(".editorial-page__tile--daughter")).toContainText("필터에선 쿨핑크");
   await expect(page.getByRole("navigation", { name: "딸의 공간 주요 메뉴" })
     .getByRole("link", { name: "발견" })).toHaveAttribute("aria-current", "page");
 });
 
-test("daughter CTA routes include readable details, placeholders and role isolation", async ({ page }) => {
+test("story and feed links resolve only to known static demo routes", async ({ page }) => {
   await page.goto("/daughter");
-  await expect(page.getByRole("link", { name: "질문·토너먼트 보기" })).toHaveAttribute("href", "/daughter/polls");
   const known = [
-    "/daughter/discover", "/daughter/sales",
-    "/daughter/community", "/daughter/polls", "/daughter/perspectives",
+    "/account", "/daughter/discover", "/daughter/sales",
+    "/daughter/community", "/daughter/polls",
     "/daughter/discover/sample-offbeat-playlist",
     "/daughter/discover/sample-beauty-notes",
     "/daughter/discover/sample-cafe-dessert",
     "/daughter/discover/sample-late-night-vinyl",
+    "/daughter/discover/sample-fan-rule",
+    "/daughter/discover/sample-group-chat",
+    "/daughter/discover/sample-joke-boundary",
   ];
   const hrefs = await page.locator(".daughter-home a").evaluateAll((els) =>
     els.map((e) => (e as HTMLAnchorElement).getAttribute("href") ?? ""));
@@ -68,7 +71,9 @@ test("daughter CTA routes include readable details, placeholders and role isolat
   for (const route of known) {
     const response = await page.goto(route);
     expect(response?.status(), route).toBe(200);
-    if (route === "/daughter/discover" || route.startsWith("/daughter/discover/") || route === "/daughter/community" || route === "/daughter/polls" || route === "/daughter/perspectives") {
+    if (route === "/account") {
+      await expect(page.getByRole("heading", { name: "내 쪽에 한 표" })).toBeVisible();
+    } else if (route === "/daughter/discover" || route.startsWith("/daughter/discover/") || route === "/daughter/community" || route === "/daughter/polls") {
       await expect(page.getByRole("main")).toContainText("시연 콘텐츠");
     } else {
       await expect(page.getByRole("main")).toContainText("준비 중입니다.");
@@ -81,45 +86,38 @@ test("daughter CTA routes include readable details, placeholders and role isolat
   expect(await page.locator(".daughter-home").count()).toBe(0);
 });
 
-test("mobile 320, 360, 375, 390, 430px: 4:5 cover above title without horizontal scrolling", async ({ page }) => {
+test("mobile 320, 360, 375, 390, 430px: compact story grids without horizontal overflow", async ({ page }) => {
   for (const width of [320, 360, 375, 390, 430]) {
     await page.setViewportSize({ width, height: 740 });
     await page.goto("/daughter");
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `overflow at ${width}px`).toBe(true);
-    const photo = await page.locator(".daughter-home__feature .daughter-home__photo").boundingBox();
-    const copy = await page.locator(".daughter-home__feature-copy").boundingBox();
-    expect(photo?.y ?? 0).toBeLessThan(copy?.y ?? 0);
-    const aspect = (photo?.width ?? 0) / (photo?.height ?? 1);
-    expect(aspect).toBeGreaterThan(0.78);
-    expect(aspect).toBeLessThan(0.82);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), "overflow at " + width + "px").toBe(true);
+    await expect(page.locator(".daughter-home__story-card")).toHaveCount(7);
     const nav = page.getByRole("navigation", { name: "딸의 공간 주요 메뉴" });
     await expect(nav.getByRole("link")).toHaveCount(4);
     await expect(nav.getByRole("link", { name: "홈" })).toHaveAttribute("aria-current", "page");
   }
 });
 
-test("desktop 1024px: photo-text split, intentionally staggered photo cards and top 4 tabs", async ({ page }) => {
+test("desktop 1024px: two-column feed, compact cards and separated role navigation", async ({ page }) => {
   await page.setViewportSize({ width: 1024, height: 900 });
   await page.goto("/daughter");
-  const photo = await page.locator(".daughter-home__feature .daughter-home__photo").boundingBox();
-  const copy = await page.locator(".daughter-home__feature-copy").boundingBox();
-  expect(photo?.x ?? 0).toBeLessThan(copy?.x ?? 0);
-  const items = await page.locator(".daughter-home__discovery-card").all();
-  const first = await items[0].boundingBox();
-  const second = await items[1].boundingBox();
-  expect(second?.y ?? 0).toBeGreaterThan(first?.y ?? 0);
+  const cards = await page.locator(".daughter-home__story-card").all();
+  const first = await cards[1].boundingBox();
+  const second = await cards[2].boundingBox();
+  expect(second?.x ?? 0).toBeGreaterThan(first?.x ?? 0);
+  expect(Math.abs((second?.y ?? 0) - (first?.y ?? 0))).toBeLessThan(10);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   const nav = page.getByRole("navigation", { name: "딸의 공간 주요 메뉴" });
   await expect(nav.getByRole("link")).toHaveCount(4);
   expect(await nav.evaluate((n) => getComputedStyle(n).position)).toBe("static");
 });
 
-test("200% root font on 320px preserves navigation and readable layout", async ({ page }) => {
+test("200% root font on 320px preserves headings and navigation", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 740 });
   await page.goto("/daughter");
   await page.evaluate(() => { document.documentElement.style.fontSize = "200%"; });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await expect(page.getByRole("heading", { level: 1, name: /딸의 공간/ })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "관심사" })).toBeVisible();
   const nav = page.getByRole("navigation", { name: "딸의 공간 주요 메뉴" });
   await expect(nav.getByRole("link")).toHaveCount(4);
   expect(await page.evaluate(() => {
@@ -129,14 +127,14 @@ test("200% root font on 320px preserves navigation and readable layout", async (
   })).toBe(true);
 });
 
-test("keyboard focus, axe WCAG, local self-hosted images and no POST/external requests", async ({ page }) => {
+test("keyboard focus, axe WCAG, local assets and no POST or external requests", async ({ page }) => {
   const unsafeRequests: string[] = [];
   page.on("request", (r) => {
-    if (!["GET", "HEAD", "OPTIONS"].includes(r.method())) unsafeRequests.push(`${r.method()} ${r.url()}`);
-    if (new URL(r.url()).hostname !== "127.0.0.1") unsafeRequests.push(`remote: ${r.url()}`);
+    if (!["GET", "HEAD", "OPTIONS"].includes(r.method())) unsafeRequests.push(r.method() + " " + r.url());
+    if (new URL(r.url()).hostname !== "127.0.0.1") unsafeRequests.push("remote: " + r.url());
   });
   await page.goto("/daughter");
-  const link = page.locator(".daughter-home__feature-copy .daughter-home__arrow-link");
+  const link = page.locator(".daughter-home__story-link").first();
   await link.focus();
   await expect(link).toBeFocused();
   expect(await link.evaluate((el) => getComputedStyle(el).outlineStyle)).toBe("solid");

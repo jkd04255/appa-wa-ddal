@@ -17,13 +17,13 @@ for (const width of [320, 390, 768, 1280]) {
     }
     await page.screenshot({ path: testInfo.outputPath(`landing-${width}.png`), fullPage: true });
     await choice.click();
-    await expect(page.getByRole("heading", { name: "딸의 공간" })).toBeVisible();
-    await expect.poll(() => page.locator(".daughter-home__feature img").evaluateAll((images) =>
-      images.every((image) => (image as HTMLImageElement).naturalWidth > 0)
-    )).toBe(true);
+    await expect(page.getByRole("heading", { name: "관심사", exact: true })).toBeVisible();
+    await expect(page.locator(".daughter-home__feed-section")).toHaveCount(3);
+    await expect(page.locator(".daughter-home__story-card")).toHaveCount(7);
+    await expect(page.locator(".daughter-home__topic-menu[open]")).toHaveCount(0);
     await page.screenshot({ path: testInfo.outputPath(`daughter-${width}.png`), fullPage: true });
     await page.getByRole("link", { name: "질문·토너먼트 보기", exact: false }).click();
-    await expect(page.getByRole("heading", { name: "쉬는 날의 작은 취향 토너먼트" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "토너먼트 선택" })).toBeVisible();
     await page.locator(".operator-activity__match-options button").first().click();
     await expect(page.locator(".operator-activity__round")).toHaveText("준결승 2 · 2/3");
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);

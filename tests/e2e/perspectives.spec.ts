@@ -6,7 +6,7 @@ const slugs = [
   "a-comfortable-distance", "the-pace-of-a-conversation", "different-tastes-together",
 ] as const;
 const titles = ["서로 편안한 대화의 거리", "서로에게 필요한 대화의 속도", "다른 취향을 나누는 방식"];
-const spaces = ["dad", "daughter"] as const;
+const spaces = ["dad"] as const;
 
 test("public perspective contract contains no raw UGC import, author, vote or sample-size fields", () => {
   const fixture = readFileSync("src/data/fixtures/shared-perspectives.ts", "utf8");
@@ -95,14 +95,9 @@ for (const space of spaces) {
   });
 }
 
-test("same shared detail ID presents identical editorial words across both spaces", async ({page}) => {
-  for(const slug of slugs){
-    const result:string[]=[];
-    for(const space of spaces){
-      await page.goto(`/${space}/perspectives/${slug}`);
-      result.push((await page.locator(".perspectives__sides--article").innerText()).trim());
-    }
-    expect(result[0]).toEqual(result[1]);
+test("daughter viewpoint routes are unavailable", async ({page}) => {
+  for (const route of ["/daughter/perspectives", ...slugs.map((slug) => `/daughter/perspectives/${slug}`)]) {
+    expect((await page.goto(route))?.status(), route).toBe(404);
   }
 });
 
@@ -136,11 +131,11 @@ test("daughter standalone poll matches home fictional prompt with no results, st
   const res=await page.goto("/daughter/polls");
   expect(res?.status()).toBe(200);
   await expect(page.getByRole("heading",{name:"이번 주 질문",level:1})).toBeVisible();
-  await expect(page.getByText("오늘 기분을 표현한다면?")).toBeVisible();
+  await expect(page.getByText("주말에 할 콘텐츠를 고른다면?")).toBeVisible();
   await expect(page.getByRole("radio")).toHaveCount(3);
   await expect(page.getByRole("main")).toContainText("실제 투표·응답 수집·집계");
-  await page.getByRole("radio",{name:"음악"}).check();
-  await expect(page.locator(".perspectives__choice-preview")).toContainText("음악");
+  await page.getByRole("radio",{name:"음악 듣기"}).check();
+  await expect(page.locator(".perspectives__choice-preview")).toContainText("음악 듣기");
   await expect(page.locator(".perspectives__choice-preview")).toContainText("투표 결과가 아닙니다");
   expect(requests).toEqual([]);
   await page.reload();
@@ -155,19 +150,23 @@ test("daughter operator tournament advances fixed brackets and resets without sa
   });
 
   await page.goto("/daughter/polls");
-  const bracket = page.getByRole("region", { name: "쉬는 날의 작은 취향 토너먼트" });
+  const bracket = page.getByRole("region", { name: "토너먼트 선택" });
   await expect(bracket).toBeVisible();
   await expect(bracket.getByRole("button")).toHaveText(["집에서 영화 보기", "친구와 카페 가기"]);
   await bracket.getByRole("button", { name: "친구와 카페 가기" }).click();
 
   await expect(bracket.getByRole("button")).toHaveText(["산책하며 음악 듣기", "좋아하는 음식 먹기"]);
+  await expect(bracket.locator(".operator-activity__round")).toBeFocused();
+  await expect(bracket.locator(".operator-activity__round")).toHaveText("준결승 2 · 2/3");
   await bracket.getByRole("button", { name: "좋아하는 음식 먹기" }).click();
 
   await expect(bracket.getByRole("button")).toHaveText(["친구와 카페 가기", "좋아하는 음식 먹기"]);
+  await expect(bracket.locator(".operator-activity__round")).toBeFocused();
   await bracket.getByRole("button", { name: "좋아하는 음식 먹기" }).click();
-  const result = bracket.getByRole("status");
+  const result = bracket.getByRole("heading", { name: "나의 우승 선택: 좋아하는 음식 먹기" });
   await expect(result).toContainText("나의 우승 선택: 좋아하는 음식 먹기");
-  await expect(result).toContainText("전체 결과나 순위가 아닙니다");
+  await expect(result).toBeFocused();
+  await expect(bracket).toContainText("전체 결과나 순위가 아닙니다");
 
   await expect(page.getByRole("main")).toContainText("저장·집계되지 않습니다");
   expect(await page.evaluate(() => ({
@@ -185,6 +184,7 @@ test("daughter operator tournament advances fixed brackets and resets without sa
   await bracket.getByRole("button", { name: "집에서 영화 보기" }).click();
   await bracket.getByRole("button", { name: "처음부터 다시 고르기" }).click();
   await expect(bracket.getByRole("button")).toHaveText(["집에서 영화 보기", "친구와 카페 가기"]);
+  await expect(bracket.locator(".operator-activity__round")).toBeFocused();
   expect(writes).toEqual([]);
 });
 
@@ -197,7 +197,7 @@ test("simulated response vanishes after role re-selection; only prior UX key per
   await page.getByRole("link",{name:"공간 다시 선택하기"}).click();
   await expect(page).toHaveURL(/\?choose=1$/);
   await page.getByRole("link",{name:/딸로 들어가기/}).click();
-  await page.goto("/daughter/perspectives");
+  await page.goto("/daughter");
   await expect(page.locator(".perspectives__choice-preview")).toHaveCount(0);
   await page.goto("/dad/perspectives");
   await expect(page.locator(".perspectives__choice-preview")).toHaveCount(0);
@@ -207,7 +207,7 @@ test("simulated response vanishes after role re-selection; only prior UX key per
 test("320–1024px list/detail/choice layouts, and 320px 200% text, do not overflow",async({page})=>{
   const routes=[
     "/dad/perspectives","/dad/perspectives/a-comfortable-distance",
-    "/daughter/perspectives","/daughter/perspectives/the-pace-of-a-conversation","/daughter/polls","/dad/polls",
+    "/daughter","/daughter/discover","/daughter/polls","/dad/polls",
   ];
   for(const width of [320,360,375,390,430,768,1024]){
     await page.setViewportSize({width,height:790});
@@ -229,9 +229,9 @@ test("320–1024px list/detail/choice layouts, and 320px 200% text, do not overf
 
 test("axe WCAG automatic, keyboard and explicit status on both lists, both details and poll",async({page})=>{
   for(const route of [
-    "/dad/perspectives","/daughter/perspectives",
+    "/dad/perspectives",
     "/dad/perspectives/a-comfortable-distance",
-    "/daughter/perspectives/a-comfortable-distance","/daughter/polls","/dad/polls",
+    "/daughter/polls","/dad/polls",
   ]){
     await page.goto(route);
     const link=page.locator(".perspectives a").first();
@@ -244,3 +244,4 @@ test("axe WCAG automatic, keyboard and explicit status on both lists, both detai
     expect(result.violations,route+" "+JSON.stringify(result.violations,null,2)).toEqual([]);
   }
 });
+

@@ -32,7 +32,7 @@ try {
   const routes = [
     "/dad", "/dad/trends", "/dad/briefing", "/dad/questions", "/dad/talk", "/dad/polls", "/dad/community", "/dad/perspectives",
     "/daughter", "/daughter/discover", "/daughter/sales", "/daughter/polls", "/daughter/community",
-    "/daughter/perspectives", "/?choose=1",
+    "/?choose=1",
   ];
   for (const path of routes) {
     const res = await fetch(url + path);
@@ -51,22 +51,26 @@ try {
   assert.match(dadHTML, /실제 저장되지 않습니다/);
   const daughterResponse = await fetch(url + "/daughter");
   const daughterHTML = await daughterResponse.text();
-  assert.match(daughterHTML, /지금 눈여겨볼 이야기/);
-  assert.match(daughterHTML, /발견한 장면들/);
+  assert.match(daughterHTML, /관심사/);
+  assert.match(daughterHTML, /관심 주제/);
+  assert.match(daughterHTML, /주제 둘러보기/);
+  assert.match(daughterHTML, /daughter-home__topic-count">20/);
   assert.match(daughterHTML, /샘플 게시글/);
-  assert.match(daughterHTML, /실제 투표 결과가 아닙니다/);
-  assert.match(daughterHTML, /시연 콘텐츠/);
+  assert.match(daughterHTML, /결과 저장 안 됨/);
+  assert.match(daughterHTML, /가상 편집 피드/);
   for (const file of ["headphones-magazine.jpg", "beauty-stilllife.jpg", "cafe-dessert.jpg", "vinyl-night.jpg"]) {
     const image = await fetch(url + "/editorial/" + file);
     assert.equal(image.status, 200, `Expected a self-hosted photograph: ${file}`);
     assert.match(image.headers.get("content-type") ?? "", /image\/jpeg/);
   }
-  // G1-06: all nine exact fixture slugs resolve to safe read-only detail pages.
+  // G1-06: all twelve exact fixture slugs resolve to safe read-only detail pages.
   const detailRoutes = [
     "/dad/trends/example-favorite-word", "/dad/trends/example-short-video",
     "/dad/trends/example-playlist", "/dad/trends/example-snack", "/dad/trends/example-personal-style",
     "/daughter/discover/sample-offbeat-playlist", "/daughter/discover/sample-beauty-notes",
     "/daughter/discover/sample-cafe-dessert", "/daughter/discover/sample-late-night-vinyl",
+    "/daughter/discover/sample-fan-rule", "/daughter/discover/sample-group-chat",
+    "/daughter/discover/sample-joke-boundary",
   ];
   for (const path of detailRoutes) {
     const detail = await fetch(url + path);
@@ -79,15 +83,16 @@ try {
   const filtered = await fetch(url + "/daughter/discover?category=beauty");
   assert.equal(filtered.status, 200);
   const filteredHTML = await filtered.text();
-  assert.match(filteredHTML, /화장대 위/);
-  assert.doesNotMatch(filteredHTML, /조용한 카페에서 고르는 한 접시/);
+  assert.match(filteredHTML, /필터에선 쿨핑크/);
+  assert.doesNotMatch(filteredHTML, /40분 줄 서서 샀는데/);
   const unknownCategory = await fetch(url + "/daughter/discover?category=not-a-category");
   assert.equal(unknownCategory.status, 200);
   assert.match(await unknownCategory.text(), /확인할 수 없는 카테고리/);
   const invalidDetailPaths = [
     "/dad/trends/not-a-fixture", "/dad/trends/sample-beauty-notes",
     "/daughter/discover/not-a-fixture", "/daughter/discover/example-snack",
-    "/daughter/sales/not-verified",
+    "/daughter/sales/not-verified", "/daughter/perspectives",
+    "/daughter/perspectives/a-comfortable-distance",
   ];
   for (const path of invalidDetailPaths) {
     const response = await fetch(url + path);
@@ -128,7 +133,7 @@ try {
   const perspectiveSlugs = [
     "a-comfortable-distance", "the-pace-of-a-conversation", "different-tastes-together",
   ];
-  for (const space of ["dad", "daughter"]) {
+  for (const space of ["dad"]) {
     const list = await fetch(url + `/${space}/perspectives`);
     assert.equal(list.status, 200, `Expected 200 for ${space} fictional perspective list`);
     const html = await list.text();
@@ -162,14 +167,15 @@ try {
   const demoPoll = await fetch(url + "/daughter/polls");
   assert.equal(demoPoll.status, 200);
   const pollHtml = await demoPoll.text();
-  assert.match(pollHtml, /오늘 기분을 표현한다면/);
+  assert.match(pollHtml, /주말에 할 콘텐츠를 고른다면/);
   assert.match(pollHtml, /실제 투표/);
   assert.doesNotMatch(pollHtml, /<form\\b/);
   for (const path of ["/dad/trends/no-fixture", "/daughter/community/no-fixture"]) {
     const res = await fetch(url + path);
     assert.equal(res.status, 404, `Expected 404 for unknown ${path}`);
   }
-  console.log("PASS: two homes, 9 editorial details, 2 sample communities, 6 sample posts, 2 memory-only composers, 2 perspective lists, 6 shared editorials, 2 fake poll routes, strict 404");
+  console.log("PASS: two homes, 9 editorial details, 2 sample communities, 6 sample posts, 2 memory-only composers, dad perspective list, 3 shared editorials, 2 fake poll routes, strict 404");
 } finally {
   server.kill("SIGTERM");
 }
+

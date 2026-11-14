@@ -57,9 +57,9 @@ export const PERSPECTIVE_QUESTIONS = {
   },
   daughter: {
     kind: "demo-question",
-    id: "question-daughter-mood",
-    question: "오늘 기분을 표현한다면?",
-    options: ["음악", "음식", "한 장의 사진"],
+    id: "question-daughter-weekend-content",
+    question: "주말에 할 콘텐츠를 고른다면?",
+    options: ["음악 듣기", "카페 가기", "사진 찍기"],
     notice: "가상 질문 · 실제 투표 및 통계가 아닙니다",
   },
 } as const satisfies Record<"dad" | "daughter", DemoQuestion>;
@@ -67,3 +67,4 @@ export const PERSPECTIVE_QUESTIONS = {
 export function findSharedPerspective(slug: string) {
   return SHARED_PERSPECTIVES.find((item) => item.slug === slug) ?? null;
 }
+

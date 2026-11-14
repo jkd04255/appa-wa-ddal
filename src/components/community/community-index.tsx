@@ -9,7 +9,7 @@ export function CommunityIndex({ space, posts, boards }: CommunityDemoProps) {
   const [board, setBoard] = useState("all");
   const [order, setOrder] = useState("sample");
   const isDad = space === "dad";
-  const pageTitle = isDad ? "아빠들의 이야기" : "취향의 뒷면";
+  const pageTitle = isDad ? "아빠들의 이야기" : "커뮤니티";
   const searched = query.trim().toLocaleLowerCase("ko-KR");
   const visible = useMemo(() => {
     const selected = posts.filter((post: CommunityDemoPost) =>
@@ -28,7 +28,7 @@ export function CommunityIndex({ space, posts, boards }: CommunityDemoProps) {
     <main id="main-content" className={`community-demo community-demo--${space}`}>
       <div className="community-demo__inner">
         <header className="community-demo__masthead">
-          <p className="community-demo__index">{isDad ? "SIDE A / SMALL TALKS" : "SIDE B / AFTER HOURS"}</p>
+          <p className="community-demo__index">{isDad ? "SIDE A / SMALL TALKS" : "커뮤니티"}</p>
           <div className="community-demo__topline">
             <h1>{pageTitle}</h1>
             <Link className="community-demo__primary-link" href={`/${space}/community/new`}>
@@ -37,7 +37,7 @@ export function CommunityIndex({ space, posts, boards }: CommunityDemoProps) {
           </div>
           <p>{isDad
             ? "각자의 속도로 대화를 시작하는 가상의 이야기들."
-            : "겉은 조용한 취향 노트, 안에는 조금 더 솔직한 작은 이야기."}</p>
+            : "관심 주제별 샘플 게시글을 모았습니다."}</p>
           <p className="community-demo__notice">
             <strong>시연 콘텐츠 · 샘플 커뮤니티입니다.</strong> 실제 작성자·회원·댓글이 없으며, 게시글과 댓글은 모두 합성 예시입니다.
             이 공간 선택은 신원·연령·작성 권한을 인증하지 않습니다.
@@ -45,7 +45,7 @@ export function CommunityIndex({ space, posts, boards }: CommunityDemoProps) {
         </header>
 
         <section className="community-demo__browse" aria-labelledby="community-browse-heading">
-          <h2 id="community-browse-heading">이야기 찾아보기</h2>
+          <h2 id="community-browse-heading">게시글 찾기</h2>
           <div className="community-demo__filters">
             <label className="community-demo__field">
               <span>샘플 글 검색</span>
@@ -103,3 +103,4 @@ export function CommunityIndex({ space, posts, boards }: CommunityDemoProps) {
     </main>
   );
 }
+

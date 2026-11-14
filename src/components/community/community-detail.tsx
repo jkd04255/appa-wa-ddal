@@ -13,7 +13,7 @@ export function CommunityDetail({ post }: { post: CommunityDemoPost }) {
         </nav>
         <article className="community-demo__article">
           <header className="community-demo__article-header">
-            <p className="community-demo__index">{post.space === "dad" ? "SIDE A / SAMPLE NOTE" : "SIDE B / SAMPLE NOTE"}</p>
+            <p className="community-demo__index">{post.space === "dad" ? "SIDE A / SAMPLE NOTE" : "시연 글"}</p>
             <span className="community-demo__board">{post.board}</span>
             <h1>{post.title}</h1>
             <p className="community-demo__subtle">{post.excerpt}</p>
@@ -45,3 +45,4 @@ export function CommunityDetail({ post }: { post: CommunityDemoPost }) {
     </main>
   );
 }
+

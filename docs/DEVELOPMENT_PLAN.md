@@ -1,29 +1,43 @@
+Warning: truncated output (original token count: 19752)
+Total output lines: 560
+
 # 아빠와 딸 — 개발 계획 및 진행 기록
 
 > 프로젝트: 아빠와 딸 (가칭)  
 > 기준 요구사항: 「아빠와 딸을 위한 양방향 트렌드·익명 커뮤니티 개발 프롬프트 v2.0」  
-> 문서 버전: v0.14.0  
+> 문서 버전: v0.16.0-rc.2
 > 최초 작성: 2026-11-10 (KST)  
 > 관리 위치: docs/DEVELOPMENT_PLAN.md  
-> 현재 게이트: 초기 제품은 개인 게시 없는 편집형 콘텐츠 + 운영자 작성 투표/토너먼트; 응답 비저장·비집계 — **G2-01·02·03 전체 HOLD**  
-> 배포 상태: G1 정적 시연 배포 사용자 승인(2026-11-12); G1-14 UI 개편·정적 시연 배포 완료(소유자 계정 전용). 회원가입·실제 게시글·개인정보 저장 기능 미연결.
+> 현재 게이트: **G2-01·02·03 커뮤니티 전체 HOLD**. 별도 사용자 승인에 따른 G1-16 계정/Auth와 회원별 1인 1표 밸런스 투표 저장·익명 합계만 예외로 구현한다. 개인 게시·댓글·DM·사진·가구·재화는 계속 범위 밖이다.
+> 배포 상태: G1-14 정적 시연은 소유자 전용으로 유지한다. G1-15 합성 정적 시연은 Public 저장소의 GitHub Pages에서 공개한다. G1-16 전용 Supabase 프로젝트는 연결됐고 공개 Pages 배포를 완료했다.
 
-## 현재 작업 G1-14 — 편집형 UI 전면 개편 및 정적 시연
+## 현재 작업 G1-16 — 밸런스 게임 시각 요소와 회원 시스템
 
-- 승인: 사용자의 “배포도 해줘” 및 “전문 웹디자이너가 되어서 웹의 UI와 디자인 등을 전면적으로 수정” 요청. 기존의 소규모 디자인 변경/시연 배포 보류에 대한 이번 작업 한정 명시적 승인이다.
-- 범위: 랜딩, 공용 탐색, 두 홈, 목록·상세·커뮤니티 시연·질문/토너먼트의 공통 시각 체계. 원문 브랜드 카피·사진 4장·각 4탭·합성 고지·메모리 전용 동작 유지.
-- 배포: Sites 정적 HTML/CSS/JS, 최초에는 소유자 계정 전용. 소스 저장소는 비공개 유지. G2 서비스 운영 승인이 아니다.
-- 상태: 완료. PR #39 병합(main `87d723f`); Actions #43143650118 일반·정적 Chromium/axe 회귀 각 81/81 통과. owner-only 정적 Site 배포 성공, [시연 화면](https://appa-wa-ddal-demo.gpt20250313.chatgpt.site).
-- 상세 인수기준·검증 한계: [G1-14 디자인·배포 기록](./G1_14_EDITORIAL_REFRESH.md).
-- 다음: 사용자가 시연을 검토한 뒤 수정 의견을 반영한다. 실기기 Safari/Android·VoiceOver/TalkBack은 미검증 유지.
-- 아래 과거 기록의 ‘배포 금지/미배포’는 당시 상태다. 이번에 허용한 것은 합성 G1 시연 배포뿐이며 실제 Auth/DB/UGC/API/투표 저장/수집/유료 기능 금지는 계속 유효하다.
+- 사용자 요청: 친구·학교 아래 빈칸에 양쪽 의견 비율을 색칠한 막대와 투표 진입을 추가하고 회원가입·로그인을 구현한다. Google 로그인은 연동 가능한 구조로 준비한다. 향후 방·가구·출석/활동 재화는 이번 구현 범위에서 제외한다.
+- 이번 요청은 계정/Auth 및 해당 밸런스 투표 저장·집계의 구현·연결에 대한 구체적 승인이다. 과거 G2 전면 금지 문구가 이 범위의 개발을 막지 않는다. 자유게시/DM/사진 업로드/SNS 수집/재화/가구/유료 서비스·다른 앱 중지와 G2 커뮤니티 운영은 승인하지 않았다.
+- 화면: 친구·학교 바로 아래 코럴/하늘색 선택 카드·62:38 예시 막대, 로그인 유도. 팬덤 대표 글에 기존 헤드폰 사진을 복원해 글 중심 첫 화면을 완화한다. 회원 페이지는 가입/로그인/이메일 확인 안내/비밀번호 재설정/로그아웃 및 Google PKCE 흐름을 구현한다.
+- 서버 상태: 새 Supabase 연결 `Jo`의 `jkd04255's Org`에 월 견적 $0의 Seoul 프로젝트 `appa-wa-ddal`(ref `cjtfkjuiqveosakaccdh`)을 만들고 마이그레이션을 적용했다. 기존 Ung2 계정·프로젝트는 변경하지 않았다. exact account callback을 Auth redirect 목록에 저장했다. Google OAuth 미연결. 기본 SMTP는 팀 이메일만 받으므로 일반 가입 메일 전송에는 사용자 소유 도메인의 custom SMTP가 필요하다.
+- DB: 계정 ID는 Supabase Auth의 UUID를 사용한다. 회원 자신의 투표만 조회, 검증된 회원만 1계정 1표, 마감/비공개/타인 명의 차단, 서버 트리거 원자적 집계, 삭제 시 집계 차감. 공개 API는 질문·총계만 제공한다. 브라우저 예시 숫자는 DB에 입력하지 않으며 실제 집계는 0표에서 시작한다.
+- 검증: Supabase hosted security/health advisors 빈 결과, RLS와 migration `20261114032812` 적용을 확인했다. 공개 `balance_poll_results` 0표를 DB 및 홈페이지에서 대조했다. Push Actions #297·PR #298 CI와 Pages 배포가 성공했다. 일반 외부 수신자 이메일·Google provider 실검증은 미실시다.
+- 기록: [G1-16 구현·연결 안내](./G1_16_ACCOUNT_BALANCE.md). PR #41 본문에 최신 HEAD·CI·Pages 결과를 갱신한다. Draft·미병합 유지.
+- 다음: 공개 callback을 포함해 Pages 앱 연결을 마치고, custom SMTP와 Google provider 설정을 검토한다. 외부 실사용 가입 전에 처리방침·연령/운영 정책을 확정한다. 기존 앱 중단이나 유료 변경은 자동으로 실행하지 않는다.
+
+## 이전 작업 G1-15 — 딸 화면 독립 디자인 및 사용성 보완
+
+- 승인: 사용자가 [G1-14 UI 검토 PR #40](https://github.com/jkd04255/appa-wa-ddal/pull/40)의 개선 제안을 구현하고, 딸 화면을 아빠 화면과 콘텐츠·시각 면에서 분리하도록 명시적으로 요청했다.
+- 범위: 딸 홈의 관심 주제 20개는 접힌 메뉴 안에 배치하고, 첫 화면의 팬덤·학교·취향·쇼핑·커뮤니티·질문 영역을 크기가 다른 벤토 그리드로 구성한다. 데스크톱 12열·태블릿 2열·모바일 1열로 재배치하며, 7개의 가상 헤드라인에는 팬덤 소비 압박·단톡방 소외·농담의 경계·기대와 실제의 차이를 다루는 제목과 본문을 사용하고 가상 시나리오임을 표시한다. 검정·코럴·보라색의 독립적인 언더그라운드 스타일을 딸의 발견·커뮤니티·질문 화면에 적용하고, 딸 경로의 세대 간 관점 화면·fixture·타입을 제거한다. 아빠 화면 디자인·카피는 유지한다. PR #41과 GitHub Pages 시연을 위해 저장소는 Public이며, Pages에는 합성 정적 화면만 게시한다.
+- 사용성 수정: 토너먼트 단계·우승 결과·초기화 뒤 키보드 초점 연결, 발견 글마다 구별되는 링크 이름, 발견 화면의 영문 장식과 순번 제거, 공간 전환 링크의 모바일 글자 크기 상향, 동작 줄이기에서 hover 이동 제거.
+- 보호 범위: 사진·합성 콘텐츠 표시·역할별 4탭·비저장/비집계 시연을 유지한다. G2-01/02/03 전체 HOLD와 실제 Auth·DB·UGC·투표 저장/집계·SNS 수집 금지는 그대로 유지한다.
+- 상태: 벤토 그리드 UI HEAD `718acb259a349cd139d4e4f7aef30d4ec6cd507b` 검증 완료. Push Actions [#43364632986](https://github.com/jkd04255/appa-wa-ddal/actions/runs/43364632986)와 PR Actions [#43364639631](https://github.com/jkd04255/appa-wa-ddal/actions/runs/43364639631) 모두 성공했다. Push 실행 로그에서 lint·build·typecheck·HTTP smoke, 일반 Chromium/axe 77/77·정적 Chromium/axe 77/77 및 Pages 배포 성공을 확인했다. 2026-11-13 공개 URL에서 데스크톱 벤토 배치·7개 헤드라인·주제 메뉴 20개·먹거리 필터 이동을 직접 확인했다. 이번 후속 커밋은 진행 기록만 갱신하며 제품 코드는 변경하지 않는다. PR #41 Draft·미병합, main `52b41d7f49421358ba343f7c7feedf2ca6348b9d` 유지. G2-01/02/03 HOLD, 실제 Auth·DB·UGC·응답 저장/집계·SNS 수집 미연결. iPhone Safari·Android·VoiceOver/TalkBack 실기기 검증은 미실시.
+- 다음 작업: [공개 딸 홈](https://jkd04255.github.io/appa-wa-ddal/daughter/)에서 사용자 디자인 피드백을 받아 G1 범위의 후속 수정을 진행한다. 모바일·태블릿 자동 회귀는 위 CI 결과이며 실제 iPhone Safari/Android·VoiceOver/TalkBack 검증과 구분한다. 본 문서 갱신 커밋의 최종 CI·Pages 결과는 PR #41 본문에 기록한다.
+- 이전 편집형 개편의 승인 범위·배포·QA 기록: [G1-14 디자인·배포 기록](./G1_14_EDITORIAL_REFRESH.md).
 
 ## 1. 목적과 제품 원칙
 
 **메인 카피: 같은 집, 조금 다른 세상.**  
 **부제: 우리가 몰랐던 서로의 이야기.**
 
-아빠와 10대 딸이 각자 독립적으로 방문할 이유가 있는 두 공간을 제공한다. 초기 제품은 편집 콘텐츠와 운영자가 직접 작성·관리하는 고정 선택지 투표·토너먼트를 제공할 수 있다. 투표 주제·선택지·토너먼트 대진은 지정 운영자만 작성·수정·게시하며, 이용자는 정해진 선택지에만 참여한다. 초기 범위에서 이용자 선택은 세션 중에만 처리하고 응답을 저장하거나 전체 결과로 집계하지 않는다. 개인 게시물·댓글·질문·선택지 추가는 허용하지 않는다. 향후 실제 응답 저장/집계나 자유게시 커뮤니티가 필요하면 별도 법률·개인정보·보안·운영 검토와 Gate 승인 후 결정한다.
+아빠와 10대 딸이 각자 독립적으로 방문할 이유가 있는 두 공간을 제공한다. 초기 제품은 편집 콘텐츠와 운영자가 직접 작성·관리하는 고정 선택지 투표·토너먼트를 제공할 수 있다. 투표 주제·선택지·토너먼트 대진은 지정 운영자만 작성·수정·게시하며, 이용자는 정해진 선택지에만 참여한다. G1-16은 요청 범위를 좁혀 회원 계정별 밸런스 게임 한 표를 저장하고 비식별 합계만 제공한다. 그 밖의 토너먼트 응답을 포함한 이용자 선택은 저장하지 않는다. 개인 게시물·댓글·질문·선택지 추가는 허용하지 않는다.
 
 서로의 의견은 **동의를 받은 설문/기고를 편집·집계한 콘텐츠**로만 연결한다. 별도 공간의 게시글 원문을 직접 노출하거나, 원문으로 역추적할 수 있게 하지 않는다.
 
@@ -37,7 +51,8 @@
 - 실제 사용자 데이터가 아닌 안전한 합성 샘플을 사용한다.
 - 트렌드·설문·세일·게시글이 실제 데이터로 오인되지 않도록 데모 표시를 넣는다.
 - 역할 선택과 마지막 공간 기억은 프론트 UI 편의 기능으로 한정한다. 역할 선택만으로 신원·관계·연령을 인증했다고 표시하지 않는다.
-- 초기 서비스는 개인 게시물·댓글·이용자 작성 투표/토너먼트를 허용하지 않는다. 지정 운영자가 사전 작성한 고정 선택지 투표와 토너먼트만 편집 콘텐츠로 제공할 수 있으며, 이용자 선택은 세션 내에서만 처리하고 저장·집계하지 않는다. 운영자 등록은 현재 수동 콘텐츠 관리 범위이며, 관리자 CMS/Auth 권한 기능을 구현했다는 뜻이 아니다. 기존 G1의 메모리 전용 작성 화면과 가상 투표는 프로토타입 시연에만 남는다.
+- **승인된 G1-16 예외:** 이메일/Google Auth 구조, 친구·학교 아래 비회원 열람 및 회원별 밸런스 투표 한 건 저장·익명 집계. 일반 공개 가입 전 별도 이메일/정책 설정이 필요하다.
+- 초기 서비스는 개인 게시물·댓글·이용자 작성 투표/토너먼트를 허용하지 않는다. 지정 운영자가 사전 작성한 선택지만 제공한다. G1-16이 승인한 밸런스 한 표만 DB 저장 및 익명 합계에 포함한다. 운영자 등록은 현재 수동 콘텐츠 관리 범위이며, 관리자 CMS/Auth 권한 기능을 구현했다는 뜻이 아니다.
 
 ### 금지: 안전 검증 게이트 통과 전까지
 
@@ -80,6 +95,7 @@
 | G1-12 | 아빠 공간 운영자 질문·토너먼트 | `/dad/polls` 고정 질문·공용 토너먼트·아빠 홈 진입 | **완료(자동 QA 기준)** | [G1-12 QA](./G1_12_QA.md), PR #31 Actions #42972194829 Chromium/axe 77/77 통과; G2 전체 HOLD 유지 |
 | G1-13 | 아빠 투표 화면 반응형·접근성 회귀 보강 | `/dad/polls`를 320–1024px·200% 확대·키보드·axe 경로에 추가 | **완료(자동 QA 기준)** | [G1-13 QA](./G1_13_QA.md), PR #32 Actions #42974211914 전체 77/77 통과; G2 전체 HOLD 유지 |
 | G1-14 | 편집형 UI 전면 개편·정적 시연 | [디자인·배포 QA](./G1_14_EDITORIAL_REFRESH.md), 일반·정적 회귀 | **완료(자동 QA·시연 배포)** | PR #39 병합 `87d723f`; Actions #43143650118 일반/정적 81/81 통과; 소유자 전용 [시연](https://appa-wa-ddal-demo.gpt20250313.chatgpt.site), 실기기 미검증 |
+| G1-15 | 딸 화면 독립 언더그라운드 디자인·GitHub Pages 시연 | 접힌 20개 주제 메뉴·6개 홈 영역의 벤토 그리드·7개 가상 헤드라인·세대 간 관점 분리·Pages 공개 정적 배포 | **자동 QA·정적 시연 검증 완료** | 벤토 UI HEAD `718acb2`: Actions #43364632986/#43364639631 성공, 일반/정적 77/77 및 Pages 성공·공개 화면 확인; PR #41 Draft·미병합; G2 HOLD 유지 |
 | G2-01 | 청소년 안전·법률·운영 정책 | [현행법 근거·정책 초안](./G2_01_CHILD_SAFETY_POLICY_DRAFT.md) · [운영 Playbook](./G2_01_MODERATION_PLAYBOOK.md) · [결정/위험/Gate](./G2_01_DECISIONS_AND_RISKS.md) · [외부 자문 요청 패키지](./G2_01_EXTERNAL_COUNSEL_REVIEW_PACKET.md) · [G2-01B 사업성·증거 패키지](./G2_01B_FEASIBILITY_AND_EVIDENCE.md) | **보류(HOLD: 사전 문서 검토만 수행)** | 외부 전문가 의견·운영 주체/예산·연령/역할 증빙·사건 대응·동의/보존 검증 및 명시적 Gate 승인 전 불가 |
 | G2-01B | 대안별 사업성·운영량·사전 증거 패키지 | A/B/C/D 비교, 비용 산식, 공급자·조직 증거, 탁상 훈련, DEC-SAFE 위험 레지스터 연결 | **문서 초안 완료; 외부 검토 대기** | [G2-01B](./G2_01B_FEASIBILITY_AND_EVIDENCE.md), [결정·위험 레지스터](./G2_01_DECISIONS_AND_RISKS.md), G2 HOLD |
 | G2-02 | 계정/Auth/권한/RLS 부정 테스트 | 서버 권한, 역할 검증, RLS·API 직접 접근·기본 거부 테스트 | **보류** | 역할 선택만으로 다른 게시판 원문/쓰기 우회 불가 |
@@ -148,167 +164,7 @@
 - **아빠 공간:** 아이보리 #F5F2EB, 깊은 블루그레이 #275467, 제목 #1E3744, 본문 17px/1.65. 히어로 1개 + 보조 트렌드 4개 + 1분 브리핑 + 커뮤니티 입구 + 서로의 시선.
 - **딸 공간:** 크림 #FAF8F4, 차콜 #27242C, 절제된 베리 #774A61, 본문 16px/1.6. 사진형 히어로 1개 + 관심사/발견 + 검증된 정보 중심 쇼핑 + 커뮤니티 + 서로의 시선.
 - **공통 토큰:** 여백 320px=좌우 16px, 360~767px=20px, 768px 이상=32px; 4~64px spacing; 카드 16~20px radius; 터치 타깃 내부 기준 44×44px.
-- **내비게이션:** 각 공간의 4탭 정확히 유지. 고정 하단 탭 + 안전 영역 + 본문 padding을 계획하고 선택 상태는 색상 외 정보로도 표시.
-- **접근성:** WCAG 2.2 AA 목표, 본문 대비 4.5:1/큰 글 3:1, 키보드 포커스, 확대/모션 축소, 이미지 alt와 폰트 권리 확인. 주요 색상 8개 조합의 대비 계산은 문서상 통과.
-- **범위 준수:** 이번 산출물은 **텍스트 와이어프레임·UI 명세**만. 실제 이미지 렌더링, 모바일 실기기·스크린리더·웹페이지 테스트가 끝난 것처럼 말하지 않는다.
-- 기준 문서: [디자인 시스템](./DESIGN_SYSTEM.md) / [와이어프레임](./WIREFRAMES.md). 개발 구현 시 두 문서가 G0-02 IA보다 구체적인 디자인 결정을 명시한 경우 본 게이트의 최신 결정으로 사용하되, 제품 요구사항 v2.0 우선.
-
-### G0-04 엔지니어링 계약 (문서 설계)
-
-- **라우팅:** Next.js App Router 제안. 루트(/), /dad, /daughter와 G0-02의 모든 하위 페이지를 역할별 layout에 매핑하며 URL/하단 4탭 활성 상태/동적 slug의 404 규칙을 정의한다. 구현 버전·비동기 params 타입은 G1-01에서 확인한다.
-- **컴포넌트 경계:** 기본 Server Component, 상호작용이 필요한 역할 선택·필터·데모 입력만 최소 Client island로 분리한다. 공용 shell/에디토리얼 카드/시연 표시/서로의 시선은 public view-model만 소비한다.
-- **재방문:** 최초 / 랜딩, 재방문 마지막 공간 기본 홈, 명시적으로 공간 선택 시 /?choose=1로 두 카드를 보여준다. 탐색 취향은 브라우저의 한 개 키 awdd.lastSpace.v1 값 dad/daughter만 저장하는 후보안이며 **계정·역할·연령 인증과 무관**하다. 차단·오류/JS 비활성 fallback 및 화면 점멸은 G1에서 검증.
-- **데이터:** TypeScript discriminated union으로 demo/verified/expired/unverified를 분리하며, 시작·종료·확인일/HTTPS 공식 출처를 검증하기 전 실제 할인으로 표시하지 않는다. 실응답수 없는 합성 투표·합성 커뮤니티만 제공한다.
-- **청소년 보호:** G1에는 쓰기 API·실DB·실Auth·DM·사진·연락처/위치·분석/광고 수집 도입 금지. 양 공간 원문/작성자 ID는 공용 관점 모델에서 제외하고, 승인/동의를 입증하지 못하면 데모로만 표시한다.
-- **테스트:** 게이트별 T-01~T-16 매트릭스를 정하고 G1부터 타입/빌드·키보드/반응형·네트워크 저장 금지·데모 표기를 실제 검사한다. G2의 서버 권한+RLS 부정 테스트는 별도 차단 게이트로 유지한다.
-- 상세 문서: [기술 아키텍처](./TECHNICAL_ARCHITECTURE.md), [TypeScript·합성 데이터 계약](./DATA_CONTRACTS.md), [보안 경계·QA 매트릭스](./SECURITY_TEST_PLAN.md).
-- **범위:** G0-04는 기술·보안·QA 문서만. 코드/컴파일/실기기 테스트/실서비스 배포는 미실시.
-
-## 6. GitHub 개발 운영 규칙
-
-1. **docs/DEVELOPMENT_PLAN.md**를 작업 상태의 단일 기준 문서로 유지한다.
-2. main에는 검증된 문서/코드만 둔다. 모든 변경은 새 작업 브랜치에서 진행한다.
-3. 브랜치 예시: docs/g0-02-information-architecture, feat/g1-02-role-landing, fix/...
-4. 기능 하나마다 별도 PR을 생성한다. PR에는 범위·변경 파일·테스트 결과·리스크·남은 문제·다음 작업을 기술한다.
-5. 동일 PR에서 계획서의 상태 표/변경 이력/테스트 로그를 함께 갱신한다.
-6. 문서 G0 작업에는 문서 확인·링크 점검, 코드 G1 작업에는 typecheck/lint/build 및 해당 기능 테스트를 수행한다.
-7. 통과 전에는 완료 표시하지 않고, 문제가 있으면 차단 사유와 해결 조건을 적는다.
-8. 배포/실사용자 데이터 연결/유료 API는 별도 허가와 안전 조건 없이는 시행하지 않는다.
-9. 이전 PR에서 확정한 내용도 후속 검증 결과에 따라 변경 가능하되, 근거와 변경점을 문서에 남긴다.
-10. 매 작업 종료 시 **완료 내용 2~3문장 + 다음 단계 1문장 + 단 하나의 ‘다음 단계 진행’ 버튼**을 제공한다. 버튼 클릭으로 다음 사용자 요청을 보내며 이후 단계도 같은 규칙으로 진행한다. 진행 실패는 완료로 표기하지 않는다.
-
-## 7. 공통 완료 기준(Definition of Done)
-
-- 한 번에 하나의 작업 단위만 변경하고 범위 밖 변경을 하지 않았는가?
-- 필요한 문서·테스트 로그·변경 이력을 같은 PR에 포함했는가?
-- 기존 결정·디자인·기능의 회귀가 없는가?
-- 코드 작업 시 lint/typecheck/build와 주요 화면 동작을 확인했는가?
-- 모바일 320/375/390/430px에서 가로 넘침/가려짐이 없는가?
-- 키보드, 스크린리더, 텍스트 대비 및 포커스 가시성을 고려했는가?
-- 모든 합성 트렌드/할인/투표/게시글에 데모 표시가 있는가?
-- 접근 키·인증 정보·실사용자 게시글·개인정보가 커밋되지 않았는가?
-- PR 검증 근거가 없는데 완료 또는 배포 완료로 표시하지 않았는가?
-
-## 8. 우선 추적할 위험
-
-| ID | 위험 | 현재 결정 |
-| --- | --- | --- |
-| R-01 | 역할 버튼 클릭을 실제 가족·연령 인증으로 오인 | UI 역할과 별도 검증/권한을 분리 |
-| R-02 | 익명 청소년 커뮤니티 내 괴롭힘·그루밍·개인정보 노출 | 연령/동의·관리자 검토·신고·제재 이전 공개 금지 |
-| R-03 | 반대 공간 게시물 및 소수 투표 응답 재식별 | 원문 공개 금지, 동의·편집·집계, 소표본 비노출 |
-| R-04 | SNS 저작권·스크래핑 약관 및 유행의 변동성 | 공식 링크·임베드·검증된 정보, 초기 수동 등록 |
-| R-05 | 아빠/딸 고정관념으로 인한 사용성 저하 | 실제 이용자 연구 후 카테고리 개선 |
-| R-06 | 초기 양면 커뮤니티의 콜드스타트 문제 | 초기 제품은 편집 콘텐츠로 가치 검증; UGC는 수요와 안전·운영 준비를 별도 심사 |
-| R-07 | 청소년 관련 광고 및 개인정보 규제 | 법률·정책 검토 전 수익화 연동 금지 |
-
-## 9. 현재 작업, 검증 및 다음 작업
-
-### G0-01 ~ G0-03 완료
-- [PR #1](https://github.com/jkd04255/appa-wa-ddal/pull/1) 개발 계획서 v0.1.x main 병합.
-- [PR #2](https://github.com/jkd04255/appa-wa-ddal/pull/2) G0-02 정보구조·디자이너→개발자 관점 검토 main 병합.
-- [PR #3](https://github.com/jkd04255/appa-wa-ddal/pull/3) G0-03 디자인 시스템 및 랜딩·아빠·딸 홈 와이어프레임 main 병합.
-- UI 코딩, 사용자 데이터/실게시판, 배포는 진행하지 않음.
-
-### G0-04 완료 (기술 문서 기준, [PR #4](https://github.com/jkd04255/appa-wa-ddal/pull/4) main 병합 확인)
-- [기술 구조](./TECHNICAL_ARCHITECTURE.md): 루트·역할별 레이아웃/라우트·Server/Client 컴포넌트·탐색 선호값·단계별 구현 범위.
-- [데이터 계약](./DATA_CONTRACTS.md): TypeScript 유니언·합성 fixture 예시·콘텐츠 확인/만료 상태·공개 데이터 allowlist.
-- [보안·QA](./SECURITY_TEST_PLAN.md): 미성년자 안전/그루밍·역할 권한 오인·원문/편집 집계 분리·G1 T-01~16 테스트 매트릭스.
-- 원래 제품 요구 v2.0의 “첫 방문 역할 선택 / 재방문 마지막 공간 기본 표시 / 언제든 랜딩 복귀”를 구현 계약에 유지.
-- **최종 완료 조건:** 세 신규 문서 + 계획서 v0.4.0의 상호 링크, 라우트, 타입, 안전 금지선 및 PR 변경 목록 검증 후 main 병합.
-- 문서 검증만 했으며 실제 Next.js 타입 컴파일·브라우저 렌더링·법률 검토를 완료했다고 주장하지 않는다.
-
-### 완료 — G1-01 ([PR #6](https://github.com/jkd04255/appa-wa-ddal/pull/6) main 병합)
-- 브랜치: feat/g1-01-scaffold. Next.js 16.4.6, React/React DOM 19.3.1, TypeScript 5.9.3, Tailwind CSS 4.3.5, ESLint 10.14.0. Node 22 범위 및 정확한 의존성 버전 지정.
-- src/app/layout.tsx, src/app/page.tsx, globals.css에 lang=ko와 '개발 환경 준비 중' 최소 루트만 등록; 역할 선택·인증·커뮤니티 기능 없음.
-- GitHub Actions [실제 성공 기록](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42830820168): 자동 생성한 package-lock.json v3 커밋, npm ci/ESLint/Next 프로덕션 빌드/TS 타입 검사/루트 HTTP 200 스모크 모두 통과.
-- 첫 검사에서 postcss anonymous export lint warning을 발견하여 수정. ESLint 9의 지원 종료 경고에 따라 10.14.0으로 업데이트하고 다시 통과함.
-- 로컬 Node v22.16.0에서 JS 문법 검사는 통과했지만 npm registry 연결 제한으로 로컬 종속성 설치/빌드는 실행하지 못함. **GitHub Actions 실제 실행 결과와 구분**.
-- 자세한 테스트와 남은 항목은 [docs/G1_01_QA.md](./G1_01_QA.md)를 기준으로 한다. 일회성 lockfile 생성 워크플로는 완료 후 삭제하고 장기 CI만 남김.
-- 최종 헤드 커밋 707bac61에서 [CI run 42831357551](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42831357551) **success** 확인 후, PR #6 squash main 병합 성공 (3b143adc). main에서 package.json/package-lock.json/CI/README/앱 코드/QA 문서 재조회 완료.
-- 화면별 UI 기능 구현은 **G1-02 이후 별도 브랜치/PR**로 순차 진행한다. 실DB/Auth/개인정보/배포 보류.
-
-### 완료 — G1-02 ([PR #8](https://github.com/jkd04255/appa-wa-ddal/pull/8) main 병합)
-- 디자인 시스템의 크림/아이보리/차콜/블루그레이/베리 색상과 한글 타이포에 맞춘 모바일 선택 랜딩 구현. 승인 카피와 역할 카드 2개 유지.
-- 최초 / 진입은 역할 선택. 정상 저장된 마지막 공간(dad/daughter)이 있다면 / 재방문에서 해당 홈으로 이동. /?choose=1은 서버 searchParams로 명시적 선택을 보장. 손상·차단된 localStorage, JS 비활성에는 안전한 카드/링크 fallback.
-- 현재 /dad 및 /daughter는 **이동 확인용 안내 페이지만** 제공. G1-03의 4탭·G1-04/05 실제 홈 콘텐츠를 선행하지 않음.
-- 첫 실브라우저 검사에서는 8개 중 1개 재선택 경로 오류 발견 → query 처리 방식을 수정. 최종 [Actions #42834285419](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42834285419)에서 npm ci/lint/build/typecheck/HTTP smoke/Playwright Chromium **8/8 통과**.
-- 반응형 320/360/375/390/430px, 키보드 포커스, axe WCAG2/2.1/2.2 AA 위반 0건 확인. 실제 iPhone Safari/Android 실기기·수동 스크린리더 검증은 진행하지 않았음.
-- 실DB/Auth·게시글/댓글 저장·DM·사진·위치·유료 API·배포 금지 유지. 역할 선택은 실제 신원/연령/작성 권한 인증이 아님.
-- 테스트 세부사항: [docs/G1_02_QA.md](./G1_02_QA.md). PR #8의 최종 head ba6e0a9에서 [GitHub Actions #42835100348](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42835100348) 전체 통과 확인 후 main에 squash 병합 b25f3877. 소스·lockfile·계획서·QA 문서 main 재조회 완료.
-
-### G1-03 완료 ([PR #10](https://github.com/jkd04255/appa-wa-ddal/pull/10) main 병합)
-- 기능 브랜치: `feat/g1-03-shared-navigation`. Server Component 기반 역할별 layout + Client navigation island, 역할별 4개 탭·활성 경로·재선택 헤더·본문 건너뛰기 링크 구현.
-- 아빠: 홈/트렌드/커뮤니티/서로의 시선. 딸: 홈/발견/커뮤니티/서로의 시선. 모바일 하단 고정/768px 이상 상단 내비, 텍스트+아이콘, 키보드·`aria-current` 제공.
-- 6개 탭 하위 경로는 **준비 중 안내만** 표시하며 실제 홈 상세, 커뮤니티/댓글·투표 데이터는 아직 없음. 미구현 상세는 404. G1-02의 역할 저장·재방문·`/?choose=1` 로직과 보안 경계 유지.
-- [초기 CI #42841508883](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42841508883)에서 Chromium 14/16: 정상 skip-link의 해시를 테스트가 허용하지 않은 부분 수정. 200% 확대에서 본문 하단 예약 여백 부족(100px < 112px) 발견 → 132px로 확장.
-- [재검증 CI #42842001821](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42842001821): 고정 설치·ESLint·TypeScript·build·HTTP/404 스모크 및 Chromium **16/16 통과**. 모바일 320/360/375/390/430px, 768/1024px 상단 메뉴, 200% 확대, axe 자동 접근성, 뒤로/새로고침/직접 URL 검증.
-- **실기기 iPhone Safari/Android Chrome·수동 VoiceOver/TalkBack는 미실시**. 향후 기기 QA에서 검증하며 문서상 완료로 기재하지 않음.
-- 최종 PR head 65c67ba7에서 [GitHub Actions #42842656495](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42842656495) 전 항목 통과 확인 후 PR #10을 main squash 병합(SHA 5ac1007a). 변경된 탐색 코드·준비 중 경로·QA 문서·계획서를 main에서 재조회 완료. [QA 상세](./G1_03_QA.md).
-
-### G1-04 완료 ([PR #12](https://github.com/jkd04255/appa-wa-ddal/pull/12) main 병합)
-- `feat/g1-04-dad-editorial-home`에서 W-02와 G0-04 계약에 맞춘 아빠 홈 매거진을 구현: 합성 대표 트렌드 1 + 보조 4, 1분 브리핑 3, 샘플 게시글 2, 질문·대화 진입 2, 서로의 시선 가상 편집 카드 1.
-- 디자인: 아이보리/블루그레이/짙은 제목, CSS 시연 표지 그래픽, 모바일 단일 열·데스크톱 히어로 분할, 섹션/정보 위계 정돈. 외부 사진·SNS 게시물 가져오기 없음.
-- typed fixture 및 demo discriminated union 사용. 모든 개별 카드에 '시연 콘텐츠' 또는 '샘플 게시글 · 실제 저장되지 않습니다' 표기. 하단에 실제 최신 정보가 아님을 명시.
-- 트렌드·커뮤니티·서로의 시선 메뉴는 기존 준비 중 페이지 유지. /dad/briefing, /dad/questions, /dad/talk은 **준비 중 경로만** 새로 추가. 상세 URL은 404, 기능 완료인 것처럼 표시하지 않음.
-- [최초 실제 CI #42847751382](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42847751382)에서 고정 npm ci/lint/typecheck/build/HTTP smoke/Chromium **23/23 통과**. 기존 16개 회귀 + 신규 7개: 320~430px/1024px/200% 글자 확대/키보드/axe/읽기 전용 요청 검사.
-- 청소년 실제 작성/댓글, 실DB/Auth/DM·외부 추적/API·배포는 **금지 유지**. iPhone/Android 실기기·수동 스크린리더 검사는 미실시.
-- QA 세부 증거: [G1-04 QA](./G1_04_QA.md). README/디자인/계획서 포함 PR 최종 head 77709ef4에서 [GitHub Actions #42848537291](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42848537291) **전체 success, Chromium 23/23**을 확인한 후 PR #12를 main squash 병합(3f7d048bf1933eff95545e6e8949729a8d763f5a). 소스·fixture·테스트·디자인·계획서 main 재조회 통과.
-
-### G1-05 완료 ([PR #14](https://github.com/jkd04255/appa-wa-ddal/pull/14) main 병합)
-- 별도 브랜치 `feat/g1-05-daughter-underground-home`. G0-03 W-03와 최신 디자인 시스템의 **Polished Underground**를 적용. 크림·차콜·베리, 사진 중심 4:5 히어로, 영문 독립잡지 인덱스, 비대칭 발견 카드. 모바일 320px 단일 열과 높은 대비·명료한 텍스트 유지.
-- 구성: 합성 히어로 1개 + 발견 3개, 관심 카테고리 3+전체, 합성 쇼핑 노트 2, 커뮤니티 샘플 2, 가상 주간 질문 1, 편집형 관점 1. 카드별 시연/샘플 표시, 상세 부연은 화면 하단 별도 배치.
-- [사진 자산/권리](./G1_05_PHOTO_ASSETS.md): Unsplash License 개별 확인한 정물·커피·음악 사진 4개를 **GitHub에서 직접 호스팅**. 최초 Unsplash 다운로드 URL 401로 실패 → 정확한 이미지 CDN URL로 재시도해 JPEG 4개 저장 및 크기 확인. 임시 다운로더 워크플로 제거. 사이트에서 제3자 이미지 호출 없음.
-- 발견·쇼핑·투표 링크의 상세 기능은 선행하지 않음: `/daughter/discover`, `/daughter/sales`, `/daughter/polls`은 **준비 중** 화면, 존재하지 않는 세부 slug는 404. 실제 할인율·투표 수·사용자 글·아이디·연락처·광고/API/배포 없음.
-- 아빠 홈·역할 재선택/마지막 공간·정확히 4탭·키보드 내비게이션 코드 보존. 새로운 typed demo fixture, Next Image 로컬 사진/alt, Server Component 중심.
-- 최초 [CI #42852371064](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42852371064)에서 라벨 React children 타입 오류 1개 발견 → ReactNode 타입으로 수정. [재검증 CI #42852579443](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42852579443) npm ci/lint/build/typecheck/HTTP·사진 4개 로딩/Chromium **31/31 성공**, axe 자동 위반 0건. 기존 23개 전부 보존.
-- **실제 iPhone Safari/Android 실기기, 수동 스크린리더·고해상도 사진 시각 감리는 미실시**. 자동 브라우저 테스트를 실기기 통과로 주장하지 않음.
-- [G1-05 QA](./G1_05_QA.md). 최종 PR head `cfd68a9857b7c3e19145ca594d51e77643258d96`의 [GitHub Actions #42853751382](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42853751382) **전체 success/Chromium 31/31** 확인 후 PR #14를 main squash 병합(`ede2a162003d8dab2265340ec2f5f1b0c1e8fe6a`). main의 사진 4개·소스·QA·라이선스·계획서 파일 재조회 완료.
-
-### G1-06 완료 ([PR #16](https://github.com/jkd04255/appa-wa-ddal/pull/16) main 병합)
-- `feat/g1-06-editorial-list-details`: `/dad/trends`의 합성 트렌드 5개와 정확한 5개 slug 상세, `/daughter/discover`의 합성 발견 4개와 정확한 4개 slug 상세. 기존 두 홈의 대표/보조 카드가 해당 가상 상세로 직접 연결됨.
-- 상세에는 배경·맥락·팁·대화 예시, **시연 콘텐츠 / 합성 시연 자료 · 외부 원문 없음 / 출처·확인 날짜 해당 없음**을 명확히 표시. 허위 취재·최신 유행·할인율·검증일 주장은 금지.
-- 딸 목록은 `?category=beauty|food|culture` 필터를 서버에서 처리하고 URL·새로고침·뒤로가기로 상태 유지. 잘못된/중복 category는 경고 + 전체 가상 목록. 4탭 활성 상태와 홈·목록 복귀가 명료하게 작동.
-- TS `Record<slug, DemoDetailCopy>`와 읽기 전용 fixture에 상세 문장을 연결하여 어떤 컨텐츠든 정확한 slug만 허용. 무효/다른 공간의 slug, 미구현 실제 세일 상세는 **404**. `sourceDisplay`는 원문·확인일·승인 없는 `verified/expired` 표기를 **unverified(정보 확인 필요)**로 낮춤. 실제 verified 상태·할인 만료 로직은 **승인된 출처 계약 전 미구현**.
-- CSS를 별도 `editorial.css`로 범위 제한하여 아빠 차분한 블루그레이와 딸 크림·차콜·베리 Polished Underground 홈 미감 유지. 사진 4개는 기존 로컬 권리 확인 자산만 재사용. 새 외부/API/DB/서버 쓰기 없음.
-- [최초 성공 CI #42859245526](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42859245526): npm ci/lint/typecheck/build/HTTP smoke + 기존 31개/신규 10개 Chromium **41/41 통과**. 320/360/375/390/430/768/1024px·320px 200% 글자 확대·키보드·axe 자동 접근성·제3자/쓰기 요청 0 확인.
-- **물리 기기 iPhone Safari/Android Chrome, 수동 VoiceOver/TalkBack 검사는 미실시**. 소스·문서 최종 HEAD `5de158ff41437f31badf6a18c0be4ff716882647`의 [PR GitHub Actions #42859936842](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42859936842) npm ci/lint/typecheck/build/HTTP smoke/Chromium **41/41 성공** 후 PR #16을 main squash 병합(`377bca61b8b34c93cae8e8d4ab73d5f2d57002d9`). 목록/상세/QA/계획서의 main 존재 재확인.
-
-### G1-07 완료 ([PR #18](https://github.com/jkd04255/appa-wa-ddal/pull/18) main 병합)
-- 기능 브랜치 `feat/g1-07-community-demo`: 아빠 `/dad/community`와 딸 `/daughter/community`에 **각 3개 합성 샘플 글**의 제목·발췌·주제·정확한 상세 링크를 표시. 각 공간의 홈 프리뷰 2개와 ID/제목을 일치시켜 이동 가능. 별도 typed fixture `community-dad.ts` / `community-daughter.ts`로 데이터 경계 유지.
-- 각 목록에서 화면 내 검색·주제 필터·시연 순서/제목 가나다순 정렬·검색결과 없음/초기화 제공. **검색어나 시연 이용 기록은 URL·쿠키·localStorage·네트워크에 저장하지 않음**. 최신 게시글/실제 조회 수·응답·익명 회원 같은 주장을 하지 않음.
-- `/dad/community/[id]`, `/daughter/community/[id]`: 합성 본문과 **샘플 댓글**을 읽기 전용으로 제공. 타 역할의 합성 ID와 알 수 없는 ID는 정확히 404, 정적 `/new`와 동적 ID 충돌 방지. 실제 작성자/댓글·사용자 개인정보·학교/주소/연락처·민감한 개인 사연 없음.
-- `/dad/community/new`, `/daughter/community/new`는 React 메모리에서만 제목 80자/내용 500자 **미리보기·전체 지우기** 제공. HTML form, 제출 API, `fetch`, POST, DB/Server Action, 분석, 사용자 사진/DM 없음. 페이지 이동·새로고침·역할 변경 시 본문 소멸. 임시 결과는 '**미리보기 전용 · 게시·저장되지 않았습니다**'로 안내하며 작성자 권한 검증을 가장하지 않음.
-- 아빠 아이보리·블루그레이, 딸 크림·차콜·베리 Polished Underground를 공유 구조+역할별 스타일로 유지. 4탭, 랜딩 재선택, G1-06 9개 상세, 두 홈 콘텐츠와 사진 4개 회귀 보존.
-- 초기 CI [#42866166154](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42866166154)에서 **51/55**, 기존 회귀 4개가 커뮤니티의 '시연 콘텐츠' 고지를 찾지 못해 실패. 페이지 상단 **'시연 콘텐츠 · 샘플 커뮤니티입니다.'** 고지를 추가하여 일관성/명료성을 높임. 수정 CI [#42866863039](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42866863039)에서 npm ci/lint/build/typecheck/HTTP smoke·Chromium **55/55 성공**. 기존 41개+신규 14개: 역할/ID 404·검색/정렬·임시 입력 소멸·React 이스케이프·로컬/네트워크 비저장·320~1024px·200%·axe 자동 검사.
-- [G1-07 QA](./G1_07_QA.md)에 실패 수정·최종 증거 기재. 최종 PR HEAD `ac6371a84378f77463c0cdfff0574cb201d6bd1f`의 [GitHub Actions #42867591890](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42867591890) npm ci/lint/build/typecheck/HTTP smoke/Chromium **55/55 전체 success** 확인 후 [PR #18](https://github.com/jkd04255/appa-wa-ddal/pull/18)을 main squash 병합(`22cbbb16183f273a0bd757123494ed48ee64458a`). main에서 목록/글 상세/작성 체험/QA·계획서 실제 재조회 완료. **실제 iPhone Safari·Android Chrome·수동 VoiceOver/TalkBack 검증은 미실시**.
-
-### G1-08 완료 ([PR #20](https://github.com/jkd04255/appa-wa-ddal/pull/20) main 병합)
-- `feat/g1-08-shared-perspectives-demo` 브랜치에서 공용 TS 타입 `perspective-editorial.ts` 및 **독립적으로 창작한 `shared-perspectives.ts`** 합성 fixture 작성. **3개 공용 편집 ID**와 동일한 내용이 아빠/딸 각자 별도 스타일의 목록 `/dad/perspectives`, `/daughter/perspectives` 및 6개 `/[slug]` 상세에 노출. ID 3개 외 허용하지 않으며 커뮤니티 게시글 ID/오류 slug는 404.
-- 각 상세는 가상 아빠/딸 관점, 가상 맥락, 부담 없는 질문, **시연 콘텐츠·원문 없음·확인일 해당 없음** 출처 안내를 제공. 다른 공간의 실 게시물·댓글 원문, 게시글 ID, 작성자/개인정보/민감 사연·소표본/인구통계·실응답 수·인용을 참조하거나 전달하지 않음. G2 이전 실데이터 접근·실집계 구현 금지.
-- 아빠 아이보리·블루그레이, 딸 크림·차콜·베리 Polished Underground 미감과 4탭·반응형·키보드/스크린리더 명료성을 유지. 홈/기존 9개 트렌드 상세/양쪽 커뮤니티·메모리 전용 작성 체험 보존.
-- 양쪽 관점 목록 및 `/daughter/polls`에 합성 질문·보기 3개 체험. React 메모리 상태의 라디오 선택/미리보기/선택 지우기만 허용, **서버 전송·영구 저장·실투표·통계/응답 수·완료 표시 없음**. 최초 역할 선택값은 탐색 편의일 뿐 인증과 무관함.
-- 최초 CI [#42938642362](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42938642362): **68/69**; 기존 실제 UI 정상, 신규 테스트의 선택 전후 안내 비교 순서 오류 1건. 테스트를 교정해 [#42938849291](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42938849291) npm ci/lint/typecheck/build/HTTP smoke/Chromium **69/69 성공**. 기존 55 + 신규 14: 공용 ID/내용 일치·원문 비참조 정적 검사·무효 404·React 라디오 저장/전송 0·모바일 320~1024px·200% 글자·axe 자동 검사.
-- [G1-08 QA](./G1_08_QA.md)에 오류 수정/검증 이력을 기록. 최종 PR HEAD `f3b1a76175b58f6522ab6ac8879f8f605b58485a`의 [Actions #42939450376](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42939450376) **npm ci/lint/build/typecheck/HTTP smoke/Chromium 69/69 전체 success** 확인 후 PR #20을 main squash 병합(`bf5c99df4fdcb23a2f10b96ace4163d47fd7dcd8`). main에 2개 목록·6개 상세·가상 투표·TS fixture·테스트·QA/계획서 존재 확인. **실제 iPhone Safari/Android Chrome·수동 VoiceOver/TalkBack 검증 미실시**.
-
-### G1-09 완료 — 전 화면 브라우저 자동 QA ([PR #22](https://github.com/jkd04255/appa-wa-ddal/pull/22) main 병합)
-- 기준: main v0.12.0 + G0-02 정보구조·G0-03 디자인 시스템·G0-04 기술/보안 계약 및 G1-04~08 화면. 전체 랜딩/아빠·딸 홈/9개 트렌드·발견 상세/양쪽 커뮤니티·6개 글 상세/쓰기 미리보기·서로의 시선 6개 상세/딸 질문/공용 4탭을 **코드·CSS·기존 자동 회귀** 기준으로 재검토.
-- **UX-09-01 키보드 초점:** 기존 '본문으로 바로가기'는 `#main-content` 해시 위치/가시성만 검증. `SkipToMain` Client component가 활성화 시 `main#main-content`에 `tabIndex=-1`을 주고 실제 DOM 초점을 옮기도록 수정. 기본 `href=#main-content` 해시 앵커는 유지하고 다음 Tab이 본문 내부로 이어지도록 검증. JS 비활성 심층 라우트 실동작은 별도 완료로 주장하지 않음.
-- **UX-09-02 입력 경계 대비:** `community-demo.css` 기본 검색/주제/정렬/글쓰기 입력 필드의 `#aaa6a8` on white 대비 **2.41:1** → `#6f6a70` on white **5.29:1**로 개선. 3:1 비텍스트 경계 목표와 44px 높이를 수치로 검증. 기존 양 공간 색상·편집 미감·사진 자산/구조 유지.
-- 기존 **69개** Chromium 회귀+신규 **6개** G1-09 감사 테스트: 10개 대표 경로의 스킵키 실제 초점/다음 Tab, 기본 해시 앵커 DOM, 두 공간 각 입력 테두리, 7개 뷰포트 320/360/375/390/430/768/1024px 고정탭 가림·오버플로, 320px·200% 확대, axe·메모리 데이터 서버 전송 0.
-- [G1-09 QA](./G1_09_QA.md)에 화면별 코드/스타일 감사 범위·근거·한계/수정 사항을 기록. **스크린샷의 실제 사람 육안 대조, iPhone Safari/Android 실기기 및 수동 VoiceOver/TalkBack·Lighthouse 실측은 미실시**. 자동 Chromium/axe 통과로 이를 대체하거나 완전한 접근성·실서비스 안전성을 보증하지 않음.
-- README·QA·계획서가 포함된 PR #22 최종 HEAD `62f40d7d46e9d7ff0867ff6fa95514495ec5e068`의 [Actions #42942426487](https://github.com/jkd04255/appa-wa-ddal/actions/runs/42942426487) **npm ci/lint/typecheck/build/HTTP smoke/Chromium 75/75 전체 success** 확인 및 변경 범위 검토 후 [PR #22](https://github.com/jkd04255/appa-wa-ddal/pull/22) main squash 병합(`11327f7aa54fbe0cf26d7d8f96b18284506a4009`). main에서 실제 SkipToMain/SpaceShell/CSS/QA/계획서 재조회 확인. 실제 기기·수동 스크린리더·화면 스크린샷 육안 감리는 **미실시**.
-
-### G2-01 공식 자료 사전 조사 및 운영 정책 초안 — 문서 전용 (G2-01 Gate **HOLD**)
-- **현행 법령 및 정부 자료를 2026-11-11 기준 조회:** 개인정보 보호법 제15·21·22조의2·30·34조(2026-09-11 시행), 청소년 보호법 제2조(2026-10-08 시행), 정보통신망법 제44조의2 및 청소년성보호법 제15조의2(2026-10-02 시행), 개인정보보호위원회의 아동·청소년 가이드/앱 실태점검, 행정안전부 112/119 긴급신고. 공식 URL과 효력·출처/법률 vs 운영 권고를 신규 문서에 명시.
-- [청소년 개인정보·안전 정책 초안](./G2_01_CHILD_SAFETY_POLICY_DRAFT.md): **만 14세 미만 개인정보 동의 시 법정대리인 동의·확인 요건**과 청소년 보호법상 19세 기준의 구별, 단순 아빠/딸 버튼·성인확인·가족관계 검증 불일치, 연령 우회/과잉 신분정보 수집 위험. 실사용자 UGC 없는 합성 편집 매거진 A안 우선 검토·실서비스 공개 금지.
-- [신고·검수·긴급 운영 Playbook](./G2_01_MODERATION_PLAYBOOK.md): P0~P3 안전위협/권리침해·임시비공개·통지·이의제기/권리행사·증거 최소 취급, 인력/당직/비용 산식 및 가정 시나리오 작성. **운영상 제안 SLA는 법정 기한이나 실제 운영 보장이 아님**. 현재 신고 접수·대응 채널/운영 주체 전혀 없음.
-- [미결정·위험·Gate 레지스터](./G2_01_DECISIONS_AND_RISKS.md): DEC-SAFE-01~16, R2-01~10, G2-01/02/03 선행 승인 조건을 문서화. 법률·보호자 동의·역할/연령 검증·신고 대응·보존·재식별·운영예산 및 G2 코드 승인 **전부 미결정**.
-- **문서 자체는 법률 자문, 연령/권한/신고 시스템 검증 또는 G2 Gate 통과가 아님**. G2-01·02·03 상태는 여전히 **보류(HOLD)**. 실제 Auth/DB/RLS/API/회원·게시·실투표/DM/위치·이미지 업로드·개인정보/분석 저장·외부 수집/유료 API·배포 기능 전면 금지. 실제 iPhone Safari/Android와 VoiceOver/TalkBack·수동 시각 감리는 미실시.
-- Gate를 해제하려면 독립적인 변호사/개인정보/아동 안전·운영/보안 전문가 의견, 운영 책임자/교대·예산/실증과 사용자 명시적 승인 필요. **계획서/정책 문서 PR 병합만으로 승인된 것으로 취급하지 않는다**.
-
-### G2-01B 완료 — 대안별 사업성·운영량·증거 패키지 (문서 전용)
-- A/B/C/D 대안, 비용 산식, 연령·역할 확인 쟁점/공급자 실사, 조직 증거 요청, 가상 사고 탁상 훈련안을 [G2-01B 문서](./G2_01B_FEASIBILITY_AND_EVIDENCE.md)에 정리했습니다. 문서만으로 법률 적합성·실운영 준비·Gate 승인으로 취급하지 않습니다.
-- **다음 대기:** 사업 책임자가 검토 후 외부 전문가 자문을 의뢰할지 결정하는 단계입니다. 외부 발송·전문가 자문·실훈련은 하지 않았습니다. G2-01·02·03 HOLD, 기능/DB/Auth/배포 금지.
+- **내비게이…7752 tokens truncated…능/DB/Auth/배포 금지.
 
 ### 검증 기록
 | 날짜(KST) | 게이트 | 항목 | 결과 |
@@ -482,7 +338,7 @@
 | 2026-11-11 | 기존 G1 lint/build/typecheck/HTTP smoke/Playwright Chromium+axe 상태 | PR #34 HEAD CI 및 main CI #42983653554 모두 **성공**; CI는 자동화 범위만 검증 |
 | 2026-11-11 | iOS Safari/Android·VoiceOver/TalkBack 실기기 QA, G2-01/02/03 정책 Gate | **미검증 / 전체 HOLD**. Auth/DB/실게시·댓글/투표 저장·집계/공개 배포 금지 |
 
-**다음 작업:** 실제 화면 스크린샷과 승인된 G0/G1 디자인 문서를 대조하여 가장 영향력 있는 디자인 문제 하나를 선정해 변경 전 검토한다. 새 UI 구현은 별도 G1 브랜치·PR 및 정확한 HEAD QA가 선행해야 한다.
+**다음 작업:** 검증된 벤토 그리드 공개 시연에 대한 사용자 디자인 피드백을 반영한다. PR #41은 Draft·미병합으로 유지하며, iPhone Safari/Android·VoiceOver/TalkBack 실기기 검증은 별도 과제이다. G2 전체 HOLD를 유지한다.
 
 ### 문서 변경 이력
 | 날짜(KST) | 버전 | 내용 |
@@ -530,3 +386,18 @@
 
 
 | 2026-11-12 | v0.14.0 | G1-14 UI 전면 개편·정적 시연 배포 완료; PR #39 main `87d723f`, Actions #43143650118 일반/정적 81/81 통과, Site source `1a408d5`; owner-only 배포, G2 HOLD 유지 |
+| 2026-11-12 | v0.15.0-rc.1 | G1-15 딸 화면 독립 디자인·20개 관심 주제·세대 관점 경로 제거·사용성 후속 수정을 기능 브랜치에 저장; QA/PR/배포 전, G2 HOLD 유지 |
+| 2026-11-12 | v0.15.0-rc.2 | Actions #43150686757의 `DaughterBoard` 타입 오류, #43152124243/#43152128496의 제거된 딸 관점 route smoke 기대값, #43152497621의 React 텍스트 구분 HTML smoke 기대값을 확인·수정; GitHub Pages 하위 경로 export와 CI 통과 후 배포 job 추가, 저장소 비공개·G2 HOLD 유지 |
+| 2026-11-12 | v0.15.0-rc.3 | Actions #43152729132/#43152735759에서 발견한 딸 홈 미리보기와 `/daughter/polls` 질문 불일치를 합성 주말 콘텐츠 질문·선택지로 통일 |
+| 2026-11-12 | v0.15.0-rc.4 | Actions #43153196147에서 발견한 딸 화면 WCAG 대비 5건을 개선하고, 리디자인 후 문구·정확 heading locator에 맞게 E2E 기대값을 갱신 |
+| 2026-11-12 | v0.15.0-rc.5 | Actions #43154064725/#43154070771에서 상세 페이지 heading 정규식이 아빠·딸 두 안내 제목을 함께 찾는 선택자 불일치를 확인; 딸/아빠 역할별 정확한 heading으로 축소 |
+| 2026-11-12 | v0.15.0-rc.6 | Actions #43154489811의 static export가 비어 있는 딸 동적 404 route에서 중단된 점을 확인; 해당 동적 route 제거 |
+| 2026-11-12 | v0.15.0-rc.7 | Actions #43154981313의 정적 브라우저 회귀에서 부모 `/daughter/perspectives` 경로가 200으로 생성됨을 확인; 부모 페이지까지 제거해 역할 관점 URL을 route 부재형 404로 처리, 최신 HEAD 전체 CI/Pages 대기 |
+| 2026-11-12 | v0.15.0-rc.8 | 딸 홈을 6개 소형 영역·접힌 20개 주제 메뉴·7개 강한 가상 헤드라인으로 정리하고, 발견/커뮤니티 본문을 갱신. HEAD `ebe4839`의 Push/PR 전체 QA 통과, Pages 공개 배포·실제 URL 확인; 저장소 Public, PR #41 Draft·미병합, G2 HOLD·실기기 미검증 유지 |
+| 2026-11-13 | v0.15.0-rc.9 | 사용자의 요청에 따라 딸 메인의 6개 콘텐츠 영역을 벤토 그리드로 재배치. 새 HEAD 전체 QA와 GitHub Pages 재배포 대기; PR #41 Draft·미병합, G2 HOLD 유지 |
+| 2026-11-13 | v0.15.0-rc.10 | 벤토 UI HEAD `718acb2`의 Push/PR CI 및 Pages 성공 확인. 일반/정적 Chromium·axe 각 77/77, 공개 화면·주제 메뉴·먹거리 필터 직접 점검. 제품 코드 변경 없이 기록 갱신; PR #41 Draft·미병합, G2 HOLD·실기기 미검증 유지 |
+
+| 2026-11-14 | v0.16.0-rc.2 | 새 Supabase 계정 연결, Seoul 전용 프로젝트 생성($0 quote), 밸런스 DB 마이그레이션/RLS 적용 및 정확한 Auth callback 저장. 공개 Pages 연결 배포와 DB·UI 0표 대조 확인. 외부 SMTP/Google OAuth/정책 실검증은 남김 |
+| 2026-11-14 | v0.16.0-rc.3 | 홈페이지 각주를 합성 커뮤니티·일반 질문과 저장되는 계정별 밸런스 투표로 구분. 이전 CI에서 PR #41 전체 검증 및 Pages 배포 성공. 이어지는 각주 정정 HEAD의 전체 CI·재배포 결과는 PR #41에 기록 |
+
+| 2026-11-14 | v0.16.0-rc.1 QA | 일반/정적 각 82건 및 DB 보안 23건 통과. 회원 오류 테스트의 alert 범위를 main으로 축소, 중복 투표의 불변 총계 검증 강화, 회원 테스트 캡처 디렉터리 분리 |

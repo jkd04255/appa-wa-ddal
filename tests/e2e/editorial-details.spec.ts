@@ -11,10 +11,13 @@ const dad = [
 ] as const;
 
 const daughter = [
-  ["sample-offbeat-playlist", "남들이 잘 모르는 노래를 좋아하는 마음"],
-  ["sample-beauty-notes", "화장대 위, 취향을 기록하는 방법"],
-  ["sample-cafe-dessert", "조용한 카페에서 고르는 한 접시"],
-  ["sample-late-night-vinyl", "조금 낯선 음악이 더 오래 남을 때"],
+  ["sample-offbeat-playlist", "최애 곡에 ‘별로’ 한마디 했더니… “팬 맞아?” 역공 시작"],
+  ["sample-beauty-notes", "필터에선 쿨핑크였는데… 내 입술에 바르자 형광? 후기 믿은 날의 반전"],
+  ["sample-cafe-dessert", "40분 줄 서서 샀는데 한 입 뒤 정적… 사진만 믿은 대가?"],
+  ["sample-late-night-vinyl", "최애 생일 광고에 돈 안 보탰다고 아웃? 팬덤 인증이 돼버린 응원"],
+  ["sample-fan-rule", "굿즈 못 샀다고 ‘팬 아님’… 지갑 사정까지 시험대 오른 팬심"],
+  ["sample-group-chat", "약속 사진은 다 올라왔는데 나만 몰랐다… ‘너한테 말한 줄’이 진짜 실수일까?"],
+  ["sample-joke-boundary", "싫다고 했는데 세 번 더… 아직도 ‘장난’이라고 넘겨야 하나?"],
 ] as const;
 
 test("source status guard refuses unreviewed verified/expired labels", () => {
@@ -45,11 +48,11 @@ test("dad trend index uses exactly five synthetic cards and readable headings", 
 
 test("daughter discovery filters are URL-driven and visibly selected", async ({ page }) => {
   await page.goto("/daughter/discover");
-  await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(4);
+  await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(7);
   const categories: [string, number, string][] = [
-    ["beauty", 1, "화장대"],
-    ["food", 1, "카페"],
-    ["culture", 2, "음악"],
+    ["beauty", 1, "필터에선 쿨핑크"],
+    ["food", 1, "40분 줄 서서"],
+    ["culture", 5, "팬덤"],
   ];
   for (const [category, count, text] of categories) {
     await page.getByRole("navigation", { name: "발견 필터" })
@@ -61,7 +64,7 @@ test("daughter discovery filters are URL-driven and visibly selected", async ({ 
     await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(count);
   }
   await page.getByRole("navigation", { name: "발견 필터" }).getByRole("link", { name: "전체" }).click();
-  await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(4);
+  await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(7);
   await expect(page.getByRole("navigation", { name: "딸의 공간 주요 메뉴" })
     .getByRole("link", { name: "발견" })).toHaveAttribute("aria-current", "page");
 });
@@ -75,12 +78,12 @@ test("invalid or repeated categories do not leak data or pretend verified result
     const response = await page.goto(url);
     expect(response?.status()).toBe(200);
     await expect(page.getByRole("status")).toContainText("확인할 수 없는 카테고리");
-    await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(4);
-    await expect(page.locator(".editorial-page__stamp")).toHaveCount(4);
+    await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(7);
+    await expect(page.locator(".editorial-page__stamp")).toHaveCount(7);
   }
 });
 
-test("all 9 exact slugs return unique and honestly sourced detail pages", async ({ page }) => {
+test("all 12 exact slugs return unique and honestly sourced detail pages", async ({ page }) => {
   for (const [space, entries] of [
     ["/dad/trends", dad],
     ["/daughter/discover", daughter],
@@ -94,7 +97,9 @@ test("all 9 exact slugs return unique and honestly sourced detail pages", async 
       await expect(main).toContainText("합성 시연 자료 · 외부 원문 없음");
       await expect(main).toContainText("출처·확인 날짜: 해당 없음");
       await expect(main.getByRole("heading", { name: "자료 상태" })).toBeVisible();
-      await expect(main.getByRole("heading", { name: /알아두면 좋은 점|나만의 발견 팁/ })).toBeVisible();
+      await expect(main.getByRole("heading", {
+        name: space.startsWith("/dad") ? /알아두면 좋은 점|나만의 발견 팁/ : /관련 정보/,
+      })).toBeVisible();
       await expect(main.getByRole("link", { name: /목록으로 돌아가기/ })).toBeVisible();
       const nav = page.getByRole("navigation", {
         name: space.startsWith("/dad") ? "아빠의 공간 주요 메뉴" : "딸의 공간 주요 메뉴",
@@ -132,11 +137,11 @@ test("existing home links open corresponding detail and allow returning to listi
   await expect(page.getByRole("heading", { level: 1 })).toContainText("플레이리스트");
 
   await page.goto("/daughter");
-  await page.locator(".daughter-home__feature-copy .daughter-home__arrow-link").click();
+  await page.locator(".daughter-home__story-link").first().click();
   await expect(page).toHaveURL(/\/daughter\/discover\/sample-offbeat-playlist$/);
   await page.getByRole("link", { name: /목록으로 돌아가기/ }).click();
   await expect(page).toHaveURL(/\/daughter\/discover\?category=culture$/);
-  await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(2);
+  await expect(page.locator(".editorial-page__tile--daughter")).toHaveCount(5);
   await page.goBack();
   await expect(page).toHaveURL(/\/daughter\/discover\/sample-offbeat-playlist$/);
 });
@@ -201,3 +206,4 @@ test("two lists and two details meet axe AA, keyboard and read-only no-external 
   }
   expect(violations).toEqual([]);
 });
+

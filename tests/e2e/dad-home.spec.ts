@@ -82,10 +82,11 @@ test("dad desktop hero remains intact and daughter home is separately themed", a
   expect(artwork?.x ?? 0).toBeLessThan(copy?.x ?? 0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.goto("/daughter");
-  await expect(page.getByRole("heading", { name: "딸의 공간" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "관심사", exact: true })).toBeVisible();
   expect(await page.locator(".dad-home").count()).toBe(0);
   await expect(page.locator(".daughter-home")).toHaveCount(1);
-  await expect(page.locator(".daughter-home__feature-grid")).toHaveCount(1);
+  await expect(page.locator(".daughter-home__feed-section")).toHaveCount(3);
+  await expect(page.locator(".daughter-home__story-card")).toHaveCount(7);
 });
 
 test("dad home links are keyboard operable, axe clean and read-only", async ({ page }) => {
@@ -121,3 +122,4 @@ test("200% root font scale keeps dad content and bottom menu usable at 320px", a
     return Number.parseFloat(getComputedStyle(shell).paddingBottom) >= nav.getBoundingClientRect().height;
   })).toBe(true);
 });
+

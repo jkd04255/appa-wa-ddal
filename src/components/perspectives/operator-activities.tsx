@@ -1,11 +1,14 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { OPERATOR_TOURNAMENT } from "@/data/fixtures/operator-activities";
 
-export function OperatorTournamentDemo() {
+export function OperatorTournamentDemo({ space = "dad" }: { space?: "dad" | "daughter" }) {
   const headingId = useId();
+  const roundRef = useRef<HTMLParagraphElement>(null);
+  const resultRef = useRef<HTMLHeadingElement>(null);
   const [picks, setPicks] = useState<string[]>([]);
+  const isDaughter = space === "daughter";
   const entries = OPERATOR_TOURNAMENT.entries;
   const round = picks.length;
   const match = round === 0
@@ -16,34 +19,49 @@ export function OperatorTournamentDemo() {
         ? [picks[0], picks[1]]
         : [];
 
+  function choose(entry: string) {
+    const nextPicks = [...picks, entry];
+    setPicks(nextPicks);
+    window.requestAnimationFrame(() => {
+      (nextPicks.length === 3 ? resultRef.current : roundRef.current)?.focus();
+    });
+  }
+
+  function reset() {
+    setPicks([]);
+    window.requestAnimationFrame(() => roundRef.current?.focus());
+  }
+
   return (
     <section className="operator-activity" aria-labelledby={headingId}>
       <div className="operator-activity__heading">
-        <p className="perspectives__eyebrow">네 가지 취향, 나만의 선택</p>
-        <h2 id={headingId}>{OPERATOR_TOURNAMENT.title}</h2>
-        <p>운영자가 정한 네 가지 보기로 나만의 우승 항목을 골라봅니다.</p>
+        <p className="perspectives__eyebrow">{isDaughter ? "시연 토너먼트" : "네 가지 취향, 나만의 선택"}</p>
+        <h2 id={headingId}>{isDaughter ? "토너먼트 선택" : OPERATOR_TOURNAMENT.title}</h2>
+        <p>{isDaughter
+          ? "고정 보기 4개를 순서대로 선택하는 시연입니다."
+          : "운영자가 정한 네 가지 보기로 나만의 우승 항목을 골라봅니다."}</p>
         <span className="perspectives__stamp">운영자 작성 시연 · 결과 비저장</span>
       </div>
 
       {match.length > 0 ? (
-        <div className="operator-activity__match" aria-live="polite">
-          <p className="operator-activity__round">
+        <div className="operator-activity__match">
+          <p className="operator-activity__round" ref={roundRef} tabIndex={-1} aria-live="off">
             {round < 2 ? `준결승 ${round + 1}` : "결승"} · {round + 1}/3
           </p>
-          <h3>어느 쪽을 고르시겠어요?</h3>
+          <h3>{isDaughter ? "항목을 선택하세요." : "어느 쪽을 고르시겠어요?"}</h3>
           <div className="operator-activity__match-options">
             {match.map((entry) => (
-              <button key={entry} type="button" onClick={() => setPicks((current) => [...current, entry])}>
+              <button key={entry} type="button" onClick={() => choose(entry)}>
                 {entry}
               </button>
             ))}
           </div>
         </div>
       ) : (
-        <div className="operator-activity__notice" role="status" aria-live="polite">
-          <p>나의 우승 선택: <strong>{picks[2]}</strong></p>
+        <div className="operator-activity__notice">
+          <h3 ref={resultRef} tabIndex={-1}>나의 우승 선택: {picks[2]}</h3>
           <p>이 선택은 개인 미리보기이며 전체 결과나 순위가 아닙니다.</p>
-          <button type="button" onClick={() => setPicks([])}>처음부터 다시 고르기</button>
+          <button type="button" onClick={reset}>처음부터 다시 고르기</button>
         </div>
       )}
 

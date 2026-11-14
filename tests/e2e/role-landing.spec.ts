@@ -29,7 +29,7 @@ test("explicit selection shows both links, switches to daughter, and persists", 
   await expect(page.getByRole("link", { name: /아빠로 들어가기/ })).toBeVisible();
   await page.getByRole("link", { name: /딸로 들어가기/ }).click();
   await expect(page).toHaveURL(/\/daughter$/);
-  await expect(page.getByRole("heading", { name: "딸의 공간" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "관심사", exact: true })).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem("awdd.lastSpace.v1"))).toBe("daughter");
   await page.goto("/");
   await expect(page).toHaveURL(/\/daughter$/);
@@ -43,7 +43,7 @@ test("invalid stored value never redirects and is never treated as permission", 
   await expect(page.getByRole("link", { name: /아빠로 들어가기/ })).toBeVisible();
   await expect(page).toHaveURL(/\/$/);
   await page.goto("/daughter");
-  await expect(page.getByRole("heading", { name: "딸의 공간" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "관심사", exact: true })).toBeVisible();
 });
 
 test("blocked localStorage permits navigation but no remembered identity", async ({ page }) => {
@@ -110,3 +110,4 @@ test("keyboard focus, axe accessibility and no write requests", async ({ page })
   expect(result.violations, JSON.stringify(result.violations, null, 2)).toEqual([]);
   expect(nonGet).toEqual([]);
 });
+

@@ -37,12 +37,4 @@ export type DaughterPoll = Readonly<{
   options: readonly string[];
   demoNotice: "실제 투표 결과가 아닙니다";
 }>;
-export type DaughterPerspective = Readonly<{
-  kind: "editorial-perspective";
-  id: string;
-  title: string;
-  dadSide: string;
-  daughterSide: string;
-  publication: DemoStatus;
-  // No actual user quote, original post ID, poll count or identifiable detail.
-}>;
+

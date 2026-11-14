@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AccountLink } from "@/components/account/account-provider";
 import type { ReactNode } from "react";
 import type { ExploreSpace } from "@/lib/role-preference";
 import { SiteNavigation } from "@/components/site-navigation";
@@ -23,6 +24,7 @@ export function SpaceShell({
           </Link>
           <SiteNavigation space={space} />
           <div className="app-header__actions">
+            <AccountLink />
             <span className="app-header__space">{label}</span>
             <Link className="app-header__switch" href="/?choose=1">
               공간 다시 선택하기
