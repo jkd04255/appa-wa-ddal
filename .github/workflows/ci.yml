@@ -50,6 +50,9 @@ jobs:
       - name: Build GitHub Pages demonstration
         env:
           NEXT_PUBLIC_BASE_PATH: /appa-wa-ddal
+          NEXT_PUBLIC_SUPABASE_URL: "https://cjtfkjuiqveosakaccdh.supabase.co"
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "sb_publishable_shhYawTwGXai11tC1Lx3GA_K4bXbFJf"
+          NEXT_PUBLIC_GOOGLE_AUTH_ENABLED: "false"
         run: npm run build:demo
       - name: Verify GitHub Pages image paths
         env:
