@@ -25,7 +25,8 @@ test("headline sections, shop, sample posts and question clearly mark synthetic 
   await expect(page.locator(".daughter-home__community li")).toHaveCount(2);
   await expect(page.locator(".daughter-home__poll-options span")).toHaveCount(3);
   await expect(page.locator(".daughter-home__feed-section--fandom .daughter-home__section-kicker")).toContainText("팬덤 · 미디어");
-  await expect(page.getByRole("main")).toContainText("실제 인물, 사건, 유행, 할인, 사용자 반응과 무관");
+  await expect(page.getByRole("main")).toContainText("합성 시연 콘텐츠");
+  await expect(page.getByRole("main")).toContainText("로그인 회원당 한 표를 저장하며");
   await expect(page.getByRole("main")).not.toContainText("서로의 시선");
   await expect(page.getByRole("main")).not.toContainText("아빠 관점");
   await expect(page.getByRole("navigation", { name: "딸의 공간 주요 메뉴" }).getByRole("link", { name: "밸런스" })).toHaveAttribute("href", "/daughter/polls");
