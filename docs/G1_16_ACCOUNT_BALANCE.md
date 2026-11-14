@@ -10,6 +10,12 @@
 
 새 Supabase 연결 `Jo`의 `jkd04255's Org`에 월 견적 $0으로 서울 리전 `appa-wa-ddal` 프로젝트를 만들었다. ref: `cjtfkjuiqveosakaccdh`, 상태 ACTIVE_HEALTHY. 계정·투표 마이그레이션을 적용했으며 보안·상태 advisor 점검에서 경고가 없다. 테이블은 빈 상태에서 시작하고 여행 질문은 총 0표다. 62:38은 사이트 UI에서 명시한 예시이며 실제 인기·집계가 아니다. 진행 중 투표는 누적 참여수 내림차순으로 표시하도록 구현했다. 실시간/최근 24시간 순위는 구현하지 않았다.
 
+## Pages 연결 확인
+
+2026-11-14 커밋 `be27336`을 포함한 GitHub Actions Push #297의 전체 검증과 Pages 배포, PR #41 CI #298이 성공했다. 공개 딸 홈에는 DB와 일치하는 `0표 / 0% / 0%`가 표시되고, 로그인·가입 화면에서 이메일 로그인을 제공한다. DB에서 `balance_poll_results`를 직접 조회해 질문과 좌·우·총계가 모두 0임을 확인했다. 기존 62:38 예시가 실제 수치로 노출되지 않는다.
+
+공개 홈 하단의 안내 문구가 모든 투표 데이터가 미연결인 것처럼 잘못 안내하던 부분을 정정했다. 저장되지 않는 합성 커뮤니티·질문 콘텐츠와, 로그인 회원 투표를 저장하는 밸런스 게임을 문구에서 구분한다.
+
 Supabase Auth URL Configuration에 Site URL `https://jkd04255.github.io/appa-wa-ddal/`을 제안했으나 저장되지 않았다. 대신 정확한 콜백 `https://jkd04255.github.io/appa-wa-ddal/account/`가 허용 redirect 목록에 저장되어 있다. 클라이언트 가입·재설정은 이 exact URL을 지정한다.
 
 GitHub Pages 빌드에는 프로젝트 URL과 **publishable key만** 주입한다. 이 키는 정적 브라우저 클라이언트용 공개 키다. secret/service-role key는 사용하지 않는다. Google provider는 비활성이다.
@@ -43,6 +49,7 @@ GitHub Pages 빌드에는 프로젝트 URL과 **publishable key만** 주입한�
 - 별도 테스트 빌드에서만 가짜 Supabase 호스트와 키를 주입한다. 모든 호출은 Playwright route로 가로채며 실계정/메일/Google로 전송하지 않는다. 가입 확인, 로그인/오류, 로그아웃, 재설정, 중복 투표, 0표, PKCE 전달, 콜백 오류를 검사한다.
 - fixture 테스트 후 실제 프로젝트 키를 사용하는 Pages 빌드를 생성해 테스트 키나 가짜 계정 상태를 배포하지 않는다.
 - 공개 화면 점검에서 발견한 대표 사진의 basePath 누락을 수정했다. 브라우저에서 이미지 디코딩을 확인하고, Pages 빌드의 이미지 경로 접두사와 실제 파일 존재를 배포 전에 검사한다.
+- 일반 회원 가입은 Supabase 기본 SMTP 제한 때문에 외부 수신자를 대상으로 동작하지 않는다. Google 로그인 버튼도 비활성 상태다. 호스팅 실제 사용자·메일·Google 실검증은 미실시다.
 - iPhone Safari/Android·VoiceOver/TalkBack 실기기 QA와 실제 공급자 종단간 QA는 미실시다.
 
 ## 이후 방·재화 확장
